@@ -9,8 +9,11 @@ You have plenty of freedom in how the app will look and behave. As long as you m
 Users should be able to
 
 - View all items in the _database_.
+  
 - Purchase items that are in stock.
+  
 - View a cart containing the items they intend to purchase.
+  
 - Edit cart before completing the purchase.
 
 ### Backend Requirements
