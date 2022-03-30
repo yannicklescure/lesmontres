@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 function App() {
   return (
     <>
-      <div>What's up</div>
+      <div>Hi there</div>
       <p>Heya</p>
       <p>Hi</p>
     </>
