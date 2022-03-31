@@ -1,66 +1,152 @@
-import styled from 'styled-components';
-import { BsSmartwatch, BsCart, BsCartFill, BsFillPersonFill } from 'react-icons/bs';
-import { COLORS } from '../constants';
-import SubNavbar from './SubNavbar';
-import { NavLink } from 'react-router-dom';
+import styled from "styled-components";
+import {
+  BsSmartwatch,
+  BsCart,
+  BsCartFill,
+  BsFillPersonFill,
+} from "react-icons/bs";
+import {
+  AiOutlineClockCircle,
+  AiOutlineUser,
+  AiOutlineShopping,
+  AiOutlineShoppingCart,
+  AiOutlineSearch,
+} from "react-icons/ai";
+import { COLORS } from "../constants";
+import SubNavbar from "./SubNavbar";
+import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
   return (
     <>
-      <Wrapper>
-        <Brand>
-          <BsSmartwatch />
-          <StyledLink to="/">Les montres</StyledLink>
-        </Brand>
-        <StyledInput placeholder="Search your dream watch" />
-        <Container>
-          <BsCart />
-          <BsCartFill />
-          <BsFillPersonFill />
-        </Container>
-      </Wrapper>
+      <MainWrapper>
+        <BrandWrapper>
+          <Brand>
+            <BrandLink to="/">
+              LesM
+              <AiOutlineClockCircle size="27" />
+              ntres
+            </BrandLink>
+          </Brand>
+        </BrandWrapper>
+
+        <SectionRight>
+          <SearchBarWrapper>
+            <SearchBar />
+            <SearchIcon />
+          </SearchBarWrapper>
+          <IconsContainer>
+            <AiOutlineUser size="25" />
+            <AiOutlineShoppingCart size="25" />
+            {/* <AiOutlineShopping size="25" /> */}
+          </IconsContainer>
+        </SectionRight>
+      </MainWrapper>
       <SubNavbar />
     </>
-  )
-}
+  );
+};
 
-const Wrapper = styled.div`
+const MainWrapper = styled.div`
+  /* border: 1px solid red; */
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  background: ${COLORS.dark};
+  background-color: ${COLORS.darker};
   color: ${COLORS.light};
-  height: 75px;
-  padding: 16px;
+  height: 85px;
+  border-bottom: 0.5px solid ${COLORS.grey};
+`;
+
+const BrandWrapper = styled.div`
+  /* border: 1px solid blue; */
+  margin-left: 30px;
+  background-color: ${COLORS.darker};
 `;
 
 const Brand = styled.div`
-  font-size: 40px;
+  /* border: 1px solid green; */
+  font-size: 30px;
   display: flex;
   align-items: center;
   gap: 12px;
 `;
 
-const StyledLink = styled(NavLink)`
-  font-family: 'Yeseva One', cursive;
+const BrandLink = styled(NavLink)`
+  /* to align clock within text */
+  display: flex;
+  align-items: flex-end;
+  font-family: "Yeseva One", sans-serif;
   font-size: 32px;
+  font-weight: bold;
   text-decoration: none;
-  color: ${COLORS.light};
+  /* color: ${COLORS.light}; */
+  color: white;
   transition: all 400ms ease;
 
   &:hover {
     color: ${COLORS.grey};
+    cursor: pointer;
   }
 `;
 
-const Container = styled.div`
+const SectionRight = styled.div`
+  /* border: 1px solid yellow; */
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-right: 30px;
+`;
+
+const SearchBarWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  width: max-content;
+  position: relative;
+`;
+
+// const SearchBar = styled.input`
+//   /* border: 1px solid ${COLORS.light}; */
+//   border: 1px solid white;
+//   /* height: 34px; */
+//   width: 130px;
+//   height: 38px;
+//   font-size: 16px;
+//   border-radius: 50px;
+//   background-color: transparent;
+//   opacity: 0.75;
+//   color: ${COLORS.grey};
+//   /* display: flex; */
+//   background-color: ${COLORS.darker};
+// `;
+
+const SearchBar = styled.input`
+  /* border: 1px solid ${COLORS.light}; */
+  border: 1px solid white;
+  /* height: 34px; */
+  width: 130px;
+  height: 38px;
+  font-size: 16px;
+  border-radius: 50px;
+  background-color: transparent;
+  opacity: 0.75;
+  color: ${COLORS.grey};
+  /* display: flex; */
+  background-color: ${COLORS.darker};
+`;
+
+const SearchIcon = styled(AiOutlineSearch)`
+  font-size: 18px;
+  position: absolute;
+  left: 78%;
+`;
+
+const IconsContainer = styled.div`
   display: flex;
   align-items: center;
   font-size: 20px;
-`;
-
-const StyledInput = styled.input`
-  border: 1px solid ${COLORS.secondary};
-  outline: none;
+  gap: 8px;
+  background-color: transparent;
 `;
 
 // const StyledLink = styled.div`

@@ -1,10 +1,9 @@
+import styled from "styled-components";
 
 const Homepage = () => {
-  return (
-    <div>
-      Homepage
-    </div>
-  )
-}
+  return <MainWrapper></MainWrapper>;
+};
+
+const MainWrapper = styled.div``;
 
 export default Homepage;
