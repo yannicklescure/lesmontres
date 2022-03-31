@@ -1,24 +1,41 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { COLORS } from "../constants";
+import { ItemsContext } from "../contexts/ItemsContext";
+import Loading from "./Loading";
 
 const SubNavbar = () => {
 
   const [categories, setCategories] = useState([]);
 
+  // useEffect(() => {
+  //   fetch('/api/items?categories=true')
+  //     .then(res => res.json())
+  //     .then((response) => {
+  //       console.log(response);
+  //       setCategories(response.data);
+  //     })
+  //     .catch(err => console.log(err));
+  //   // eslint-disable-next-line
+  // }, []);
+
+  const {
+    state: {
+      items,
+    }
+  } = useContext(ItemsContext);
+
   useEffect(() => {
-    fetch('/api/items?categories=true')
-      .then(res => res.json())
-      .then((response) => {
-        console.log(response);
-        setCategories(response.data);
-      })
-      .catch(err => console.log(err));
+    let tmp = [];
+    items.forEach((item) => {
+      if (!tmp.includes(item.category)) tmp.push(item.category);
+    });
+    setCategories(tmp);
     // eslint-disable-next-line
   }, []);
 
-  if (categories.length === 0) return <></>
+  if (categories.length === 0) return <><Loading size="32" /></>
 
   return (
     <Wrapper>

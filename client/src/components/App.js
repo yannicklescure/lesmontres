@@ -8,10 +8,14 @@ import Navbar from "./Navbar"
 import Footer from "./Footer";
 import { ItemsContext } from "../contexts/ItemsContext";
 import { useContext, useEffect } from "react";
+import Loading from "./Loading";
 
 function App() {
 
   const {
+    state: {
+      hasLoaded,  
+    },
     actions: {
       loadingItems,
       receivedItemsFromServer,
@@ -30,6 +34,10 @@ function App() {
       .catch(err => errorFromServer());
   // eslint-disable-next-line
   }, []);
+
+  if (!hasLoaded) {
+    return <Loading size="32" />
+  }
 
   return (
     <>
