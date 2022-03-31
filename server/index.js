@@ -40,8 +40,8 @@ express()
   // .put("/api/items/:_id", updateItem)
 
   .get("/api/users", getUsers)
-  .post("/api/userLogin", logInUser)
-  .post("/api/user", createUser)
+  .post("/api/login", logInUser)
+  .post("/api/signup", createUser)
   // REST endpoints?
   .get("/bacon", (req, res) => res.status(200).json("🥓"))
 

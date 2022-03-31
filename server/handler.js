@@ -82,15 +82,17 @@ const logInUser = async (req, res) => {
     if (!email || !password) {
       return res
         .status(400)
-        .json({ status: 400, message: "Add Your Credintials and Password" });
+        .json({ status: 400, message: "Add Your Email and Password" });
     }
     const loginAuth = await db.collection("users").findOne({ email: email });
     if (loginAuth) {
       const loginPassword = await bcrypt.compare(password, loginAuth.password);
       if (loginPassword) {
-        return res
-          .status(200)
-          .json({ status: 200, message: "User Logged In", user: loginAuth });
+        return res.status(200).json({
+          status: 200,
+          message: "User Logged In",
+          data: loginAuth.cartArray,
+        });
       } else
         return res
           .status(400)
@@ -114,11 +116,19 @@ const createUser = async (req, res) => {
     email: email,
     password: password,
     cartArray: [],
+    wishList: [],
+    purchasedHistory: [],
   };
   try {
     await client.connect();
     const db = client.db("LesMontres");
     const emailUsers = await db.collection("users").findOne({ email: email });
+    const emailValidation = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    if (!emailValidation.test(email)) {
+      return res
+        .status(400)
+        .json({ status: 400, message: "E-mail isn't valid" });
+    }
     if (!email || !password || !firstName || !lastName) {
       return res
         .status(409)
@@ -126,12 +136,11 @@ const createUser = async (req, res) => {
     }
     if (emailUsers) {
       return res
-        .status(201)
-        .json({ status: 201, message: "User Already Exsits" });
+        .status(400)
+        .json({ status: 400, message: "User Already Exsits" });
     }
     const cryptedPassword = await bcrypt.hash(password, 10);
     userArray.password = cryptedPassword;
-    console.log(userArray);
     const users = await db.collection("users").insertOne(userArray);
     users
       ? res.status(200).json({
