@@ -70,6 +70,12 @@ const StyledLink = styled(NavLink)`
   text-transform: uppercase;
   letter-spacing: 2px;
   color: ${COLORS.light};
+  transition: all 400ms ease;
+
+  &:hover {
+    color: ${COLORS.grey};
+    cursor: pointer;
+  }
 `;
 
 export default SubNavbar;
