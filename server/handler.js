@@ -1,5 +1,7 @@
 "use strict";
 
+const { v4: uuidv4 } = require("uuid");
+const bcrypt = require("bcrypt");
 const { MongoClient } = require("mongodb");
 require("dotenv").config();
 const { MONGO_URI } = process.env;
@@ -70,8 +72,86 @@ const getUsers = async (req, res) => {
   }
 };
 
+const getUser = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, option);
+  const { email, password } = req.body;
+
+  try {
+    await client.connect();
+    const db = client.db("LesMontres");
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ status: 400, message: "Add Your Credintials and Password" });
+    }
+    const loginAuth = await db.collection("users").findOne({ email: email });
+    if (loginAuth) {
+      const loginPassword = await bcrypt.compare(password, loginAuth.password);
+      if (loginPassword) {
+        return res
+          .status(200)
+          .json({ status: 200, message: "User Logged In", user: loginAuth });
+      } else
+        return res
+          .status(400)
+          .json({ status: 400, message: "Password Don't Match " });
+    } else
+      return res.status(400).json({ status: 400, message: "E-mail Not Found" });
+  } catch (err) {
+    console.log(err);
+  } finally {
+    client.close();
+  }
+};
+
+const createUser = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, option);
+  const { firstName, lastName, email, password } = req.body;
+  const userArray = {
+    _id: uuidv4(),
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    password: password,
+    cartArray: [],
+  };
+  try {
+    await client.connect();
+    const db = client.db("LesMontres");
+    const emailUsers = await db.collection("users").findOne({ email: email });
+    if (!email || !password || !firstName || !lastName) {
+      return res
+        .status(409)
+        .json({ status: 409, message: "Add Your Credintials" });
+    }
+    if (emailUsers) {
+      return res
+        .status(201)
+        .json({ status: 201, message: "User Already Exsits" });
+    }
+    const cryptedPassword = await bcrypt.hash(password, 10);
+    userArray.password = cryptedPassword;
+    console.log(userArray);
+    const users = await db.collection("users").insertOne(userArray);
+    users
+      ? res.status(200).json({
+          status: 200,
+          data: req.body,
+          message: "User Created",
+          id: userArray._id,
+        })
+      : res.status(409).json({ status: 409, message: "ERROR" });
+  } catch (err) {
+    console.log(err);
+  } finally {
+    client.close();
+  }
+};
+
 module.exports = {
   getItems,
   getCompanies,
   getUsers,
+  createUser,
+  getUser,
 };
