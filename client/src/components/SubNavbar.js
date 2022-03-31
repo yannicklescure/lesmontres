@@ -1,15 +1,28 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const SubNavbar = () => {
 
-  // fetch categories
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/items?categories=true')
+      .then(res => res.json())
+      .then((response) => {
+        console.log(response);
+        setCategories(response.data);
+      })
+      .catch(err => console.log(err));
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <Wrapper>
-      <div>Category</div>
-      <div>Category</div>
-      <div>Category</div>
-      <div>Category</div>
+      {
+        categories.map(category => (
+          <div key={category}>{category}</div>
+        ))
+      }
     </Wrapper>
   );
 };

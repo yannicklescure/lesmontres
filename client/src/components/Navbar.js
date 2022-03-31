@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { BsSmartwatch, BsCart, BsCartFill, BsFillPersonFill } from 'react-icons/bs';
 import { COLORS } from '../constants';
-import { SubNavbar } from './SubNavbar';
+import SubNavbar from './SubNavbar';
 
 const Navbar = () => {
   return (
@@ -26,7 +26,8 @@ const Navbar = () => {
 const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  background: ${COLORS.grey};
+  background: ${COLORS.dark};
+  color: ${COLORS.light};
   height: 75px;
   padding: 16px;
 `;
