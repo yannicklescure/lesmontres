@@ -56,10 +56,9 @@ function App() {
             </Route>
             <Route exact path="/products">
               <Products />
-
+            </Route>
             <Route exact path="/products/:category?">
                 <Products />
-
             </Route>
             <Route path="">
               <ErrorPage />
