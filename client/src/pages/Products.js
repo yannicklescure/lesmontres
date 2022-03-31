@@ -1,25 +1,28 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Loading from "../components/Loading";
+import { ItemsContext } from "../contexts/ItemsContext";
 
 const Products = () => {
+  const params = useParams();
+  console.log(params);
+  const category = params?.category !== undefined ? params.category : 'fitness'
+  
+  const {
+    state: {
+      hasLoaded,  
+      items,
+    }
+  } = useContext(ItemsContext);
 
-  const [products, setProducts] = useState([]);
 
-  useEffect(() => {
-    fetch('/api/items')
-      .then(res => res.json())
-      .then((response) => {
-        console.log(response);
-        setProducts(response.data);
-      })
-      .catch(err => console.log(err));
-    // eslint-disable-next-line
-  }, []);
-
-  if (products.length === 0) {
+  if (!hasLoaded) {
     return <Loading size="32" />
   }
+
+  console.log(category);
+  const products = items.filter(item => item.category.toLowerCase() === category);
 
   return (
     <Wrapper>
@@ -37,6 +40,7 @@ const Products = () => {
 const Wrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
+  padding: 16px 0;
 `;
 
 const StyledImg = styled.img`
