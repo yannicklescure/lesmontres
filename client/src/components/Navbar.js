@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { BsSmartwatch, BsCart, BsCartFill, BsFillPersonFill } from 'react-icons/bs';
 import { COLORS } from '../constants';
 import SubNavbar from './SubNavbar';
+import { NavLink } from 'react-router-dom';
 
 const Navbar = () => {
   return (
@@ -9,7 +10,7 @@ const Navbar = () => {
       <Wrapper>
         <Brand>
           <BsSmartwatch />
-          <span>Les montres</span>
+          <StyledLink to="/">Les montres</StyledLink>
         </Brand>
         <StyledInput placeholder="Search your dream watch" />
         <Container>
@@ -37,10 +38,17 @@ const Brand = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
+`;
 
-  & span {
-    font-family: 'Yeseva One', cursive;
-    font-size: 32px;
+const StyledLink = styled(NavLink)`
+  font-family: 'Yeseva One', cursive;
+  font-size: 32px;
+  text-decoration: none;
+  color: ${COLORS.light};
+  transition: all 400ms ease;
+
+  &:hover {
+    color: ${COLORS.grey};
   }
 `;
 
