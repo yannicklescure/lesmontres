@@ -10,34 +10,28 @@ import SignUp from "../pages/SignUp";
 import { ItemsContext } from "../contexts/ItemsContext";
 import { useContext, useEffect } from "react";
 import Loading from "./Loading";
+import Login from "../pages/Login";
 
 function App() {
-
   const {
-    state: {
-      hasLoaded,  
-    },
-    actions: {
-      loadingItems,
-      receivedItemsFromServer,
-      errorFromServer,
-    }
+    state: { hasLoaded },
+    actions: { loadingItems, receivedItemsFromServer, errorFromServer },
   } = useContext(ItemsContext);
 
   useEffect(() => {
     loadingItems();
     fetch(`/api/items`)
-      .then(res => res.json())
+      .then((res) => res.json())
       .then((response) => {
         console.log(response);
-        receivedItemsFromServer({items: response.data});
+        receivedItemsFromServer({ items: response.data });
       })
-      .catch(err => errorFromServer());
-  // eslint-disable-next-line
+      .catch((err) => errorFromServer());
+    // eslint-disable-next-line
   }, []);
 
   if (!hasLoaded) {
-    return <Loading size="32" />
+    return <Loading size="32" />;
   }
 
   return (
@@ -54,11 +48,14 @@ function App() {
             <Route exact path="/sign-up">
               <SignUp />
             </Route>
+            <Route exact path="/login">
+              <Login />
+            </Route>
             <Route exact path="/products">
               <Products />
             </Route>
             <Route exact path="/products/:category?">
-                <Products />
+              <Products />
             </Route>
             <Route path="">
               <ErrorPage />
