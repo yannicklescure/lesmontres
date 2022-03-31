@@ -22,8 +22,16 @@ express()
   .use(express.json())
   .use(express.urlencoded({ extended: false }))
   .use("/", express.static(__dirname + "/"))
-  .get("/api/get-companies", getCompanies)
-  .get("/api/get-items", getItems)
+
+  .get("/api/companies", getCompanies)
+  // .post("/api/companies", addCompany)
+  // .delete("/api/companies/:_id", deleteCompany)
+  // .put("/api/companies/:_id", updateCompany)
+
+  .get("/api/items", getItems)
+  // .post("/api/items", addItem)
+  // .delete("/api/items/:_id", deleteItem)
+  // .put("/api/items/:_id", updateItem)
 
   // REST endpoints?
   .get("/bacon", (req, res) => res.status(200).json("🥓"))
