@@ -35,7 +35,7 @@ const getItems = async (req, res) => {
     const result = await db.collection("items").find().toArray();
     let data = result;
 
-    if (req.query.categories === "true") {
+    if (req.query.categories) {
       let categories = [];
       data.forEach((item) => {
         if (!categories.includes(item.category)) categories.push(item.category);
