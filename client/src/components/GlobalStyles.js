@@ -1,15 +1,8 @@
 import { createGlobalStyle } from "styled-components";
+import { COLORS } from "../constants";
 
 export default createGlobalStyle`
   :root {
-    --color-cadmium-red: #D80026;
-    --color-alabama-crimson: #AA001E;
-    --color-orange: #F79D00;
-    --color-selective-yellow: #FDBB01;
-    --color-desert-sand: #E3C4A6;
-    --font-body: 'Roboto', sans-serif;
-    --font-heading: 'Righteous', cursive;
-    --padding-page: 16px;
   }
 
   /* http://meyerweb.com/eric/tools/css/reset/
@@ -18,7 +11,7 @@ export default createGlobalStyle`
   */
 
   * {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Poppins', sans-serif;
   }
 
   html, body, div, span, applet, object, iframe,
@@ -48,6 +41,7 @@ export default createGlobalStyle`
   }
   body {
       line-height: 1;
+      /* background-color: ${COLORS.darker}; */
   }
   ol, ul {
       list-style: none;
@@ -69,7 +63,6 @@ export default createGlobalStyle`
     padding: 0 12px;
   }
 `;
-
 
 // font-family: 'Roboto', sans-serif;
 // font-family: 'Yeseva One', cursive;

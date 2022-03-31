@@ -41,7 +41,7 @@ const SubNavbar = () => {
     <Wrapper>
       {
         categories.map(category => (
-          <StyledLink key={category} to={`/products/${category.toLowerCase()}`}>{category}</StyledLink>
+          <StyledLink key={category} to={`/products/${category.toUpperCase()}`}>{category}</StyledLink>
         ))
       }
     </Wrapper>
@@ -52,14 +52,21 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 24px;
-  background-color: ${COLORS.light};
-  padding: 16px;
-  border-bottom: 1px solid ${COLORS.grey};
+  gap: 35px;
+  background-color: black;
+  /* background-color: none; */
+  padding: 17px;
+  border-bottom: 0.5px solid ${COLORS.grey};
+
 `;
 
 const StyledLink = styled(NavLink)`
+  font-family: Poppins;
+  font-size: 12px;
   text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: ${COLORS.light};
 `;
 
 export default SubNavbar;
