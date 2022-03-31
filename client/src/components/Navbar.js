@@ -15,8 +15,17 @@ import {
 import { COLORS } from "../constants";
 import SubNavbar from "./SubNavbar";
 import { NavLink } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../contexts/UserContext";
 
 const Navbar = () => {
+
+  const {
+    state: {
+      user
+    }
+  } = useContext(UserContext);
+
   return (
     <>
       <MainWrapper>
@@ -36,8 +45,14 @@ const Navbar = () => {
             <SearchIcon />
           </SearchBarWrapper>
           <IconsContainer>
-            <AiOutlineUser size="25" />
-            <AiOutlineShoppingCart size="25" />
+
+            <StyledIconLink to="/login">
+              <AiOutlineUser size="25" />
+            </StyledIconLink>
+
+            { user._id && (
+              <AiOutlineShoppingCart size="25" />
+            ) }
             {/* <AiOutlineShopping size="25" /> */}
           </IconsContainer>
         </SectionRight>
@@ -82,6 +97,18 @@ const BrandLink = styled(NavLink)`
   text-decoration: none;
   /* color: ${COLORS.light}; */
   color: white;
+  transition: all 400ms ease;
+
+  &:hover {
+    color: ${COLORS.grey};
+    cursor: pointer;
+  }
+`;
+
+const StyledIconLink = styled(NavLink)`
+  text-decoration: none;
+  color: ${COLORS.light};
+  font-size: 20px;
   transition: all 400ms ease;
 
   &:hover {
