@@ -1,12 +1,15 @@
 import styled from "styled-components";
 
 const SubNavBar = () => {
+
+  // fetch categories
+
   return (
     <Wrapper>
-      <div>Products</div>
-      <div>Products</div>
-      <div>Products</div>
-      <div>Products</div>
+      <div>Category</div>
+      <div>Category</div>
+      <div>Category</div>
+      <div>Category</div>
     </Wrapper>
   );
 };
