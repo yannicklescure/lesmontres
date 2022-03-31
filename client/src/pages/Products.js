@@ -3,7 +3,7 @@ import { useEffect } from "react";
 const Products = () => {
 
   useEffect(() => {
-    fetch('/api/items')
+    fetch('/api/get-items')
       .then(res => res.json())
       .then((reponse) => {
         console.log(reponse);
