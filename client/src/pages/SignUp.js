@@ -1,23 +1,56 @@
 // SignUp.js
 
-// POST new user
+// TODO: POST new user
 
 import styled from "styled-components";
-import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useState, useRef } from "react";
+import { useHistory, NavLink } from "react-router-dom";
 
 const SignUp = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const history = useHistory();
+  const [disabled, setDisabled] = useState(true);
+  const [valid, setValid] = useState(false);
 
-  let history = useHistory(); // ??? put in hooks folder?
+  // create a reference for each input to store the values
+  const firstName = useRef();
+  const lastName = useRef();
+  const email = useRef();
+  const password = useRef();
+  const confirmPassword = useRef();
+
+  // check if all inputs are filled--if true, enable Sign Up button
+  const handleChange = (ev) => {
+    if (password.current.value !== confirmPassword.current.value) {
+      // console.log("Passwords don't match");
+
+      // we need a return to end the function if the passwords don't match
+      return;
+    }
+    if (
+      firstName.current.value.length > 0 &&
+      lastName.current.value.length > 0 &&
+      email.current.value.length > 0 &&
+      password.current.value.length > 0 &&
+      confirmPassword.current.value.length > 0
+    ) {
+      setDisabled(false);
+    }
+    // if all inputs are valid, setValid(true)
+    setValid(true);
+  };
 
   const handleSubmit = (ev) => {
     ev.preventDefault();
+    if (valid) {
+      const user = {
+        firstName: firstName.current.value,
+        lastName: lastName.current.value,
+        email: email.current.value,
+        password: password.current.value,
+        confirmPassword: confirmPassword.current.value,
+      };
+      console.log(user);
+    }
   };
 
   return (
@@ -28,49 +61,53 @@ const SignUp = () => {
           type="text"
           name="first-name"
           required
-          value={firstName}
           placeholder="First Name"
-          onChange={(ev) => setFirstName(ev.target.value)}
+          ref={firstName}
+          onChange={handleChange}
         ></FirstName>
         <LastName
           type="text"
           name="last-name"
           required
-          value={lastName}
           placeholder="Last Name"
-          onChange={(ev) => setLastName(ev.target.value)}
+          ref={lastName}
+          onChange={handleChange}
         ></LastName>
 
         <Email
           type="email"
           name="email"
           required
-          value={email}
           placeholder="E-mail"
-          onChange={(ev) => setEmail(ev.target.value)}
+          ref={email}
+          onChange={handleChange}
         ></Email>
 
         <Password
           type="password"
           name="password"
           required
-          value={password}
           placeholder="Password"
-          onChange={(ev) => setPassword(ev.target.value)}
+          ref={password}
+          onChange={handleChange}
         ></Password>
         {/* Show/hide eye icon */}
         <ConfirmPassword
           type="password"
           name="confirm-password"
           required
-          value={confirmPassword}
           placeholder="Confirm Password"
-          onChange={(ev) => setConfirmPassword(ev.target.value)}
+          ref={confirmPassword}
+          onChange={handleChange}
         ></ConfirmPassword>
 
-        {/* if (required inputs) */}
-        <SignUpBtn type="submit" value="Sign Up" onSubmit={handleSubmit} />
-        <DisabledSignUpBtn type="submit" value="Sign Up" disabled />
+        <SignUpBtn
+          type="submit"
+          onClick={(ev) => handleSubmit(ev)}
+          disabled={disabled}
+        >
+          Sign Up
+        </SignUpBtn>
 
         <div>
           Already have an account?
@@ -95,15 +132,21 @@ const SignUpForm = styled.form`
 `;
 const FirstName = styled.input``;
 const LastName = styled.input``;
-const Username = styled.input``;
 const Email = styled.input``;
 const Password = styled.input``;
 const ConfirmPassword = styled.input``;
-const SignUpBtn = styled.input`
-  /* background-color: red; */
-`;
-const DisabledSignUpBtn = styled.input`
-  /* background-color: blue; */
+
+const SignUpBtn = styled.button`
+  background-color: red;
+  ${({ disabled }) =>
+    disabled
+      ? `
+      cursor: not-allowed;
+      opacity: 0.5;
+      `
+      : `
+      cursor: pointer;
+  `};
 `;
 
 export default SignUp;
