@@ -4,8 +4,9 @@ import Homepage from "../pages/Homepage";
 import Products from "../pages/Products";
 import ErrorPage from "../pages/ErrorPage";
 import GlobalStyles from "./GlobalStyles";
-import Navbar from "./Navbar"
+import Navbar from "./Navbar";
 import Footer from "./Footer";
+import SignUp from "../pages/SignUp";
 
 function App() {
   return (
@@ -17,6 +18,9 @@ function App() {
           <Switch>
             <Route exact path="/">
               <Homepage />
+            </Route>
+            <Route exact path="/sign-up">
+              <SignUp />
             </Route>
             <Route exact path="/products">
               <Products />
