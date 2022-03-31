@@ -62,8 +62,8 @@ export default createGlobalStyle`
   }
 
   input {
-    font-size: 24px;
-    height: 42px;
+    font-size: 16px;
+    height: 32px;
     /* border: 2px solid var(--color-orange); */
     border-radius: 4px;
     padding: 0 12px;

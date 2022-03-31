@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import Homepage from "../pages/Homepage";
 import Products from "../pages/Products";
 import ErrorPage from "../pages/ErrorPage";
@@ -11,12 +11,19 @@ import { ItemsContext } from "../contexts/ItemsContext";
 import { useContext, useEffect } from "react";
 import Loading from "./Loading";
 import Login from "../pages/Login";
+import { UserContext } from "../contexts/UserContext";
 
 function App() {
   const {
     state: { hasLoaded },
     actions: { loadingItems, receivedItemsFromServer, errorFromServer },
   } = useContext(ItemsContext);
+
+  const {
+    state: {
+      user
+    }
+  } = useContext(UserContext);
 
   useEffect(() => {
     loadingItems();
@@ -44,15 +51,22 @@ function App() {
             <Route exact path="/">
               <Homepage />
             </Route>
-
-            <Route exact path="/sign-up">
-              <SignUp />
+            <Route exact path="/signup">
+              {
+                user._id
+                ? <Redirect to='/'/>
+                : <SignUp />
+              }
             </Route>
             <Route exact path="/login">
-              <Login />
+              {
+                user._id
+                ? <Redirect to='/'/>
+                : <Login />
+              }
             </Route>
             <Route exact path="/products">
-              <Products />
+              <Redirect to='/products/fitness'/>
             </Route>
             <Route exact path="/products/:category?">
               <Products />
@@ -71,7 +85,7 @@ function App() {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 100px);
+  min-height: calc(100vh - 150px);
 `;
 
 export default App;

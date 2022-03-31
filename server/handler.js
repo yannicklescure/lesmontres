@@ -88,10 +88,24 @@ const logInUser = async (req, res) => {
     if (loginAuth) {
       const loginPassword = await bcrypt.compare(password, loginAuth.password);
       if (loginPassword) {
+        const {
+          firstName, 
+          lastName,
+          email,
+          _id,
+          cartArray
+        } = loginAuth;
+        
         return res.status(200).json({
           status: 200,
           message: "User Logged In",
-          data: loginAuth.cartArray,
+          data: {
+            firstName, 
+            lastName,
+            email,
+            _id,
+            cartArray
+          },
         });
       } else
         return res
@@ -145,9 +159,13 @@ const createUser = async (req, res) => {
     users
       ? res.status(200).json({
           status: 200,
-          data: req.body,
+          data: {
+            firstName, 
+            lastName,
+            email,
+            _id: userArray._id,
+          },
           message: "User Created",
-          id: userArray._id,
         })
       : res.status(409).json({ status: 409, message: "ERROR" });
   } catch (err) {

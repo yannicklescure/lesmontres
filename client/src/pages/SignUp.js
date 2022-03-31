@@ -1,18 +1,26 @@
-// SignUp.js
-
-// TODO:
-// - POST new user
-// - NavLink to login--add to modules?
-
 import styled from "styled-components";
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import { useHistory, NavLink } from "react-router-dom";
-import { AiOutlineClockCircle } from "react-icons/ai";
+import { COLORS } from "../constants";
+import { BsSmartwatch } from 'react-icons/bs';
+import { UserContext } from "../contexts/UserContext";
+import Loading from "../components/Loading";
 
 const SignUp = () => {
   const history = useHistory();
   const [disabled, setDisabled] = useState(true);
   const [valid, setValid] = useState(false);
+
+  const {
+    state: {
+      status
+    },
+    actions: {
+      loadingUser,
+      receivedUserFromServer,
+      errorFromServerUser,
+    }
+  } = useContext(UserContext);
 
   // create a reference for each input to store the values
   const firstName = useRef();
@@ -25,8 +33,9 @@ const SignUp = () => {
   const handleChange = (ev) => {
     if (password.current.value !== confirmPassword.current.value) {
       // console.log("Passwords don't match");
-
       // we need a return to end the function if the passwords don't match
+      setValid(false);
+      setDisabled(true);
       return;
     }
     if (
@@ -45,20 +54,39 @@ const SignUp = () => {
   const handleSubmit = (ev) => {
     ev.preventDefault();
     if (valid) {
-      const user = {
+      const formData = {
         firstName: firstName.current.value,
         lastName: lastName.current.value,
         email: email.current.value,
         password: password.current.value,
-        confirmPassword: confirmPassword.current.value,
       };
-      console.log(user);
+      console.log(formData);
+      loadingUser();
+      fetch(`/api/signup`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+        .then((res) => res.json())
+        .then((json) => {
+          console.log(json);
+          receivedUserFromServer({user: json.data});
+          // Go to homepage
+          history.push('/');
+        })
+        .catch((err) => {
+          console.error(err);
+          errorFromServerUser({message: 'An unknown error has occurred'});
+        });
     }
   };
 
   return (
     <Wrapper>
-      <div>Welcome to LesMontres</div>
+      <StyledLogo><BsSmartwatch /></StyledLogo>
+      <Title>Sign up to Les montres</Title>
       <SignUpForm>
         <FirstName
           type="text"
@@ -109,16 +137,11 @@ const SignUp = () => {
           onClick={(ev) => handleSubmit(ev)}
           disabled={disabled}
         >
-          Sign Up
+          { status === "loading-user" ? <Loading size="18" /> : 'Sign Up' }          
         </SignUpBtn>
-
-        <span>
-          Already have an account? <LoginLink>Login</LoginLink> instead
-        </span>
-        <div>
-          <AiOutlineClockCircle />
-        </div>
       </SignUpForm>
+
+      <StyledInfo>Already have an account? <LoginLink to="/login">Login</LoginLink></StyledInfo> 
     </Wrapper>
   );
 };
@@ -126,22 +149,64 @@ const SignUp = () => {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  width: 300px;
-  /* font-family: Poppins; */
+  align-items: center;
+  min-height: calc(100vh - 150px);
+  padding: 16px;
 `;
+
+const StyledLogo = styled.div`
+  font-size: 48px;
+  margin-bottom: 16px;
+`;
+
+const Title = styled.h1`
+  font-size: 18px;
+  margin-bottom: 24px;
+  color: ${COLORS.dark};
+  `;
+
 const SignUpForm = styled.form`
   display: flex;
   flex-direction: column;
+  background-color: ${COLORS.light};
+  border: 1px solid ${COLORS.grey};
+  padding: 16px;
+  border-radius: 4px;
+  width: 300px;
 `;
-const FirstName = styled.input``;
-const LastName = styled.input``;
-const Email = styled.input``;
-const Password = styled.input``;
-const ConfirmPassword = styled.input``;
+
+const StyledInfo = styled.div`
+  text-align: center;
+  font-size: 14px;
+  margin-top: 16px;
+  width: 262px;
+  background-color: ${COLORS.light};
+  border: 1px solid ${COLORS.grey};
+  padding: 16px;
+  border-radius: 4px;
+  width: 300px;
+`;
+
+const StyledInput = styled.input`
+  border: 1px solid ${COLORS.grey};
+  margin-bottom: 12px;
+`;
+
+const FirstName = styled(StyledInput)``;
+const LastName = styled(StyledInput)``;
+const Email = styled(StyledInput)``;
+const Password = styled(StyledInput)``;
+const ConfirmPassword = styled(StyledInput)``;
 
 const SignUpBtn = styled.button`
-  background-color: red;
+  border: none;
+  background-color: ${COLORS.purple};
+  color: ${COLORS.light};
+  font-size: 16px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+
   ${({ disabled }) =>
     disabled
       ? `
@@ -153,6 +218,6 @@ const SignUpBtn = styled.button`
   `};
 `;
 
-const LoginLink = styled.div``;
+const LoginLink = styled(NavLink)``;
 
 export default SignUp;
