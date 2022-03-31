@@ -41,7 +41,10 @@ const SubNavbar = () => {
     <Wrapper>
       {
         categories.map(category => (
-          <StyledLink key={category} to={`/products/${category.toUpperCase()}`}>{category}</StyledLink>
+          <StyledLink 
+            key={category} 
+            to={`/products/${category.toLowerCase()}`}
+          >{category}</StyledLink>
         ))
       }
     </Wrapper>
@@ -53,7 +56,7 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   gap: 35px;
-  background-color: black;
+  background-color: ${COLORS.dark};
   /* background-color: none; */
   padding: 17px;
   border-bottom: 0.5px solid ${COLORS.grey};
