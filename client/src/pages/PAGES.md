@@ -5,19 +5,21 @@
 ## NAV BAR
 
 - [ ] logo
-- [ ] search bar
+- [ ] search bar - "search for products..."
+
+- [ ] icons
+  - [ ] my account (login/sign up)
+    - [ ] wishlist  
+    - [ ] settings
+      - [ ] change username/password      
+  - [ ] cart (mvp)
+
+
+### SUB-NAV BAR 
 
 - [ ] products
   - [ ] categories
   - [ ] companies
-- [ ] icons
-  - [ ] my account (login/sign up)
-  - [ ] wishlist 
-  - [ ] cart (mvp)
-
-- [ ] search bar - "search for products..."
-
-## SUB-NAV BAR 
 
 ## FOOTER
 
