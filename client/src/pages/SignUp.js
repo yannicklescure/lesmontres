@@ -1,10 +1,13 @@
 // SignUp.js
 
-// TODO: POST new user
+// TODO:
+// - POST new user
+// - NavLink to login--add to modules?
 
 import styled from "styled-components";
 import { useState, useRef } from "react";
 import { useHistory, NavLink } from "react-router-dom";
+import { AiOutlineClockCircle } from "react-icons/ai";
 
 const SignUp = () => {
   const history = useHistory();
@@ -109,10 +112,11 @@ const SignUp = () => {
           Sign Up
         </SignUpBtn>
 
+        <span>
+          Already have an account? <LoginLink>Login</LoginLink> instead
+        </span>
         <div>
-          Already have an account?
-          <div>Log In instead</div>
-          <div>Logo icon</div>
+          <AiOutlineClockCircle />
         </div>
       </SignUpForm>
     </Wrapper>
@@ -148,5 +152,7 @@ const SignUpBtn = styled.button`
       cursor: pointer;
   `};
 `;
+
+const LoginLink = styled.div``;
 
 export default SignUp;
