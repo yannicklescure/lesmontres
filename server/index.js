@@ -7,7 +7,7 @@ const {
   getItems,
   getUsers,
   createUser,
-  getUser,
+  logInUser,
 } = require("./handler");
 const PORT = 4000;
 
@@ -40,7 +40,7 @@ express()
   // .put("/api/items/:_id", updateItem)
 
   .get("/api/users", getUsers)
-  .post("/api/userLogin", getUser)
+  .post("/api/userLogin", logInUser)
   .post("/api/user", createUser)
   // REST endpoints?
   .get("/bacon", (req, res) => res.status(200).json("🥓"))

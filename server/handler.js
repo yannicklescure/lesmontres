@@ -72,7 +72,7 @@ const getUsers = async (req, res) => {
   }
 };
 
-const getUser = async (req, res) => {
+const logInUser = async (req, res) => {
   const client = new MongoClient(MONGO_URI, option);
   const { email, password } = req.body;
 
@@ -153,5 +153,5 @@ module.exports = {
   getCompanies,
   getUsers,
   createUser,
-  getUser,
+  logInUser,
 };
