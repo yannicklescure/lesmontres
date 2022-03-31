@@ -2,7 +2,13 @@
 
 const express = require("express");
 const morgan = require("morgan");
-const { getCompanies, getItems, getUsers } = require("./handler");
+const {
+  getCompanies,
+  getItems,
+  getUsers,
+  createUser,
+  logInUser,
+} = require("./handler");
 const PORT = 4000;
 
 express()
@@ -34,7 +40,8 @@ express()
   // .put("/api/items/:_id", updateItem)
 
   .get("/api/users", getUsers)
-
+  .post("/api/userLogin", logInUser)
+  .post("/api/user", createUser)
   // REST endpoints?
   .get("/bacon", (req, res) => res.status(200).json("🥓"))
 
