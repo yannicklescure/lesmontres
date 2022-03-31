@@ -19,7 +19,7 @@ const getCompanies = async (req, res) => {
       : res.status(409).json({ status: 409, message: "ERROR" });
   } catch (err) {
     console.log("Error Getting Companies", err);
-    res.status(500).json({ status: 500, message: "SERVER ERROR" });
+    res.status(500).json({ status: 500, message: err });
   } finally {
     client.close();
   }
@@ -36,7 +36,7 @@ const getItems = async (req, res) => {
       : res.status(409).json({ status: 409, message: "ERROR" });
   } catch (err) {
     console.log("Error Getting Items", err);
-    res.status(500).json({ status: 500, message: "SERVER ERROR" });
+    res.status(500).json({ status: 500, message: err });
   } finally {
     client.close();
   }

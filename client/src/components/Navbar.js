@@ -1,21 +1,25 @@
 import styled from 'styled-components';
 import { BsSmartwatch, BsCart, BsCartFill, BsFillPersonFill } from 'react-icons/bs';
 import { COLORS } from '../constants';
+import { SubNavbar } from './SubNavbar';
 
 const Navbar = () => {
   return (
-    <Wrapper>
-      <Brand>
-        <BsSmartwatch />
-        <span>Les montres</span>
-      </Brand>
-      <StyledInput placeholder="Search your dream watch" />
-      <Container>
-        <BsCart />
-        <BsCartFill />
-        <BsFillPersonFill />
-      </Container>
-    </Wrapper>
+    <>
+      <Wrapper>
+        <Brand>
+          <BsSmartwatch />
+          <span>Les montres</span>
+        </Brand>
+        <StyledInput placeholder="Search your dream watch" />
+        <Container>
+          <BsCart />
+          <BsCartFill />
+          <BsFillPersonFill />
+        </Container>
+      </Wrapper>
+      <SubNavbar />
+    </>
   )
 }
 
