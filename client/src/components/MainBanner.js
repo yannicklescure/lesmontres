@@ -5,24 +5,34 @@ import { NavLink } from "react-router-dom";
 const MainBanner = () => {
   return (
     <MainWrapper>
-      <TextArea>
-        <MainHeading>Timeless Smartwatches and Fitness Trackers.</MainHeading>
-        <SubHeading>
-          And other random sporty outside stuff labore et dolore magna aliqua.
-          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-          nisi ut aliquip ex ea commodo consequat.
-        </SubHeading>
-      </TextArea>
-
-      <ShopNowBtn to="/products">SHOP NOW</ShopNowBtn>
+      <Container>
+        <TextArea>
+          <MainHeading>Timeless Smartwatches and Fitness Trackers.</MainHeading>
+          <SubHeading>
+            And other random sporty outside stuff labore et dolore magna aliqua.
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+            nisi ut aliquip ex ea commodo consequat.
+          </SubHeading>
+        </TextArea>
+        <ShopNowBtn to="/products">SHOP NOW</ShopNowBtn>
+      </Container>
     </MainWrapper>
   );
 };
 
 const MainWrapper = styled.div`
-  min-height: calc(100vh - 85px - 47px);
+  min-height: 100vh;
   position: relative;
   font-family: Poppins;
+  background: url("/images/trackers.png") no-repeat center center fixed;
+  background-size: cover;
+  margin-top: -85px;
+  z-index: -1;
+  display: flex;
+  align-items: center;
+`;
+
+const Container = styled.div`
 `;
 
 const TextArea = styled.div`

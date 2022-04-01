@@ -152,12 +152,9 @@ const PageWrapper = styled.div`
   margin-bottom: 16px;
   border-bottom: 1px solid ${COLORS.secondary};
   background-color: white;
-  /* padding: 50px; */
 `;
 
 const ProductsSection = styled.div`
-  /* border-bottom: 1px solid ${COLORS.secondary}; */
-  /* border: 2px solid green; */
   display: flex;
   flex-wrap: wrap;
   padding: 16px;
