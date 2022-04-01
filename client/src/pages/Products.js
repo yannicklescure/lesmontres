@@ -16,6 +16,7 @@ const Products = () => {
     state: { hasLoaded, items },
   } = useContext(ItemsContext);
 
+<<<<<<< HEAD
   const [allProducts, setAllProducts] = useState([]);
   const [products, setProducts] = useState([]);
   const [companiesIds, setCompaniesIds] = useState([]);
@@ -40,11 +41,14 @@ const Products = () => {
     // eslint-disable-next-line
   }, [category]);
 
+=======
+>>>>>>> master
   if (!hasLoaded) {
     return <Loading size="32" />;
   }
 
   console.log(category);
+<<<<<<< HEAD
 
   const handleChecked = (company) => {
     // console.log(company);
@@ -105,6 +109,25 @@ const Products = () => {
         ))}
       </ProductsSection>
     </PageWrapper>
+=======
+  const products = items.filter(
+    (item) => item.category.toLowerCase() === category
+  );
+
+  return (
+    <Wrapper>
+      {products.map((product) => (
+        <div key={product._id}>
+          <StyledImg
+            src={product.imageSrc}
+            alt={product._id}
+            width="96"
+            height="96"
+          />
+        </div>
+      ))}
+    </Wrapper>
+>>>>>>> master
   );
 };
 
@@ -126,6 +149,7 @@ const ProductsSection = styled.div`
   display: flex;
   flex-wrap: wrap;
   padding: 16px;
+<<<<<<< HEAD
   justify-content: center;
   gap: 30px;
 `;
@@ -185,4 +209,15 @@ const Price = styled.div`
   font-size: 18px;
 `;
 
+=======
+  background-color: white;
+`;
+
+const StyledImg = styled.img`
+  /* width: ${({ width }) => width + "px"}; */
+  /* height: ${({ height }) => height + "px"}; */
+  object-fit: contain;
+`;
+
+>>>>>>> master
 export default Products;
