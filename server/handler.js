@@ -120,7 +120,9 @@ const logInUser = async (req, res) => {
           lastName,
           email,
           _id,
-          cartArray
+          cartArray,
+          wishList,
+          purchasedHistory,
         } = loginAuth;
         
         return res.status(200).json({
@@ -131,7 +133,9 @@ const logInUser = async (req, res) => {
             lastName,
             email,
             _id,
-            cartArray
+            cartArray,
+            wishList,
+            purchasedHistory,
           },
         });
       } else
@@ -152,10 +156,10 @@ const createUser = async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
   const userArray = {
     _id: uuidv4(),
-    firstName: firstName,
-    lastName: lastName,
-    email: email,
-    password: password,
+    firstName,
+    lastName,
+    email,
+    password,
     cartArray: [],
     wishList: [],
     purchasedHistory: [],
@@ -191,6 +195,9 @@ const createUser = async (req, res) => {
             lastName,
             email,
             _id: userArray._id,
+            cartArray,
+            wishList,
+            purchasedHistory,
           },
           message: "User Created",
         })
