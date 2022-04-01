@@ -82,6 +82,7 @@ const getItems = async (req, res) => {
     client.close();
   }
 };
+
 const getUsers = async (req, res) => {
   const client = new MongoClient(MONGO_URI, option);
   try {
@@ -109,12 +110,15 @@ const logInUser = async (req, res) => {
     if (!email || !password) {
       return res
         .status(400)
-        .json({ status: 400, message: "Add Your Email and Password" });
+        .json({ status: 400, message: "Add your email and password" });
     }
-    const loginAuth = await db.collection("users").findOne({ email: email });
+    const loginAuth = await db.collection("users").findOne({ email });
     if (loginAuth) {
       const loginPassword = await bcrypt.compare(password, loginAuth.password);
       if (loginPassword) {
+<<<<<<< HEAD
+        const { firstName, lastName, email, _id, cartArray } = loginAuth;
+=======
         const {
           firstName, 
           lastName,
@@ -125,23 +129,31 @@ const logInUser = async (req, res) => {
           purchasedHistory,
         } = loginAuth;
         
+>>>>>>> master
         return res.status(200).json({
           status: 200,
           message: "User Logged In",
           data: {
+<<<<<<< HEAD
+            firstName,
+=======
             firstName, 
+>>>>>>> master
             lastName,
             email,
             _id,
             cartArray,
+<<<<<<< HEAD
+=======
             wishList,
             purchasedHistory,
+>>>>>>> master
           },
         });
       } else
         return res
           .status(400)
-          .json({ status: 400, message: "Password Don't Match " });
+          .json({ status: 400, message: "Passwords don't match" });
     } else
       return res.status(400).json({ status: 400, message: "E-mail Not Found" });
   } catch (err) {
@@ -167,7 +179,7 @@ const createUser = async (req, res) => {
   try {
     await client.connect();
     const db = client.db("LesMontres");
-    const emailUsers = await db.collection("users").findOne({ email: email });
+    const emailUsers = await db.collection("users").findOne({ email });
     const emailValidation = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
     if (!emailValidation.test(email)) {
       return res
@@ -177,12 +189,12 @@ const createUser = async (req, res) => {
     if (!email || !password || !firstName || !lastName) {
       return res
         .status(409)
-        .json({ status: 409, message: "Add Your Credintials" });
+        .json({ status: 409, message: "Add your credentials" });
     }
     if (emailUsers) {
       return res
         .status(400)
-        .json({ status: 400, message: "User Already Exsits" });
+        .json({ status: 400, message: "User already exists" });
     }
     const cryptedPassword = await bcrypt.hash(password, 10);
     userArray.password = cryptedPassword;
@@ -190,6 +202,9 @@ const createUser = async (req, res) => {
     users
       ? res.status(200).json({
           status: 200,
+<<<<<<< HEAD
+          data: req.body.cartArray,
+=======
           data: {
             firstName, 
             lastName,
@@ -199,9 +214,105 @@ const createUser = async (req, res) => {
             wishList,
             purchasedHistory,
           },
+>>>>>>> master
           message: "User Created",
         })
       : res.status(409).json({ status: 409, message: "ERROR" });
+  } catch (err) {
+    console.log(err);
+  } finally {
+    client.close();
+  }
+};
+const updateCart = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, option);
+  const { email, cartArray } = req.body;
+  try {
+    await client.connect();
+    const db = client.db("LesMontres");
+    const emailUsers = await db.collection("users").findOne({ email });
+
+    console.log(emailUsers);
+    if (emailUsers) {
+      const result = await db.collection("users").updateOne(
+        { email },
+        {
+          $set: {
+            cartArray,
+          },
+        }
+      );
+      console.log(cartArray);
+      console.log(result);
+      return res.status(200).json({
+        status: 200,
+        message: `${cartArray} was added to the cart`,
+      });
+    } else {
+      return res.status(400).json({
+        status: 400,
+        message: `Not able to add Cart #: ${cartArray} to the cart, user not found`,
+      });
+    }
+  } catch (err) {
+    console.log(err);
+  } finally {
+    client.close();
+  }
+};
+const updatePurchaseHistory = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, option);
+  const { email, purchaseHistory } = req.body;
+  try {
+    await client.connect();
+    const db = client.db("LesMontres");
+    const emailUsers = await db.collection("users").findOne({ email });
+
+    if (emailUsers) {
+      const result = await db.collection("users").updateOne(
+        { email },
+        {
+          $push: {
+            purchaseHistory: purchaseHistory,
+          },
+        }
+      );
+      return res.status(200).json({
+        status: 200,
+        message: ` was added to the History of purchases`,
+      });
+    } else {
+      return res.status(400).json({
+        status: 400,
+        message: `Not able to add Purchase to the cart, user not found`,
+      });
+    }
+  } catch (err) {
+    console.log(err);
+  } finally {
+    client.close();
+  }
+};
+const addToWishlist = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, option);
+  try {
+    await client.connect();
+    const { email, itemId } = req.body;
+    const db = client.db("LesMontres");
+    const emailUsers = await db.collection("users").findOne({ email });
+    if (emailUsers) {
+      await db
+        .collection("users")
+        .updateOne({ email }, { $push: { wishlist: itemId } });
+      return res
+        .status(200)
+        .json({ status: 200, message: `${itemId} was added to the Wishlist` });
+    } else {
+      return res.status(400).json({
+        status: 400,
+        message: `Not able to add Item #: ${itemId} to wishlist, user not found`,
+      });
+    }
   } catch (err) {
     console.log(err);
   } finally {
@@ -215,4 +326,7 @@ module.exports = {
   getUsers,
   createUser,
   logInUser,
+  updateCart,
+  addToWishlist,
+  updatePurchaseHistory,
 };
