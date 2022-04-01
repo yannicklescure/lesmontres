@@ -1,6 +1,6 @@
+import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { COLORS } from "../constants";
-import { NavLink } from "react-router-dom";
 
 const MainBanner = () => {
   return (
@@ -26,13 +26,14 @@ const MainWrapper = styled.div`
   font-family: Poppins;
   background: url("/images/trackers.png") no-repeat center center fixed;
   background-size: cover;
-  margin-top: -85px;
-  z-index: -1;
+  top: 0;
+  left: 0;
   display: flex;
   align-items: center;
 `;
 
 const Container = styled.div`
+  margin-left: 100px;
 `;
 
 const TextArea = styled.div`
@@ -40,29 +41,32 @@ const TextArea = styled.div`
 `;
 
 const MainHeading = styled.h1`
-  font-size: 65px;
+  font-size: 64px;
   color: white;
-  margin-left: 100px;
-  padding: 75px 0 25px 0;
+  margin: 0 0 24px 0;
 `;
 
 const SubHeading = styled.div`
   font-weight: regular;
   color: grey;
-  margin-left: 100px;
-  padding-bottom: 25px;
 `;
 
 const ShopNowBtn = styled(NavLink)`
-  margin-left: 100px;
-  background-color: ${COLORS.darker};
+  display: block;
+  margin-top: 24px;
+  background-color: ${COLORS.secondary};
+  text-decoration: none;
   border: none;
-  opacity: 0.75;
-  font-size: 12px;
+  /* opacity: 0.75; */
+  font-size: 14px;
   color: ${COLORS.light};
-  padding: 18px;
-  width: 180px;
+  padding: 20px 24px;
+  width: fit-content;
   transition: all 400ms ease;
+
+  &:hover {
+    background-color: ${COLORS.dark};
+  }
 `;
 
 export default MainBanner;
