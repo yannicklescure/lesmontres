@@ -63,13 +63,10 @@ function App() {
             <Route exact path="/products/:category?">
               <Products />
             </Route>
-<<<<<<< HEAD
             <Route exact path="/product/:_id">
               <ProductDetails />
-=======
             <Route exact path="/cart">
               <Cart />
->>>>>>> 7c7d42df2f8bd3d90480ed711a78153c58663a84
             </Route>
             <Route path="">
               <ErrorPage />
