@@ -6,8 +6,8 @@ const Homepage = () => {
   return (
     <div>
       <MainBanner />
-      {/* <PopularItemsBanner />
-      <CompaniesBanner /> */}
+      <PopularItemsBanner />
+      <CompaniesBanner />
     </div>
   );
 };
