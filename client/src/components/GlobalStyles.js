@@ -11,7 +11,7 @@ export default createGlobalStyle`
   */
 
   * {
-    font-family: 'Poppins', sans-serif;
+        font-family: Helvetica, sans-serif;
   }
 
   html, body, div, span, applet, object, iframe,

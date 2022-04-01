@@ -1,11 +1,5 @@
 import styled from "styled-components";
 import {
-  BsSmartwatch,
-  BsCart,
-  BsCartFill,
-  BsFillPersonFill,
-} from "react-icons/bs";
-import {
   AiOutlineClockCircle,
   AiOutlineUser,
   AiOutlineShopping,
