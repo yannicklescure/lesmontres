@@ -12,6 +12,7 @@ import { useContext, useEffect } from "react";
 import Loading from "./Loading";
 import Login from "../pages/Login";
 import { UserContext } from "../contexts/UserContext";
+import Cart from "../pages/Cart";
 
 function App() {
   const {
@@ -20,9 +21,7 @@ function App() {
   } = useContext(ItemsContext);
 
   const {
-    state: {
-      user
-    }
+    state: { user },
   } = useContext(UserContext);
 
   useEffect(() => {
@@ -52,24 +51,19 @@ function App() {
               <Homepage />
             </Route>
             <Route exact path="/signup">
-              {
-                user._id
-                ? <Redirect to='/'/>
-                : <SignUp />
-              }
+              {user._id ? <Redirect to="/" /> : <SignUp />}
             </Route>
             <Route exact path="/login">
-              {
-                user._id
-                ? <Redirect to='/'/>
-                : <Login />
-              }
+              {user._id ? <Redirect to="/" /> : <Login />}
             </Route>
             <Route exact path="/products">
-              <Redirect to='/products/fitness'/>
+              <Redirect to="/products/fitness" />
             </Route>
             <Route exact path="/products/:category?">
               <Products />
+            </Route>
+            <Route exact path="/cart">
+              <Cart />
             </Route>
             <Route path="">
               <ErrorPage />
