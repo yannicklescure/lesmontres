@@ -38,13 +38,13 @@ const Products = () => {
 
   useEffect(() => {
     setForceUpdate(forceUpdate + 1);
-    console.log(category);
-    console.log(localStorage);
+    // console.log(category);
+    // console.log(localStorage);
     loadingCategories();
-    console.log('hasLoaded ' + hasLoaded);
+    // console.log('hasLoaded ' + hasLoaded);
     
     const thisCategory = localStorage.find(el => el.name === category);
-    console.log(thisCategory);
+    // console.log(thisCategory);
     if (thisCategory) {
       setCompanies(thisCategory.companies);
       setAllProducts(thisCategory.items);
@@ -59,18 +59,18 @@ const Products = () => {
     fetch(`/api/companies?category=${category}`)
       .then((res) => res.json())
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         setCompaniesIds(response.data.map(item => item._id));
         setCompanies(response.data);
         const copy = categories;
-        console.log(copy);
+        // console.log(copy);
         copy.find(el => el.name === category).companies = response.data;
         const filteredItems = items.filter(item => item.category.toLowerCase() === category);
         copy.find(el => el.name === category).items = filteredItems;
         setAllProducts(filteredItems);
         setProducts(filteredItems);
         updateCategories({categories: copy});
-        console.log(copy);
+        // console.log(copy);
       })
       .catch((err) => console.log(err));
 
@@ -106,7 +106,7 @@ const Products = () => {
       const filteredProducts = allProducts.filter(product => product.companyId === id);
       filteredProducts.forEach(filteredProduct => productsToDisplay.push(filteredProduct));
     });
-    console.log(productsToDisplay);
+    // console.log(productsToDisplay);
     setProducts(productsToDisplay.sort((a,b) => a._id - b._id));
   }
 

@@ -61,7 +61,7 @@ const reducer = (state, action) => {
 };
 
 export const CategoriesProvider = ({ children }) => {
-  const [localStorage, setLocalStorage] = usePersistedState('categories', {});
+  const [localStorage, setLocalStorage] = usePersistedState('categories', []);
   
   const [state, dispatch] = useReducer(reducer, initialState);
 
