@@ -29,6 +29,7 @@ const Products = () => {
   const [forceUpdate, setForceUpdate] = useState(0);
 
   useEffect(() => {
+    let unmounted = false;
     setForceUpdate(forceUpdate + 1);
     // console.log(category);
     // console.log(localStorage);
@@ -48,24 +49,30 @@ const Products = () => {
     }
 
     fetch(`/api/companies?category=${category}`)
-      .then((res) => res.json())
+      .then((res) => {
+        if (!unmounted) return res.json();      
+      })
       .then((response) => {
-        // console.log(response);
-        setCompaniesIds(response.data.map((item) => item._id));
-        setCompanies(response.data);
-        const copy = categories;
-        // console.log(copy);
-        copy.find((el) => el.name === category).companies = response.data;
-        const filteredItems = items.filter(
-          (item) => item.category.toLowerCase() === category
-        );
-        copy.find((el) => el.name === category).items = filteredItems;
-        setAllProducts(filteredItems);
-        setProducts(filteredItems);
-        updateCategories({ categories: copy });
-        // console.log(copy);
+        if (!unmounted) {
+          // console.log(response);
+          setCompaniesIds(response.data.map(item => item._id));
+          setCompanies(response.data);
+          const copy = categories;
+          // console.log(copy);
+          copy.find(el => el.name === category).companies = response.data;
+          const filteredItems = items.filter(item => item.category.toLowerCase() === category);
+          copy.find(el => el.name === category).items = filteredItems;
+          setAllProducts(filteredItems);
+          setProducts(filteredItems);
+          updateCategories({categories: copy});
+          // console.log(copy);
+        }
       })
       .catch((err) => console.log(err));
+
+    return () => {
+      unmounted = true;
+    }
 
     // eslint-disable-next-line
   }, [category]);

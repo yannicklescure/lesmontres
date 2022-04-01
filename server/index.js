@@ -4,6 +4,7 @@ const express = require("express");
 const morgan = require("morgan");
 const {
   getCompanies,
+  getItem,
   getItems,
   getUsers,
   createUser,
@@ -39,6 +40,7 @@ express()
   // .put("/api/companies/:_id", updateCompany)
 
   .get("/api/items", getItems)
+  .get("/api/items/:_id", getItem)
   // .post("/api/items", addItem)
   // .delete("/api/items/:_id", deleteItem)
   // .put("/api/items/:_id", updateItem)
