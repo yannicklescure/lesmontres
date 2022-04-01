@@ -11,13 +11,40 @@ const option = {
   useUnifiedTopology: true,
 };
 const getCompanies = async (req, res) => {
+  console.log(req.query);
+  const {category} = req.query;
+
   const client = new MongoClient(MONGO_URI, option);
   try {
     await client.connect();
     const db = client.db("LesMontres");
-    const result = await db.collection("companies").find().toArray();
-    result
-      ? res.status(200).json({ status: 200, data: result, message: "success" })
+    const companies = await db.collection("companies").find().toArray();
+    let data = companies;
+    // console.log(data);
+
+    const items = await db.collection("items").find().toArray();
+    // console.log(items);
+    
+    if (category) {
+      const products = items.filter(item => item.category.toLowerCase() === category);
+      // console.log(products);
+      const companiesIds = [];
+      products.forEach(product => {
+        if (!companiesIds.includes(product.companyId)) companiesIds.push(product.companyId);
+      });
+      // console.log(companiesIds);
+      const filteredCompanies = [];
+      companiesIds.forEach(companiesId => {
+        const filteredCompany = companies.filter(company => company._id === companiesId);
+        filteredCompanies.push(filteredCompany[0]);
+      });
+      // console.log(filteredCompanies);
+
+      data = filteredCompanies;
+    }
+
+    data
+      ? res.status(200).json({ status: 200, data, message: "success" })
       : res.status(409).json({ status: 409, message: "ERROR" });
   } catch (err) {
     console.log("Error Getting Companies", err);
@@ -93,7 +120,9 @@ const logInUser = async (req, res) => {
           lastName,
           email,
           _id,
-          cartArray
+          cartArray,
+          wishList,
+          purchasedHistory,
         } = loginAuth;
         
         return res.status(200).json({
@@ -104,7 +133,9 @@ const logInUser = async (req, res) => {
             lastName,
             email,
             _id,
-            cartArray
+            cartArray,
+            wishList,
+            purchasedHistory,
           },
         });
       } else
@@ -125,10 +156,10 @@ const createUser = async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
   const userArray = {
     _id: uuidv4(),
-    firstName: firstName,
-    lastName: lastName,
-    email: email,
-    password: password,
+    firstName,
+    lastName,
+    email,
+    password,
     cartArray: [],
     wishList: [],
     purchasedHistory: [],
@@ -164,6 +195,9 @@ const createUser = async (req, res) => {
             lastName,
             email,
             _id: userArray._id,
+            cartArray,
+            wishList,
+            purchasedHistory,
           },
           message: "User Created",
         })
