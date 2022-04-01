@@ -1,11 +1,5 @@
 import styled from "styled-components";
 import {
-  BsSmartwatch,
-  BsCart,
-  BsCartFill,
-  BsFillPersonFill,
-} from "react-icons/bs";
-import {
   AiOutlineClockCircle,
   AiOutlineUser,
   AiOutlineShopping,
@@ -22,19 +16,15 @@ const Navbar = () => {
   const history = useHistory();
 
   const {
-    state: {
-      user
-    },
-    actions: {
-      logoutUser,
-    }
+    state: { user },
+    actions: { logoutUser },
   } = useContext(UserContext);
 
   const handleLogout = () => {
-    console.log('Logout');
+    console.log("Logout");
     logoutUser();
-    history.push('/');
-  }
+    history.push("/");
+  };
 
   return (
     <>
@@ -55,8 +45,8 @@ const Navbar = () => {
             <SearchIcon />
           </SearchBarWrapper>
           <IconsContainer>
-            { user._id 
-              ? (<>
+            {user._id ? (
+              <>
                 <StyledIconMenu>
                   <StyledIconBtn>
                     <AiOutlineUser size="25" />
@@ -69,13 +59,14 @@ const Navbar = () => {
                   </StyledIconSubMenu>
                 </StyledIconMenu>
                 <AiOutlineShoppingCart size="25" />
-              </>)
-              : (<>
+              </>
+            ) : (
+              <>
                 <StyledIconLink to="/login">
                   <AiOutlineUser size="25" />
                 </StyledIconLink>
-              </>)
-            }
+              </>
+            )}
             {/* <AiOutlineShopping size="25" /> */}
           </IconsContainer>
         </SectionRight>
@@ -90,7 +81,7 @@ const MainWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: ${COLORS.darker};
+  /* background-color: ${COLORS.darker}; */
   color: ${COLORS.light};
   height: 85px;
   border-bottom: 0.5px solid ${COLORS.grey};
@@ -99,12 +90,12 @@ const MainWrapper = styled.div`
 const BrandWrapper = styled.div`
   /* border: 1px solid blue; */
   margin-left: 30px;
-  background-color: ${COLORS.darker};
+  /* background-color: ${COLORS.darker}; */
 `;
 
 const Brand = styled.div`
   /* border: 1px solid green; */
-  font-size: 30px;
+  font-size: 35px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -114,10 +105,11 @@ const BrandLink = styled(NavLink)`
   /* to align clock within text */
   display: flex;
   align-items: flex-end;
-  font-family: "Yeseva One", sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 32px;
   font-weight: bold;
   text-decoration: none;
+  letter-spacing: 1px;
   /* color: ${COLORS.light}; */
   color: white;
   transition: all 400ms ease;
@@ -168,7 +160,9 @@ const StyledIconSubMenu = styled.div`
     display: block;
   }
 
-  & ${StyledIconItems}:hover, ${Logout}:hover {background-color: #f1f1f1}
+  & ${StyledIconItems}:hover, ${Logout}:hover {
+    background-color: #f1f1f1;
+  }
 `;
 
 const StyledIconBtn = styled.button`
@@ -237,7 +231,7 @@ const SearchBar = styled.input`
   opacity: 0.75;
   color: ${COLORS.grey};
   /* display: flex; */
-  background-color: ${COLORS.darker};
+  /* background-color: ${COLORS.darker}; */
 `;
 
 const SearchIcon = styled(AiOutlineSearch)`

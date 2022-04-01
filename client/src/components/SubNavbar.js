@@ -59,6 +59,7 @@ const Wrapper = styled.div`
   align-items: center;
   gap: 35px;
   background-color: ${COLORS.dark};
+
   /* background-color: none; */
   padding: 17px;
   border-bottom: 0.5px solid ${COLORS.grey};
