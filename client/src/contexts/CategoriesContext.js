@@ -40,6 +40,13 @@ const reducer = (state, action) => {
         status: "categories-loaded",
       }
     }
+    case "categories-updated": {
+      return {
+        ...state,
+        ...action,
+        status: "categories-updated",
+      }
+    }
     case "error-from-server": {
       return {
         ...state,
@@ -59,12 +66,11 @@ export const CategoriesProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    // console.log(localStorage);
-    // console.log(localStorage?.user?._id);
-    if(localStorage?.user?._id) {
+    console.log(localStorage);
+    if(localStorage?.length > 0) {
       dispatch({
         hasLoaded: true,
-        categories: localStorage.categories,
+        categories: localStorage,
         message: 'data loaded from storage',
         type: "received-categories-from-storage",
       })
@@ -81,10 +87,12 @@ export const CategoriesProvider = ({ children }) => {
   const receivedCategoriesFromServer = (data) => {
     console.log(data);
     const tmp = data.categories.map(category => ({
-      category,
-      companies: []
+      name: category.toLowerCase(),
+      companies: [],
+      items: []
     }));
     setLocalStorage(tmp);
+    data.categories = tmp;
     dispatch({
       ...data,
       type: "received-categories-from-server",
@@ -98,13 +106,24 @@ export const CategoriesProvider = ({ children }) => {
     });
   };
 
+  const updateCategories = (data) => {
+    setLocalStorage(data.categories);
+    console.log(data);
+    dispatch({
+      ...data,
+      type: "categories-updated",
+    });
+  };
+
   return (
     <CategoriesContext.Provider value={{
+      localStorage,
       state,
       actions: {
         loadingCategories,
         receivedCategoriesFromServer,
         errorFromServerCategories,
+        updateCategories,
       }
     }}>
       {children}

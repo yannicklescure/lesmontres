@@ -1,26 +1,12 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { COLORS } from "../constants";
 import { CategoriesContext } from "../contexts/CategoriesContext";
 import { ItemsContext } from "../contexts/ItemsContext";
-import usePersistedState from "../hooks/usePersistedState";
 import Loading from "./Loading";
 
 const SubNavbar = () => {
-
-  // const [categories, setCategories] = useState([]);
-
-  // useEffect(() => {
-  //   fetch('/api/items?categories=true')
-  //     .then(res => res.json())
-  //     .then((response) => {
-  //       console.log(response);
-  //       setCategories(response.data);
-  //     })
-  //     .catch(err => console.log(err));
-  //   // eslint-disable-next-line
-  // }, []);
 
   const {
     state: {
@@ -30,6 +16,7 @@ const SubNavbar = () => {
 
   const {
     state: {
+      hasLoaded,
       categories,
     },
     actions: {
@@ -50,16 +37,16 @@ const SubNavbar = () => {
     // eslint-disable-next-line
   }, []);
 
-  if (categories.length === 0) return <><Loading size="32" /></>
+  if (!hasLoaded) return <><Loading size="32" /></>
 
   return (
     <Wrapper>
       {
         categories.map(category => (
           <StyledLink 
-            key={category} 
-            to={`/products/${category.toLowerCase()}`}
-          >{category.includes('and') ? category.replace('and', '&') : category}</StyledLink>
+            key={category.name} 
+            to={`/products/${category.name.toLowerCase()}`}
+          >{category.name.includes('and') ? category.name.replace('and', '&') : category.name}</StyledLink>
         ))
       }
     </Wrapper>
