@@ -11,7 +11,9 @@ const initialState = {
     firstName: null, 
     lastName: null, 
     email: null, 
-    cartArray: []
+    cartArray: [],
+    wishList: [],
+    purchasedHistory: [],
   },
   message: null,
   type: "initial",
