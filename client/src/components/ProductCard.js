@@ -1,23 +1,39 @@
 import styled from "styled-components";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { COLORS } from "../constants";
 import {
-  AiOutlineClockCircle,
   AiOutlineHeart,
   AiFillHeart,
+  AiOutlineShopping,
+  AiFillShopping,
 } from "react-icons/ai";
-import { HiOutlineShoppingCart, HiShoppingCart } from "react-icons/hi";
+import { MdOutlineShoppingCart, MdShoppingCart } from "react-icons/md";
 
 const ProductCard = ({ product, getCompanyName }) => {
+  const [isShown, setIsShown] = useState(false);
+  const [fillHeart, setFillHeart] = useState(false);
+
   return (
-    <ProductCardWrapper to={`/product/${product._id}`}>
-      {/* <IconsWrapper>
-        <HeartOutlineIcon />
-        <HeartFillIcon />
+    <ProductCardWrapper>
+      <IconsWrapper>
+        <AiOutlineHeart />
+        <AiFillHeart />
+        <MdOutlineShoppingCart />
+        <MdShoppingCart />
+        <button
+          onMouseEnter={() => setIsShown(true)}
+          onMouseLeave={() => setIsShown(false)}
+        >
+          btn
+        </button>
+        {isShown && <div>hello!</div>}
+        {/* <HeartFillIcon />
         <CartOutlineIcon />
-        <CartFillIcon />
-      </IconsWrapper> */}
-      <CardNavLink>
+        <CartFillIcon /> */}
+      </IconsWrapper>
+
+      <CardNavLink to={`/product/${product._id}`}>
         <ImgWrapper>
           <StyledImg
             key={product._id}
@@ -50,10 +66,10 @@ const ProductCardWrapper = styled.div`
 const CardNavLink = styled(NavLink)``;
 
 const IconsWrapper = styled.div``;
-const HeartOutlineIcon = styled(AiOutlineHeart)``;
-const HeartFillIcon = styled(AiFillHeart)``;
-const CartOutlineIcon = styled(HiOutlineShoppingCart)``;
-const CartFillIcon = styled(HiShoppingCart);
+// const HeartOutlineIcon = styled(AiOutlineHeart)``;
+// const HeartFillIcon = styled(AiFillHeart)``;
+// const CartOutlineIcon = styled(HiOutlineShoppingCart)``;
+// const CartFillIcon = styled(HiShoppingCart);
 
 const ImgWrapper = styled.div`
   /* border: 1px solid ${COLORS.grey}; */
