@@ -26,7 +26,7 @@ const Sidebar = ({companies, handleChecked}) => {
         <StyledTitle>Companies</StyledTitle>
         { companies.length > 0 &&
           companies.map(company => (
-            <Checkbox key={company[0]._id} company={company} handleChecked={handleChecked} />
+            <Checkbox key={company._id} company={company} handleChecked={handleChecked} />
           ))
         }
       <StyledTitle>Filter</StyledTitle>

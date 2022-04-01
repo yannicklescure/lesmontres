@@ -5,6 +5,7 @@ import Loading from "../components/Loading";
 import Sidebar from "../components/Sidebar";
 import { COLORS } from "../constants";
 import { ItemsContext } from "../contexts/ItemsContext";
+import usePersistedState from "../hooks/usePersistedState";
 
 const Products = () => {
   const params = useParams();
@@ -29,7 +30,7 @@ const Products = () => {
       .then((res) => res.json())
       .then((response) => {
         console.log(response);
-        setCompaniesIds(response.data.map(item => item[0]._id));
+        setCompaniesIds(response.data.map(item => item._id));
         setCompanies(response.data);
       })
       .catch((err) => console.log(err));
@@ -73,6 +74,12 @@ const Products = () => {
     setProducts(productsToDisplay.sort((a,b) => a._id - b._id));
   }
 
+  const getCompanyName = (id) => {
+    return companies.find(company => company._id === id).name;
+  }
+
+  if (companies.length === 0) return <Loading />
+
   return (
     <Wrapper>
       <Sidebar companies={companies} handleChecked={handleChecked} />
@@ -81,6 +88,7 @@ const Products = () => {
           products.map(product => (
             <div key={product._id}>
               <StyledImg src={product.imageSrc} alt={product._id} width="96" height="96" />
+              <div>{getCompanyName(product.companyId)}</div>
             </div>
           ))
         }

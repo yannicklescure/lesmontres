@@ -36,7 +36,7 @@ const getCompanies = async (req, res) => {
       const filteredCompanies = [];
       companiesIds.forEach(companiesId => {
         const filteredCompany = companies.filter(company => company._id === companiesId);
-        filteredCompanies.push(filteredCompany);
+        filteredCompanies.push(filteredCompany[0]);
       });
       // console.log(filteredCompanies);
 

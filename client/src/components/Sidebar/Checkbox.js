@@ -6,7 +6,7 @@ const Checkbox = ({company, handleChecked}) => {
 
   const handleChange = () => {
     const displayed = !checked;
-    const _id = company[0]._id;
+    const _id = company._id;
     setChecked(displayed);
     handleChecked({ _id, displayed });
   }
@@ -15,12 +15,12 @@ const Checkbox = ({company, handleChecked}) => {
     <StyledCheckBox>
       <input 
         type="checkbox" 
-        id={company[0]._id}
-        name={company[0].name} 
+        id={company._id}
+        name={company.name} 
         checked={checked}
         onChange={handleChange}
       />
-      <label htmlFor={company[0]._id}>{company[0].name}</label>
+      <label htmlFor={company._id}>{company.name}</label>
     </StyledCheckBox>
   )
 }
