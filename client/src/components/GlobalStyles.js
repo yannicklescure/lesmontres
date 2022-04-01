@@ -42,6 +42,8 @@ export default createGlobalStyle`
   body {
       line-height: 1;
       /* background-color: ${COLORS.darker}; */
+      background: url("/images/trackers.png") no-repeat center center fixed;
+      background-size: cover;
   }
   ol, ul {
       list-style: none;
