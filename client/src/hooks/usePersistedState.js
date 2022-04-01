@@ -17,8 +17,8 @@ const usePersistedState = (name, defaultValue) => {
 
   useEffect(() => {
     localStorage.setItem(nameRef.current, JSON.stringify(value));
-  }, [name, value]);
-  // });
+  // }, [name, value]);
+  });
     
   return [value, setValue];
 };

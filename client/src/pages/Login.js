@@ -130,14 +130,14 @@ const SignUpForm = styled.form`
   border: 1px solid ${COLORS.grey};
   padding: 16px;
   border-radius: 4px;
-  width: 300px;
+  width: 336px;
 `;
 
 const StyledInfo = styled.div`
   text-align: center;
   font-size: 14px;
   margin-top: 16px;
-  width: 300px;
+  width: 336px;
   background-color: ${COLORS.light};
   border: 1px solid ${COLORS.grey};
   padding: 16px;
