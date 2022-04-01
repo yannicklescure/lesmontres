@@ -1,10 +1,22 @@
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { COLORS } from "../constants";
+import {
+  AiOutlineClockCircle,
+  AiOutlineHeart,
+  AiFillHeart,
+} from "react-icons/ai";
+import { HiOutlineShoppingCart, HiShoppingCart } from "react-icons/hi";
 
 const ProductCard = ({ product, getCompanyName }) => {
   return (
     <ProductCardWrapper to={`/product/${product._id}`}>
+      <IconsWrapper>
+        <HeartOutlineIcon />
+        <HeartFillIcon />
+        <CartOutlineIcon />
+        <CartFillIcon />
+      </IconsWrapper>
       <ImgWrapper>
         <StyledImg key={product._id} src={product.imageSrc} alt={product._id} />
       </ImgWrapper>
@@ -26,7 +38,14 @@ const ProductCardWrapper = styled(NavLink)`
   justify-content: center;
   text-align: center;
   gap: 20px;
+  text-decoration: none;
 `;
+
+const IconsWrapper = styled.div``;
+const HeartOutlineIcon = styled(AiOutlineHeart)``;
+const HeartFillIcon = styled(AiFillHeart)``;
+const CartOutlineIcon = styled(HiOutlineShoppingCart)``;
+const CartFillIcon = styled(HiShoppingCart);
 
 const ImgWrapper = styled.div`
   /* border: 1px solid ${COLORS.grey}; */
@@ -64,12 +83,14 @@ const CompanyName = styled.div`
   text-transform: uppercase;
   font-size: 12px;
   font-family: Lato, sans-serif;
+  text-decoration: none;
 `;
 
 const Price = styled.div`
   font-family: Poppins, sans-serif;
   font-weight: bold;
   font-size: 18px;
+  text-decoration: none;
 `;
 
 export default ProductCard;
