@@ -2,7 +2,7 @@ import styled from "styled-components";
 import {
   AiOutlineClockCircle,
   AiOutlineUser,
-  AiOutlineShopping,
+  // AiOutlineShopping,
   AiOutlineShoppingCart,
   AiOutlineSearch,
 } from "react-icons/ai";
@@ -11,11 +11,12 @@ import SubNavbar from "./SubNavbar";
 import { NavLink, useHistory, useLocation } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
-
+import SearchBar from "./SearchBar";
 const Navbar = () => {
   const history = useHistory();
   const location = useLocation();
   console.log(location);
+  const isHomepage = location.pathname === "/";
 
   const {
     state: { user },
@@ -30,7 +31,7 @@ const Navbar = () => {
 
   return (
     <>
-      <MainWrapper>
+      <MainWrapper isHomepage={isHomepage}>
         <BrandWrapper>
           <Brand>
             <BrandLink to="/">
@@ -44,7 +45,6 @@ const Navbar = () => {
         <SectionRight>
           <SearchBarWrapper>
             <SearchBar />
-            <SearchIcon />
           </SearchBarWrapper>
           <IconsContainer>
             {user._id ? (
@@ -73,17 +73,17 @@ const Navbar = () => {
           </IconsContainer>
         </SectionRight>
       </MainWrapper>
-      {location.pathname !== "/" && <SubNavbar />}
+      {!isHomepage && <SubNavbar />}
     </>
   );
 };
 
 const MainWrapper = styled.div`
-  /* border: 1px solid red; */
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* background-color: ${COLORS.darker}; */
+  background-color: ${({ isHomepage }) =>
+    isHomepage ? "transparent" : COLORS.darker};
   color: ${COLORS.light};
   height: 85px;
   border-bottom: 0.5px solid ${COLORS.grey};
@@ -203,7 +203,6 @@ const SearchBarWrapper = styled.div`
   display: flex;
   align-items: center;
   width: max-content;
-  position: relative;
 `;
 
 // const SearchBar = styled.input`
@@ -220,27 +219,6 @@ const SearchBarWrapper = styled.div`
 //   /* display: flex; */
 //   background-color: ${COLORS.darker};
 // `;
-
-const SearchBar = styled.input`
-  /* border: 1px solid ${COLORS.light}; */
-  border: 1px solid white;
-  /* height: 34px; */
-  width: 130px;
-  height: 38px;
-  font-size: 16px;
-  border-radius: 50px;
-  background-color: transparent;
-  opacity: 0.75;
-  color: ${COLORS.grey};
-  /* display: flex; */
-  /* background-color: ${COLORS.darker}; */
-`;
-
-const SearchIcon = styled(AiOutlineSearch)`
-  font-size: 18px;
-  position: absolute;
-  left: 78%;
-`;
 
 const IconsContainer = styled.div`
   display: flex;

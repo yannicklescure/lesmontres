@@ -3,15 +3,16 @@ import { createContext, useReducer } from "react";
 export const ItemsContext = createContext(null);
 
 const initialState = {
-  status: 'idle',
-  hasLoaded: false,  
+  status: "idle",
+  hasLoaded: false,
   items: [],
+  searchItems: [],
   message: null,
   type: "initial",
 };
 
 const reducer = (state, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case "initial": {
       return {
         ...state,
@@ -21,15 +22,15 @@ const reducer = (state, action) => {
       return {
         ...state,
         status: "loading-items-feed",
-      }
-    } 
+      };
+    }
     case "received-items-from-server": {
       return {
         ...state,
         ...action,
         hasLoaded: true,
         status: "items-loaded",
-      }
+      };
     }
     case "error-from-server": {
       return {
@@ -66,14 +67,16 @@ export const ItemsProvider = ({ children }) => {
   };
 
   return (
-    <ItemsContext.Provider value={{ 
-      state,
-      actions: {
-        loadingItems,
-        receivedItemsFromServer,
-        errorFromServer,
-      }
-    }}>
+    <ItemsContext.Provider
+      value={{
+        state,
+        actions: {
+          loadingItems,
+          receivedItemsFromServer,
+          errorFromServer,
+        },
+      }}
+    >
       {children}
     </ItemsContext.Provider>
   );

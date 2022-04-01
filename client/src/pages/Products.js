@@ -134,10 +134,8 @@ const Products = () => {
 };
 
 const PageWrapper = styled.div`
-  /* border: 2px solid pink; */
-  /* display: grid;
-  grid-template-columns: 200px auto; */
-  display: flex;
+  display: grid;
+  grid-template-columns: 200px auto;
   position: relative;
   margin-bottom: 16px;
   border-bottom: 1px solid ${COLORS.secondary};
