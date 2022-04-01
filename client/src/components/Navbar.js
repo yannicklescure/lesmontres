@@ -4,14 +4,14 @@ import {
   AiOutlineUser,
   // AiOutlineShopping,
   AiOutlineShoppingCart,
-  AiOutlineSearch,
+  // AiOutlineSearch,
 } from "react-icons/ai";
 import { COLORS } from "../constants";
 import SubNavbar from "./SubNavbar";
 import { NavLink, useHistory, useLocation } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
-
+import SearchBar from "./SearchBar";
 const Navbar = () => {
   const history = useHistory();
   const location = useLocation();
@@ -47,7 +47,6 @@ const Navbar = () => {
         <SectionRight>
           <SearchBarWrapper>
             <SearchBar />
-            <SearchIcon />
           </SearchBarWrapper>
           <IconsContainer>
             {user._id ? (
@@ -201,25 +200,24 @@ const SearchBarWrapper = styled.div`
   display: flex;
   align-items: center;
   width: max-content;
-  position: relative;
 `;
 
-const SearchBar = styled.input`
-  border: 1px solid white;
-  width: 130px;
-  height: 38px;
-  font-size: 16px;
-  border-radius: 50px;
-  background-color: transparent;
-  opacity: 0.75;
-  color: ${({isHomepage}) => isHomepage ? COLORS.dark : COLORS.light};
-`;
+// const SearchBar = styled.input`
+//   border: 1px solid white;
+//   width: 130px;
+//   height: 38px;
+//   font-size: 16px;
+//   border-radius: 50px;
+//   background-color: transparent;
+//   opacity: 0.75;
+//   color: ${({isHomepage}) => isHomepage ? COLORS.dark : COLORS.light};
+// `;
 
-const SearchIcon = styled(AiOutlineSearch)`
-  font-size: 18px;
-  position: absolute;
-  left: 78%;
-`;
+// const SearchIcon = styled(AiOutlineSearch)`
+//   font-size: 18px;
+//   position: absolute;
+//   left: 78%;
+// `;
 
 const IconsContainer = styled.div`
   display: flex;
