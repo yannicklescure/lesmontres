@@ -1,18 +1,15 @@
-import styled from "styled-components";
+import MainBanner from "../components/MainBanner";
+import PopularItemsBanner from "../components/PopularItemsBanner";
+import CompaniesBanner from "../components/CompaniesBanner";
 
 const Homepage = () => {
-  return <Wrapper>Homepage</Wrapper>;
+  return (
+    <div>
+      <MainBanner />
+      {/* <PopularItemsBanner />
+      <CompaniesBanner /> */}
+    </div>
+  );
 };
-
-// TO DO
-// Banner component
-
-const Wrapper = styled.div`
-  background-color: red;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: calc(100vh - 85px - 47px);
-`;
 
 export default Homepage;
