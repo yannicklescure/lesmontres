@@ -4,7 +4,7 @@ import {
   AiOutlineUser,
   // AiOutlineShopping,
   AiOutlineShoppingCart,
-  AiOutlineSearch,
+  // AiOutlineSearch,
 } from "react-icons/ai";
 import { COLORS } from "../constants";
 import SubNavbar from "./SubNavbar";
@@ -17,6 +17,8 @@ const Navbar = () => {
   const location = useLocation();
   console.log(location);
   const isHomepage = location.pathname === "/";
+  const isLogin = location.pathname === "/login";
+  const isSignup = location.pathname === "/signup";
 
   const {
     state: { user },
@@ -34,7 +36,7 @@ const Navbar = () => {
       <MainWrapper isHomepage={isHomepage}>
         <BrandWrapper>
           <Brand>
-            <BrandLink to="/">
+            <BrandLink to="/" isHomepage={isHomepage}>
               LesM
               <AiOutlineClockCircle size="27" />
               ntres
@@ -54,9 +56,9 @@ const Navbar = () => {
                     <AiOutlineUser size="25" />
                   </StyledIconBtn>
                   <StyledIconSubMenu>
-                    <StyledIconItems to="/">My wish list</StyledIconItems>
-                    <StyledIconItems to="/">Settings</StyledIconItems>
-                    <StyledIconItems to="/">Something</StyledIconItems>
+                    <StyledIconItems to="/" isHomepage={isHomepage}>My wish list</StyledIconItems>
+                    <StyledIconItems to="/" isHomepage={isHomepage}>Settings</StyledIconItems>
+                    <StyledIconItems to="/" isHomepage={isHomepage}>Something</StyledIconItems>
                     <Logout onClick={handleLogout}>LOG OUT</Logout>
                   </StyledIconSubMenu>
                 </StyledIconMenu>
@@ -64,7 +66,7 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                <StyledIconLink to="/login">
+                <StyledIconLink to="/login" isHomepage={isHomepage}>
                   <AiOutlineUser size="25" />
                 </StyledIconLink>
               </>
@@ -73,7 +75,7 @@ const Navbar = () => {
           </IconsContainer>
         </SectionRight>
       </MainWrapper>
-      {!isHomepage && <SubNavbar />}
+      {(!isHomepage && !isSignup && !isLogin) && <SubNavbar />}
     </>
   );
 };
@@ -82,17 +84,14 @@ const MainWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: ${({ isHomepage }) =>
-    isHomepage ? "transparent" : COLORS.darker};
-  color: ${COLORS.light};
+  background-color: ${({isHomepage}) => isHomepage ? 'transparent' : COLORS.dark};
+  color: ${({isHomepage}) => isHomepage ? COLORS.dark : COLORS.light};
   height: 85px;
   border-bottom: 0.5px solid ${COLORS.grey};
 `;
 
 const BrandWrapper = styled.div`
-  /* border: 1px solid blue; */
   margin-left: 30px;
-  /* background-color: ${COLORS.darker}; */
 `;
 
 const Brand = styled.div`
@@ -112,8 +111,7 @@ const BrandLink = styled(NavLink)`
   font-weight: bold;
   text-decoration: none;
   letter-spacing: 1px;
-  /* color: ${COLORS.light}; */
-  color: white;
+  color: ${({isHomepage}) => isHomepage ? COLORS.dark : COLORS.light};
   transition: all 400ms ease;
 
   &:hover {
@@ -124,12 +122,12 @@ const BrandLink = styled(NavLink)`
 
 const StyledIconLink = styled(NavLink)`
   text-decoration: none;
-  color: ${COLORS.light};
+  color: ${({isHomepage}) => isHomepage ? COLORS.dark : COLORS.light};
   font-size: 20px;
   transition: all 400ms ease;
 
   &:hover {
-    color: ${COLORS.grey};
+    color: ${({isHomepage}) => isHomepage ? COLORS.dark : COLORS.light};
     cursor: pointer;
   }
 `;
@@ -156,8 +154,8 @@ const StyledIconSubMenu = styled.div`
   z-index: 1;
 
   & ${StyledIconItems}, ${Logout} {
-    color: black;
-    padding: 12px 16px;
+    color: ${({isHomepage}) => isHomepage ? COLORS.dark : COLORS.light};
+    padding: 12px 16px; 
     text-decoration: none;
     display: block;
   }
@@ -171,7 +169,7 @@ const StyledIconBtn = styled.button`
   background: none;
   border: none;
   outline: none;
-  color: ${COLORS.light};
+  color: ${({isHomepage}) => isHomepage ? COLORS.dark : COLORS.light};
   font-size: 20px;
   display: flex;
   align-items: center;
@@ -187,12 +185,11 @@ const StyledIconMenu = styled.div`
   }
 
   &:hover ${StyledIconBtn} {
-    color: ${COLORS.grey};
+    color: ${({isHomepage}) => isHomepage ? COLORS.dark : COLORS.light};
   }
 `;
 
 const SectionRight = styled.div`
-  /* border: 1px solid yellow; */
   display: flex;
   justify-content: flex-end;
   gap: 12px;
@@ -206,18 +203,20 @@ const SearchBarWrapper = styled.div`
 `;
 
 // const SearchBar = styled.input`
-//   /* border: 1px solid ${COLORS.light}; */
 //   border: 1px solid white;
-//   /* height: 34px; */
 //   width: 130px;
 //   height: 38px;
 //   font-size: 16px;
 //   border-radius: 50px;
 //   background-color: transparent;
 //   opacity: 0.75;
-//   color: ${COLORS.grey};
-//   /* display: flex; */
-//   background-color: ${COLORS.darker};
+//   color: ${({isHomepage}) => isHomepage ? COLORS.dark : COLORS.light};
+// `;
+
+// const SearchIcon = styled(AiOutlineSearch)`
+//   font-size: 18px;
+//   position: absolute;
+//   left: 78%;
 // `;
 
 const IconsContainer = styled.div`
@@ -227,23 +226,5 @@ const IconsContainer = styled.div`
   gap: 8px;
   background-color: transparent;
 `;
-
-// const StyledLink = styled.div`
-//   text-decoration: none;
-// `;
-// const StyledBtn = styled.div`
-//   background-color: ${COLORS.secondary};
-//   color: ${COLORS.light};
-//   margin-left: 12px;
-//   /* border: 1px solid ${COLORS.purple}; */
-//   padding: 8px 12px;
-//   border-radius: 4px;
-//   transition: all 400ms ease;
-//   cursor: pointer;
-
-//   &:hover {
-//     background-color: ${COLORS.purple};
-//   }
-// `;
 
 export default Navbar;

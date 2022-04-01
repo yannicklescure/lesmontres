@@ -235,9 +235,9 @@ const createUser = async (req, res) => {
             lastName,
             email,
             _id: userArray._id,
-            cartArray,
-            wishList,
-            purchasedHistory,
+            cartArray: userArray.cartArray,
+            wishList: userArray.wishList,
+            purchasedHistory: userArray.purchasedHistory,
           },
           message: "User Created",
         })
