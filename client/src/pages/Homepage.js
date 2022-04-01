@@ -1,9 +1,11 @@
 import styled from "styled-components";
 
 const Homepage = () => {
-  return <MainWrapper></MainWrapper>;
+  return <Wrapper>Homepage</Wrapper>;
 };
 
-const MainWrapper = styled.div``;
+const Wrapper = styled.div`
+  padding: 16px;
+`;
 
 export default Homepage;

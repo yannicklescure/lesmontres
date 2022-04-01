@@ -14,17 +14,27 @@ import {
 } from "react-icons/ai";
 import { COLORS } from "../constants";
 import SubNavbar from "./SubNavbar";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 
 const Navbar = () => {
+  const history = useHistory();
 
   const {
     state: {
       user
+    },
+    actions: {
+      logoutUser,
     }
   } = useContext(UserContext);
+
+  const handleLogout = () => {
+    console.log('Logout');
+    logoutUser();
+    history.push('/');
+  }
 
   return (
     <>
@@ -45,14 +55,27 @@ const Navbar = () => {
             <SearchIcon />
           </SearchBarWrapper>
           <IconsContainer>
-
-            <StyledIconLink to="/login">
-              <AiOutlineUser size="25" />
-            </StyledIconLink>
-
-            { user._id && (
-              <AiOutlineShoppingCart size="25" />
-            ) }
+            { user._id 
+              ? (<>
+                <StyledIconMenu>
+                  <StyledIconBtn>
+                    <AiOutlineUser size="25" />
+                  </StyledIconBtn>
+                  <StyledIconSubMenu>
+                    <StyledIconItems to="/">My wish list</StyledIconItems>
+                    <StyledIconItems to="/">Settings</StyledIconItems>
+                    <StyledIconItems to="/">Something</StyledIconItems>
+                    <Logout onClick={handleLogout}>LOG OUT</Logout>
+                  </StyledIconSubMenu>
+                </StyledIconMenu>
+                <AiOutlineShoppingCart size="25" />
+              </>)
+              : (<>
+                <StyledIconLink to="/login">
+                  <AiOutlineUser size="25" />
+                </StyledIconLink>
+              </>)
+            }
             {/* <AiOutlineShopping size="25" /> */}
           </IconsContainer>
         </SectionRight>
@@ -114,6 +137,61 @@ const StyledIconLink = styled(NavLink)`
   &:hover {
     color: ${COLORS.grey};
     cursor: pointer;
+  }
+`;
+
+const StyledIconItems = styled(NavLink)``;
+
+const Logout = styled.button`
+  background: none;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  text-align: left;
+  padding: 0;
+  font-size: 16px;
+`;
+
+const StyledIconSubMenu = styled.div`
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: ${COLORS.light};
+  min-width: 144px;
+  font-size: 16px;
+  z-index: 1;
+
+  & ${StyledIconItems}, ${Logout} {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+
+  & ${StyledIconItems}:hover, ${Logout}:hover {background-color: #f1f1f1}
+`;
+
+const StyledIconBtn = styled.button`
+  background: none;
+  border: none;
+  outline: none;
+  color: ${COLORS.light};
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const StyledIconMenu = styled.div`
+  position: relative;
+  display: inline-block;
+
+  &:hover ${StyledIconSubMenu} {
+    display: block;
+  }
+
+  &:hover ${StyledIconBtn} {
+    color: ${COLORS.grey};
   }
 `;
 

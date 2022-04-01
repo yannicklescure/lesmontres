@@ -60,7 +60,6 @@ const Wrapper = styled.div`
   /* background-color: none; */
   padding: 17px;
   border-bottom: 0.5px solid ${COLORS.grey};
-
 `;
 
 const StyledLink = styled(NavLink)`

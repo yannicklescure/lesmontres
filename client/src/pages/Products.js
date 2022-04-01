@@ -40,7 +40,7 @@ const Products = () => {
 const Wrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  padding: 16px 0;
+  padding: 16px;
 `;
 
 const StyledImg = styled.img`

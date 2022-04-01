@@ -60,6 +60,13 @@ const reducer = (state, action) => {
         status: "user-deleted",
       }
     }
+    case "logout-user": {
+      return {
+        ...state,
+        ...action,
+        status: "user-logged-out",
+      }
+    }
     case "error-from-server": {
       return {
         ...state,
@@ -113,6 +120,14 @@ export const UserProvider = ({ children }) => {
     });
   };
 
+  const logoutUser = (data) => {
+    setLocalStorage({});
+    dispatch({
+      ...initialState,
+      type: "logout-user",
+    });
+  };
+
   const receivedUserFromServer = (data) => {
     setLocalStorage(data);
     dispatch({
@@ -137,6 +152,7 @@ export const UserProvider = ({ children }) => {
         errorFromServerUser,
         deleteUser,
         updateUser,
+        logoutUser,
       }
     }}>
       {children}
