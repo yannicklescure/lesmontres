@@ -6,6 +6,7 @@ import Sidebar from "../components/Sidebar";
 import { COLORS } from "../constants";
 import { ItemsContext } from "../contexts/ItemsContext";
 import { CategoriesContext } from "../contexts/CategoriesContext";
+import ProductCard from "../components/ProductCard";
 
 const Products = () => {
   const params = useParams();
@@ -50,21 +51,23 @@ const Products = () => {
 
     fetch(`/api/companies?category=${category}`)
       .then((res) => {
-        if (!unmounted) return res.json();      
+        if (!unmounted) return res.json();
       })
       .then((response) => {
         if (!unmounted) {
           // console.log(response);
-          setCompaniesIds(response.data.map(item => item._id));
+          setCompaniesIds(response.data.map((item) => item._id));
           setCompanies(response.data);
           const copy = categories;
           // console.log(copy);
-          copy.find(el => el.name === category).companies = response.data;
-          const filteredItems = items.filter(item => item.category.toLowerCase() === category);
-          copy.find(el => el.name === category).items = filteredItems;
+          copy.find((el) => el.name === category).companies = response.data;
+          const filteredItems = items.filter(
+            (item) => item.category.toLowerCase() === category
+          );
+          copy.find((el) => el.name === category).items = filteredItems;
           setAllProducts(filteredItems);
           setProducts(filteredItems);
-          updateCategories({categories: copy});
+          updateCategories({ categories: copy });
           // console.log(copy);
         }
       })
@@ -72,7 +75,7 @@ const Products = () => {
 
     return () => {
       unmounted = true;
-    }
+    };
 
     // eslint-disable-next-line
   }, [category]);
@@ -123,22 +126,7 @@ const Products = () => {
       <Sidebar companies={companies} handleChecked={handleChecked} />
       <ProductsSection forceUpdate={forceUpdate}>
         {products.map((product) => (
-          // <ProductWrapper>
-          <ProductWrapper>
-            <ImgWrapper>
-              <StyledImg
-                key={product._id}
-                src={product.imageSrc}
-                alt={product._id}
-              />
-            </ImgWrapper>
-            <Description>
-              <ItemName>{product.name}</ItemName>
-              <CompanyName>{getCompanyName(product.companyId)}</CompanyName>
-              <Price>{product.price}</Price>
-            </Description>
-          </ProductWrapper>
-          // </ProductWrapper>
+          <ProductCard product={product} getCompanyName={getCompanyName} />
         ))}
       </ProductsSection>
     </PageWrapper>
@@ -165,61 +153,6 @@ const ProductsSection = styled.div`
   padding: 16px;
   justify-content: center;
   gap: 30px;
-`;
-
-const ProductWrapper = styled.div`
-  border: 1px solid ${COLORS.grey};
-  width: 275px;
-  height: 350px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-  gap: 20px;
-`;
-
-const ImgWrapper = styled.div`
-  /* border: 1px solid ${COLORS.grey}; */
-`;
-
-const StyledImg = styled.img`
-  /* object-fit: contain; */
-  /* border: 2px solid blue; */
-  width: 200px;
-  height: 200px;
-  margin: auto;
-  padding: 30px;
-  /* margin-bottom: 20px; */
-`;
-
-const Description = styled.div`
-  /* border: 2px solid purple; */
-  height: fit-content;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`;
-
-const ItemName = styled.div`
-  padding: 0 15px 0 30px;
-  color: ${COLORS.secondary};
-  /* text-transform: uppercase; */
-  font-size: 14px;
-  font-family: Lato, sans-serif;
-  font-weight: bold;
-  /* letter-spacing: 1px; */
-`;
-
-const CompanyName = styled.div`
-  text-transform: uppercase;
-  font-size: 12px;
-  font-family: Lato, sans-serif;
-`;
-
-const Price = styled.div`
-  font-family: Poppins, sans-serif;
-  font-weight: bold;
-  font-size: 18px;
 `;
 
 export default Products;
