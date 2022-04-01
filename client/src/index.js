@@ -1,13 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App';
+import { CategoriesProvider } from './contexts/CategoriesContext';
 import { ItemsProvider } from './contexts/ItemsContext';
+import { UserProvider } from './contexts/UserContext';
 
 ReactDOM.render(
   <React.StrictMode>
+    <UserProvider>
     <ItemsProvider>
+    <CategoriesProvider>
       <App />
+    </CategoriesProvider>
     </ItemsProvider>
+    </UserProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -29,7 +29,7 @@ const SpinnerBlade = styled.div`
   width: ${({size}) => size/9 + 'px'};
   height: ${({size}) => size/3 + 'px'};
   border-radius: ${({size}) => size/20 + 'px'};
-  background-color: ${COLORS.secondary};
+  background-color: ${COLORS.dark};
   animation: iSpinnerBlade 1s linear infinite;
   will-change: opacity;
 

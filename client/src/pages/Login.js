@@ -23,27 +23,14 @@ const SignUp = () => {
   } = useContext(UserContext);
 
   // create a reference for each input to store the values
-  const firstName = useRef();
-  const lastName = useRef();
   const email = useRef();
   const password = useRef();
-  const confirmPassword = useRef();
 
   // check if all inputs are filled--if true, enable Sign Up button
   const handleChange = (ev) => {
-    if (password.current.value !== confirmPassword.current.value) {
-      // console.log("Passwords don't match");
-      // we need a return to end the function if the passwords don't match
-      setValid(false);
-      setDisabled(true);
-      return;
-    }
     if (
-      firstName.current.value.length > 0 &&
-      lastName.current.value.length > 0 &&
-      email.current.value.length > 0 &&
-      password.current.value.length > 0 &&
-      confirmPassword.current.value.length > 0
+      email.current.value.length > 3 &&
+      password.current.value.length > 3
     ) {
       setDisabled(false);
     }
@@ -55,14 +42,12 @@ const SignUp = () => {
     ev.preventDefault();
     if (valid) {
       const formData = {
-        firstName: firstName.current.value,
-        lastName: lastName.current.value,
         email: email.current.value,
         password: password.current.value,
       };
       console.log(formData);
       loadingUser();
-      fetch(`/api/signup`, {
+      fetch(`/api/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -86,25 +71,8 @@ const SignUp = () => {
   return (
     <Wrapper>
       <StyledLogo><BsSmartwatch /></StyledLogo>
-      <Title>Sign up to Les montres</Title>
+      <Title>Login to Les montres</Title>
       <SignUpForm>
-        <FirstName
-          type="text"
-          name="first-name"
-          required
-          placeholder="First Name"
-          ref={firstName}
-          onChange={handleChange}
-        ></FirstName>
-        <LastName
-          type="text"
-          name="last-name"
-          required
-          placeholder="Last Name"
-          ref={lastName}
-          onChange={handleChange}
-        ></LastName>
-
         <Email
           type="email"
           name="email"
@@ -122,26 +90,16 @@ const SignUp = () => {
           ref={password}
           onChange={handleChange}
         ></Password>
-        {/* Show/hide eye icon */}
-        <ConfirmPassword
-          type="password"
-          name="confirm-password"
-          required
-          placeholder="Confirm Password"
-          ref={confirmPassword}
-          onChange={handleChange}
-        ></ConfirmPassword>
-
-        <SignUpBtn
+        <LoginBtn
           type="submit"
           onClick={(ev) => handleSubmit(ev)}
           disabled={disabled}
         >
-          { status === "loading-user" ? <Loading size="18" /> : 'Sign Up' }          
-        </SignUpBtn>
+          { status === "loading-user" ? <Loading size="18" /> : 'Login' }          
+        </LoginBtn>
       </SignUpForm>
 
-      <StyledInfo>Already have an account? <LoginLink to="/login">Login</LoginLink></StyledInfo> 
+      <StyledInfo>New to Les montres? <LoginLink to="/signup">Create an account.</LoginLink></StyledInfo> 
     </Wrapper>
   );
 };
@@ -163,7 +121,7 @@ const Title = styled.h1`
   font-size: 18px;
   margin-bottom: 24px;
   color: ${COLORS.dark};
-  `;
+`;
 
 const SignUpForm = styled.form`
   display: flex;
@@ -179,12 +137,11 @@ const StyledInfo = styled.div`
   text-align: center;
   font-size: 14px;
   margin-top: 16px;
-  width: 262px;
+  width: 336px;
   background-color: ${COLORS.light};
   border: 1px solid ${COLORS.grey};
   padding: 16px;
   border-radius: 4px;
-  width: 336px;
 `;
 
 const StyledInput = styled.input`
@@ -192,13 +149,10 @@ const StyledInput = styled.input`
   margin-bottom: 12px;
 `;
 
-const FirstName = styled(StyledInput)``;
-const LastName = styled(StyledInput)``;
 const Email = styled(StyledInput)``;
 const Password = styled(StyledInput)``;
-const ConfirmPassword = styled(StyledInput)``;
 
-const SignUpBtn = styled.button`
+const LoginBtn = styled.button`
   border: none;
   background-color: ${COLORS.purple};
   color: ${COLORS.light};
