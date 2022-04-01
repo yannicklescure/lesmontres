@@ -50,14 +50,14 @@ const Navbar = () => {
             {user._id ? (
               <>
                 <StyledIconMenu>
-                  <StyledIconBtn isHomepage={isHomepage}>
+                  <StyledIconBtn>
                     <AiOutlineUser size="25" />
                   </StyledIconBtn>
                   <StyledIconSubMenu>
-                    <StyledIconItems to="/" isHomepage={isHomepage}>My wish list</StyledIconItems>
-                    <StyledIconItems to="/" isHomepage={isHomepage}>Settings</StyledIconItems>
-                    <StyledIconItems to="/" isHomepage={isHomepage}>Something</StyledIconItems>
-                    <Logout onClick={handleLogout} isHomepage={isHomepage}>LOG OUT</Logout>
+                    <StyledIconItems to="/">My wish list</StyledIconItems>
+                    <StyledIconItems to="/">Settings</StyledIconItems>
+                    <StyledIconItems to="/">Something</StyledIconItems>
+                    <Logout onClick={handleLogout}>LOG OUT</Logout>
                   </StyledIconSubMenu>
                 </StyledIconMenu>
                 <AiOutlineShoppingCart size="25" />
@@ -86,6 +86,7 @@ const MainWrapper = styled.div`
   color: ${({isHomepage}) => isHomepage ? COLORS.dark : COLORS.light};
   height: 85px;
   border-bottom: 0.5px solid ${COLORS.grey};
+  z-index: 1000;
 `;
 
 const BrandWrapper = styled.div`
@@ -101,7 +102,6 @@ const Brand = styled.div`
 `;
 
 const BrandLink = styled(NavLink)`
-  /* to align clock within text */
   display: flex;
   align-items: flex-end;
   font-family: "Poppins", sans-serif;
@@ -149,7 +149,7 @@ const StyledIconSubMenu = styled.div`
   background-color: ${COLORS.light};
   min-width: 144px;
   font-size: 16px;
-  z-index: 1;
+  z-index: 1000;
 
   & ${StyledIconItems}, ${Logout} {
     color: ${COLORS.dark};
