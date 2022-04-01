@@ -2,7 +2,7 @@ import styled from "styled-components";
 import {
   AiOutlineClockCircle,
   AiOutlineUser,
-  AiOutlineShopping,
+  // AiOutlineShopping,
   AiOutlineShoppingCart,
   AiOutlineSearch,
 } from "react-icons/ai";
@@ -16,6 +16,7 @@ const Navbar = () => {
   const history = useHistory();
   const location = useLocation();
   console.log(location);
+  const isHomepage = location.pathname === "/";
 
   const {
     state: { user },
@@ -30,7 +31,7 @@ const Navbar = () => {
 
   return (
     <>
-      <MainWrapper>
+      <MainWrapper isHomepage={isHomepage}>
         <BrandWrapper>
           <Brand>
             <BrandLink to="/">
@@ -73,17 +74,16 @@ const Navbar = () => {
           </IconsContainer>
         </SectionRight>
       </MainWrapper>
-      {location.pathname !== "/" && <SubNavbar />}
+      {!isHomepage && <SubNavbar />}
     </>
   );
 };
 
 const MainWrapper = styled.div`
-  /* border: 1px solid red; */
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* background-color: ${COLORS.darker}; */
+  background-color: ${({isHomepage}) => isHomepage ? 'transparent' : COLORS.darker};
   color: ${COLORS.light};
   height: 85px;
   border-bottom: 0.5px solid ${COLORS.grey};
