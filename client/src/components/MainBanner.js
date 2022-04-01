@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { COLORS } from "../constants";
+import { NavLink } from "react-router-dom";
 
 const MainBanner = () => {
   return (
@@ -13,17 +14,12 @@ const MainBanner = () => {
         </SubHeading>
       </TextArea>
 
-      <ShopNowBtn>SHOP NOW</ShopNowBtn>
+      <ShopNowBtn to="/products">SHOP NOW</ShopNowBtn>
     </MainWrapper>
   );
 };
 
 const MainWrapper = styled.div`
-  /* border: 2px solid red; */
-  /* background-color: black; */
-  /* display: flex; */
-  /* justify-content: center; */
-  /* align-items: center; */
   min-height: calc(100vh - 85px - 47px);
   position: relative;
   font-family: Poppins;
@@ -47,7 +43,7 @@ const SubHeading = styled.div`
   padding-bottom: 25px;
 `;
 
-const ShopNowBtn = styled.button`
+const ShopNowBtn = styled(NavLink)`
   margin-left: 100px;
   background-color: ${COLORS.darker};
   border: none;

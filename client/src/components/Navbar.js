@@ -8,12 +8,14 @@ import {
 } from "react-icons/ai";
 import { COLORS } from "../constants";
 import SubNavbar from "./SubNavbar";
-import { NavLink, useHistory } from "react-router-dom";
+import { NavLink, useHistory, useLocation } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 
 const Navbar = () => {
   const history = useHistory();
+  const location = useLocation();
+  console.log(location);
 
   const {
     state: { user },
@@ -71,7 +73,7 @@ const Navbar = () => {
           </IconsContainer>
         </SectionRight>
       </MainWrapper>
-      <SubNavbar />
+      {location.pathname !== "/" && <SubNavbar />}
     </>
   );
 };
