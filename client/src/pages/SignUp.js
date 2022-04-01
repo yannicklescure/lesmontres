@@ -172,7 +172,7 @@ const SignUpForm = styled.form`
   border: 1px solid ${COLORS.grey};
   padding: 16px;
   border-radius: 4px;
-  width: 300px;
+  width: 336px;
 `;
 
 const StyledInfo = styled.div`
@@ -184,7 +184,7 @@ const StyledInfo = styled.div`
   border: 1px solid ${COLORS.grey};
   padding: 16px;
   border-radius: 4px;
-  width: 300px;
+  width: 336px;
 `;
 
 const StyledInput = styled.input`

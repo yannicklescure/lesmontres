@@ -44,7 +44,7 @@ const SubNavbar = () => {
           <StyledLink 
             key={category} 
             to={`/products/${category.toLowerCase()}`}
-          >{category}</StyledLink>
+          >{category.includes('and') ? category.replace('and', '&') : category}</StyledLink>
         ))
       }
     </Wrapper>
