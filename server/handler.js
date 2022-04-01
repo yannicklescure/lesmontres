@@ -67,7 +67,7 @@ const getItem = async (req, res) => {
     await client.connect();
     const db = client.db("LesMontres");
     const _id = parseInt(req.params._id);
-    const result = await db.collection("items").findOne({_id});
+    const result = await db.collection("items").findOne({ _id });
     console.log(result);
     let data = result;
 
@@ -91,6 +91,17 @@ const getItems = async (req, res) => {
     const db = client.db("LesMontres");
     const result = await db.collection("items").find().toArray();
     let data = result;
+
+    if (req.query.search) {
+      let searchResults = [];
+      data.forEach((item) => {
+        if (item.name.toLowerCase().includes(req.query.search.toLowerCase())) {
+          searchResults.push(item);
+        }
+      });
+      data = searchResults;
+      console.log(searchResults);
+    }
 
     if (req.query.categories) {
       let categories = [];
