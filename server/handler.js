@@ -59,6 +59,29 @@ const getCompanies = async (req, res) => {
   }
 };
 
+const getItem = async (req, res) => {
+  console.log(req.params);
+
+  const client = new MongoClient(MONGO_URI, option);
+  try {
+    await client.connect();
+    const db = client.db("LesMontres");
+    const _id = parseInt(req.params._id);
+    const result = await db.collection("items").findOne({_id});
+    console.log(result);
+    let data = result;
+
+    result
+      ? res.status(200).json({ status: 200, data, message: "success" })
+      : res.status(409).json({ status: 409, message: "Item not found" });
+  } catch (err) {
+    console.log("Error Getting Items", err);
+    res.status(500).json({ status: 500, message: err });
+  } finally {
+    client.close();
+  }
+};
+
 const getItems = async (req, res) => {
   console.log(req.query);
 
@@ -311,6 +334,7 @@ const addToWishlist = async (req, res) => {
 };
 
 module.exports = {
+  getItem,
   getItems,
   getCompanies,
   getUsers,
