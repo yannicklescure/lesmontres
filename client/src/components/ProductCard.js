@@ -11,25 +11,31 @@ import { HiOutlineShoppingCart, HiShoppingCart } from "react-icons/hi";
 const ProductCard = ({ product, getCompanyName }) => {
   return (
     <ProductCardWrapper to={`/product/${product._id}`}>
-      <IconsWrapper>
+      {/* <IconsWrapper>
         <HeartOutlineIcon />
         <HeartFillIcon />
         <CartOutlineIcon />
         <CartFillIcon />
-      </IconsWrapper>
-      <ImgWrapper>
-        <StyledImg key={product._id} src={product.imageSrc} alt={product._id} />
-      </ImgWrapper>
-      <Description>
-        <ItemName>{product.name}</ItemName>
-        <CompanyName>{getCompanyName(product.companyId)}</CompanyName>
-        <Price>{product.price}</Price>
-      </Description>
+      </IconsWrapper> */}
+      <CardNavLink>
+        <ImgWrapper>
+          <StyledImg
+            key={product._id}
+            src={product.imageSrc}
+            alt={product._id}
+          />
+        </ImgWrapper>
+        <Description>
+          <ItemName>{product.name}</ItemName>
+          <CompanyName>{getCompanyName(product.companyId)}</CompanyName>
+          <Price>{product.price}</Price>
+        </Description>
+      </CardNavLink>
     </ProductCardWrapper>
   );
 };
 
-const ProductCardWrapper = styled(NavLink)`
+const ProductCardWrapper = styled.div`
   border: 1px solid ${COLORS.grey};
   width: 275px;
   height: 350px;
@@ -40,6 +46,8 @@ const ProductCardWrapper = styled(NavLink)`
   gap: 20px;
   text-decoration: none;
 `;
+
+const CardNavLink = styled(NavLink)``;
 
 const IconsWrapper = styled.div``;
 const HeartOutlineIcon = styled(AiOutlineHeart)``;
