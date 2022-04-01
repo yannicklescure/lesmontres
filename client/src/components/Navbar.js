@@ -45,21 +45,19 @@ const Navbar = () => {
         </BrandWrapper>
 
         <SectionRight>
-          <SearchBarWrapper>
-            <SearchBar />
-          </SearchBarWrapper>
+          <SearchBar />
           <IconsContainer>
             {user._id ? (
               <>
                 <StyledIconMenu>
-                  <StyledIconBtn>
+                  <StyledIconBtn isHomepage={isHomepage}>
                     <AiOutlineUser size="25" />
                   </StyledIconBtn>
                   <StyledIconSubMenu>
                     <StyledIconItems to="/" isHomepage={isHomepage}>My wish list</StyledIconItems>
                     <StyledIconItems to="/" isHomepage={isHomepage}>Settings</StyledIconItems>
                     <StyledIconItems to="/" isHomepage={isHomepage}>Something</StyledIconItems>
-                    <Logout onClick={handleLogout}>LOG OUT</Logout>
+                    <Logout onClick={handleLogout} isHomepage={isHomepage}>LOG OUT</Logout>
                   </StyledIconSubMenu>
                 </StyledIconMenu>
                 <AiOutlineShoppingCart size="25" />
@@ -115,8 +113,8 @@ const BrandLink = styled(NavLink)`
   transition: all 400ms ease;
 
   &:hover {
-    color: ${COLORS.grey};
-    cursor: pointer;
+    color: ${({isHomepage}) => isHomepage ? COLORS.secondary : COLORS.grey};
+    cursor: pointer; 
   }
 `;
 
@@ -127,7 +125,7 @@ const StyledIconLink = styled(NavLink)`
   transition: all 400ms ease;
 
   &:hover {
-    color: ${({isHomepage}) => isHomepage ? COLORS.dark : COLORS.light};
+    color: ${({isHomepage}) => isHomepage ? COLORS.secondary : COLORS.grey};
     cursor: pointer;
   }
 `;
@@ -154,7 +152,7 @@ const StyledIconSubMenu = styled.div`
   z-index: 1;
 
   & ${StyledIconItems}, ${Logout} {
-    color: ${({isHomepage}) => isHomepage ? COLORS.dark : COLORS.light};
+    color: ${COLORS.dark};
     padding: 12px 16px; 
     text-decoration: none;
     display: block;
@@ -169,7 +167,7 @@ const StyledIconBtn = styled.button`
   background: none;
   border: none;
   outline: none;
-  color: ${({isHomepage}) => isHomepage ? COLORS.dark : COLORS.light};
+  color: ${COLORS.dark};
   font-size: 20px;
   display: flex;
   align-items: center;
@@ -185,7 +183,7 @@ const StyledIconMenu = styled.div`
   }
 
   &:hover ${StyledIconBtn} {
-    color: ${({isHomepage}) => isHomepage ? COLORS.dark : COLORS.light};
+    color: ${COLORS.dark};
   }
 `;
 
@@ -194,12 +192,6 @@ const SectionRight = styled.div`
   justify-content: flex-end;
   gap: 12px;
   margin-right: 30px;
-`;
-
-const SearchBarWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  width: max-content;
 `;
 
 // const SearchBar = styled.input`

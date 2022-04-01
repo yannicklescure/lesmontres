@@ -26,7 +26,7 @@ export default function SearchBar() {
 
   return (
     <SearchBarWrapper>
-      <SearchIcon onClick={() => setAddWidth(!addWidth)} />
+      <SearchIcon onClick={() => setAddWidth(!addWidth)} size="25" />
       {addWidth && (
         <SearchPopUp props={search}>
           <CloseIcon
@@ -34,7 +34,7 @@ export default function SearchBar() {
             onClick={() => [setAddWidth(!addWidth), setSearch("")]}
           />
           <SearchContainer>
-            <SearchHeader>What Are You Looking For ?</SearchHeader>
+            <SearchHeader>What are you looking for ?</SearchHeader>
             <SearchBarInput
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search"
@@ -44,7 +44,7 @@ export default function SearchBar() {
 
           {search && search.length > 3 && (
             <SearchTitle>
-              You Searched For ' <SearchParam>{search}</SearchParam> ' :
+              You searched for ' <SearchParam>{search}</SearchParam> ' :
             </SearchTitle>
           )}
 
@@ -82,7 +82,12 @@ const SearchBarInput = styled.input`
   padding: 10px 0;
   color: ${COLORS.dark};
 `;
-const SearchBarWrapper = styled.div``;
+const SearchBarWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  width: max-content;
+`;
+
 const SearchPopUp = styled.div`
   position: absolute;
   top: 0;
@@ -96,7 +101,7 @@ const SearchPopUp = styled.div`
 `;
 
 const SearchIcon = styled(AiOutlineSearch)`
-  font-size: 18px;
+  font-size: 20px;
   cursor: pointer;
 `;
 const SearchContainer = styled.div`
