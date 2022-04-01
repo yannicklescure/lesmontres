@@ -12,7 +12,7 @@ const option = {
 };
 const getCompanies = async (req, res) => {
   console.log(req.query);
-  const {category} = req.query;
+  const { category } = req.query;
 
   const client = new MongoClient(MONGO_URI, option);
   try {
@@ -24,18 +24,23 @@ const getCompanies = async (req, res) => {
 
     const items = await db.collection("items").find().toArray();
     // console.log(items);
-    
+
     if (category) {
-      const products = items.filter(item => item.category.toLowerCase() === category);
+      const products = items.filter(
+        (item) => item.category.toLowerCase() === category
+      );
       // console.log(products);
       const companiesIds = [];
-      products.forEach(product => {
-        if (!companiesIds.includes(product.companyId)) companiesIds.push(product.companyId);
+      products.forEach((product) => {
+        if (!companiesIds.includes(product.companyId))
+          companiesIds.push(product.companyId);
       });
       // console.log(companiesIds);
       const filteredCompanies = [];
-      companiesIds.forEach(companiesId => {
-        const filteredCompany = companies.filter(company => company._id === companiesId);
+      companiesIds.forEach((companiesId) => {
+        const filteredCompany = companies.filter(
+          (company) => company._id === companiesId
+        );
         filteredCompanies.push(filteredCompany[0]);
       });
       // console.log(filteredCompanies);
@@ -116,11 +121,8 @@ const logInUser = async (req, res) => {
     if (loginAuth) {
       const loginPassword = await bcrypt.compare(password, loginAuth.password);
       if (loginPassword) {
-<<<<<<< HEAD
-        const { firstName, lastName, email, _id, cartArray } = loginAuth;
-=======
         const {
-          firstName, 
+          firstName,
           lastName,
           email,
           _id,
@@ -128,26 +130,18 @@ const logInUser = async (req, res) => {
           wishList,
           purchasedHistory,
         } = loginAuth;
-        
->>>>>>> master
+
         return res.status(200).json({
           status: 200,
           message: "User Logged In",
           data: {
-<<<<<<< HEAD
             firstName,
-=======
-            firstName, 
->>>>>>> master
             lastName,
             email,
             _id,
             cartArray,
-<<<<<<< HEAD
-=======
             wishList,
             purchasedHistory,
->>>>>>> master
           },
         });
       } else
@@ -202,11 +196,8 @@ const createUser = async (req, res) => {
     users
       ? res.status(200).json({
           status: 200,
-<<<<<<< HEAD
-          data: req.body.cartArray,
-=======
           data: {
-            firstName, 
+            firstName,
             lastName,
             email,
             _id: userArray._id,
@@ -214,7 +205,6 @@ const createUser = async (req, res) => {
             wishList,
             purchasedHistory,
           },
->>>>>>> master
           message: "User Created",
         })
       : res.status(409).json({ status: 409, message: "ERROR" });
