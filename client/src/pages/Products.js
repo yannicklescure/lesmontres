@@ -5,7 +5,7 @@ import Loading from "../components/Loading";
 import Sidebar from "../components/Sidebar";
 import { COLORS } from "../constants";
 import { ItemsContext } from "../contexts/ItemsContext";
-import usePersistedState from "../hooks/usePersistedState";
+import { CategoriesContext } from "../contexts/CategoriesContext";
 
 const Products = () => {
   const params = useParams();
@@ -13,8 +13,62 @@ const Products = () => {
   const category = params?.category !== undefined ? params.category : "fitness";
 
   const {
-    state: { hasLoaded, items },
+    state: { items },
   } = useContext(ItemsContext);
+
+  const {
+    localStorage,
+    state: { hasLoaded, categories },
+    actions: { updateCategories, loadingCategories },
+  } = useContext(CategoriesContext);
+
+  const [allProducts, setAllProducts] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [companiesIds, setCompaniesIds] = useState([]);
+  const [companies, setCompanies] = useState([]);
+  const [forceUpdate, setForceUpdate] = useState(0);
+
+  useEffect(() => {
+    setForceUpdate(forceUpdate + 1);
+    // console.log(category);
+    // console.log(localStorage);
+    loadingCategories();
+    // console.log('hasLoaded ' + hasLoaded);
+
+    const thisCategory = localStorage.find((el) => el.name === category);
+    // console.log(thisCategory);
+    if (thisCategory) {
+      setCompanies(thisCategory.companies);
+      setAllProducts(thisCategory.items);
+      setProducts(thisCategory.items);
+    } else {
+      setCompanies([]);
+      setAllProducts([]);
+      setProducts([]);
+    }
+
+    fetch(`/api/companies?category=${category}`)
+      .then((res) => res.json())
+      .then((response) => {
+        // console.log(response);
+        setCompaniesIds(response.data.map((item) => item._id));
+        setCompanies(response.data);
+        const copy = categories;
+        // console.log(copy);
+        copy.find((el) => el.name === category).companies = response.data;
+        const filteredItems = items.filter(
+          (item) => item.category.toLowerCase() === category
+        );
+        copy.find((el) => el.name === category).items = filteredItems;
+        setAllProducts(filteredItems);
+        setProducts(filteredItems);
+        updateCategories({ categories: copy });
+        // console.log(copy);
+      })
+      .catch((err) => console.log(err));
+
+    // eslint-disable-next-line
+  }, [category]);
 
   if (!hasLoaded) {
     return <Loading size="32" />;
@@ -60,7 +114,7 @@ const Products = () => {
   return (
     <PageWrapper>
       <Sidebar companies={companies} handleChecked={handleChecked} />
-      <ProductsSection>
+      <ProductsSection forceUpdate={forceUpdate}>
         {products.map((product) => (
           // <ProductWrapper>
           <ProductWrapper>
