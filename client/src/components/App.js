@@ -30,7 +30,7 @@ function App() {
     fetch(`/api/items`)
       .then((res) => res.json())
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         receivedItemsFromServer({ items: response.data });
       })
       .catch((err) => errorFromServer());

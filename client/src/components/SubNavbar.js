@@ -1,41 +1,18 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { COLORS } from "../constants";
 import { CategoriesContext } from "../contexts/CategoriesContext";
-import { ItemsContext } from "../contexts/ItemsContext";
 import Loading from "./Loading";
 
-const SubNavbar = () => {
-
-  const {
-    state: {
-      items,
-    }
-  } = useContext(ItemsContext);
+const SubNavbar = () => {  
 
   const {
     state: {
       hasLoaded,
       categories,
     },
-    actions: {
-      loadingCategories,
-      receivedCategoriesFromServer,
-      // errorFromServerCategories,
-    }
-  } = useContext(CategoriesContext);
-
-  useEffect(() => {
-    let tmp = [];
-    loadingCategories();
-    items.forEach((item) => {
-      if (!tmp.includes(item.category)) tmp.push(item.category);
-    });
-    receivedCategoriesFromServer({categories: tmp});
-    console.log(tmp);
-    // eslint-disable-next-line
-  }, []);
+  } = useContext(CategoriesContext);  
 
   if (!hasLoaded) return <><Loading size="32" /></>
 
