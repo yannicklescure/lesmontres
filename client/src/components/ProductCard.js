@@ -50,7 +50,12 @@ const ProductCard = ({ product, getCompanyName }) => {
       </IconsWrapper>
 
       <ImgWrapper>
-        <StyledImg key={product._id} src={product.imageSrc} alt={product._id} />
+        <StyledImg 
+          key={product._id} 
+          src={product.imageSrc} 
+          alt={product._id} 
+          isShown={isShown}
+        />
       </ImgWrapper>
       <Description>
         <ItemName>{product.name}</ItemName>
@@ -87,6 +92,7 @@ const IconsWrapper = styled.div`
   position: absolute;
   top: 12px;
   right: 12px;
+  z-index: 1000;
 `;
 
 const WishlistIcons = styled.div`
@@ -105,6 +111,9 @@ const StyledImg = styled.img`
   height: 200px;
   margin: auto;
   padding: 30px;
+  object-fit: contain;
+  transform: scale(${({isShown}) => isShown ? 1 : 0.9});
+  transition: all 300ms ease;
 `;
 
 const Description = styled.div`
