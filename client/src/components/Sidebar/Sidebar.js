@@ -3,8 +3,8 @@ import { COLORS } from "../../constants";
 import { NavLink, useLocation, useParams } from "react-router-dom";
 import { BsSmartwatch } from 'react-icons/bs';
 import { AiFillCaretRight, AiFillCaretDown } from 'react-icons/ai';
-import Checkbox from "./Checkbox";
 import { useState } from "react";
+import Filters from "./Filters";
 
 const Sidebar = ({companies, handleChecked}) => {
   const location = useLocation();
@@ -33,13 +33,11 @@ const Sidebar = ({companies, handleChecked}) => {
         <StyledTitleBtn onClick={handleClick}><div>Companies</div><div>{
           !isShown ? <AiFillCaretRight /> : <AiFillCaretDown />
           }</div></StyledTitleBtn>
-        <InputBox isShown={isShown}>
-          { companies.length > 0 &&
-            companies.map(company => (
-              <Checkbox key={company._id} company={company} handleChecked={handleChecked} />
-            ))
-          }
-        </InputBox>
+        <Filters
+          filters={companies}
+          isShown={isShown}
+          handleChecked={handleChecked}
+        />
       <StyledTitleBtn>Filter</StyledTitleBtn>
     </Wrapper>
   )
@@ -87,11 +85,6 @@ const StyledTitleBtn = styled.button`
     display: flex;
     align-items: center;
   }
-`;
-
-const InputBox = styled.div`
-  display: ${({isShown}) => isShown ? 'block' : 'none'};
-  transition: all 300ms ease;
 `;
 
 const StyledLink = styled(NavLink)`

@@ -2,12 +2,12 @@ import { useState } from "react";
 import styled from "styled-components";
 import { COLORS } from "../../constants";
 
-const Checkbox = ({company, handleChecked}) => {
+const Checkbox = ({filter, handleChecked}) => {
   const [checked, setChecked] = useState(false);
 
   const handleChange = () => {
     const displayed = !checked;
-    const _id = company._id;
+    const _id = filter._id;
     setChecked(displayed);
     handleChecked({ _id, displayed });
   }
@@ -16,12 +16,12 @@ const Checkbox = ({company, handleChecked}) => {
     <StyledCheckBox>
       <input 
         type="checkbox" 
-        id={company._id}
-        name={company.name} 
+        id={filter._id}
+        name={filter.name} 
         checked={checked}
         onChange={handleChange}
       />
-      <label htmlFor={company._id}>{company.name}</label>
+      <label htmlFor={filter._id}>{filter.name}</label>
     </StyledCheckBox>
   )
 }
