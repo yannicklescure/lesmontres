@@ -9,9 +9,11 @@ import {
 import { COLORS } from "../constants";
 import SubNavbar from "./SubNavbar";
 import { NavLink, useHistory, useLocation } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "../contexts/UserContext";
 import SearchBar from "./SearchBar";
+import { ItemsContext } from "../contexts/ItemsContext";
+import { CategoriesContext } from "../contexts/CategoriesContext";
 const Navbar = () => {
   const history = useHistory();
   const location = useLocation();
@@ -25,6 +27,33 @@ const Navbar = () => {
     actions: { logoutUser },
   } = useContext(UserContext);
 
+  const {
+    state: {
+      items,
+    }
+  } = useContext(ItemsContext);
+
+  const {
+    localStorage,
+    actions: {
+      loadingCategories,
+      receivedCategoriesFromServer,
+    }
+  } = useContext(CategoriesContext);  
+
+  useEffect(() => {
+    if(localStorage?.length === 0) {
+      let tmp = [];
+      loadingCategories();
+      items.forEach((item) => {
+        if (!tmp.includes(item.category)) tmp.push(item.category);
+      });
+      receivedCategoriesFromServer({categories: tmp});
+      // console.log(tmp);
+    }
+    // eslint-disable-next-line
+  }, []);
+
   const handleLogout = () => {
     console.log("Logout");
     logoutUser();
@@ -33,10 +62,10 @@ const Navbar = () => {
 
   return (
     <>
-      <MainWrapper isHomepage={isHomepage}>
+      <MainWrapper ishomepage={isHomepage.toString()}>
         <BrandWrapper>
           <Brand>
-            <BrandLink to="/" isHomepage={isHomepage}>
+            <BrandLink to="/" ishomepage={isHomepage.toString()}>
               LesM
               <AiOutlineClockCircle size="27" />
               ntres
@@ -64,7 +93,7 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                <StyledIconLink to="/login" isHomepage={isHomepage}>
+                <StyledIconLink to="/login" ishomepage={isHomepage.toString()}>
                   <AiOutlineUser size="25" />
                 </StyledIconLink>
               </>
@@ -82,10 +111,11 @@ const MainWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: ${({isHomepage}) => isHomepage ? 'transparent' : COLORS.dark};
-  color: ${({isHomepage}) => isHomepage ? COLORS.dark : COLORS.light};
+  background-color: ${({ishomepage}) => ishomepage === 'true' ? 'transparent' : COLORS.dark};
+  color: ${({ishomepage}) => ishomepage === 'true' ? COLORS.dark : COLORS.light};
   height: 85px;
   border-bottom: 0.5px solid ${COLORS.grey};
+  position: relative;
   z-index: 1000;
 `;
 
@@ -109,23 +139,23 @@ const BrandLink = styled(NavLink)`
   font-weight: bold;
   text-decoration: none;
   letter-spacing: 1px;
-  color: ${({isHomepage}) => isHomepage ? COLORS.dark : COLORS.light};
+  color: ${({ishomepage}) => ishomepage === 'true' ? COLORS.dark : COLORS.light};
   transition: all 400ms ease;
 
   &:hover {
-    color: ${({isHomepage}) => isHomepage ? COLORS.secondary : COLORS.grey};
+    color: ${({ishomepage}) => ishomepage === 'true' ? COLORS.secondary : COLORS.grey};
     cursor: pointer; 
   }
 `;
 
 const StyledIconLink = styled(NavLink)`
   text-decoration: none;
-  color: ${({isHomepage}) => isHomepage ? COLORS.dark : COLORS.light};
+  color: ${({ishomepage}) => ishomepage === 'true' ? COLORS.dark : COLORS.light};
   font-size: 20px;
   transition: all 400ms ease;
 
   &:hover {
-    color: ${({isHomepage}) => isHomepage ? COLORS.secondary : COLORS.grey};
+    color: ${({ishomepage}) => ishomepage === 'true' ? COLORS.secondary : COLORS.grey};
     cursor: pointer;
   }
 `;
@@ -202,7 +232,7 @@ const SectionRight = styled.div`
 //   border-radius: 50px;
 //   background-color: transparent;
 //   opacity: 0.75;
-//   color: ${({isHomepage}) => isHomepage ? COLORS.dark : COLORS.light};
+//   color: ${({isHomepage}) => isHomepage === 'true' ? COLORS.dark : COLORS.light};
 // `;
 
 // const SearchIcon = styled(AiOutlineSearch)`
