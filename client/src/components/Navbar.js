@@ -4,6 +4,7 @@ import {
   AiOutlineUser,
   // AiOutlineShopping,
   AiOutlineShoppingCart,
+  AiOutlineHeart,
   // AiOutlineSearch,
 } from "react-icons/ai";
 import { COLORS } from "../constants";
@@ -11,7 +12,10 @@ import SubNavbar from "./SubNavbar";
 import { NavLink, useHistory, useLocation } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
+import { WishListContext } from "../contexts/WishListContext";
 import SearchBar from "./SearchBar";
+import WishListBar from "./WishListBar";
+
 const Navbar = () => {
   const history = useHistory();
   const location = useLocation();
@@ -24,6 +28,10 @@ const Navbar = () => {
     state: { user },
     actions: { logoutUser },
   } = useContext(UserContext);
+  const {
+    state: { isWishListBarOpen },
+    actions: { openWishListBar, closeWishListBar },
+  } = useContext(WishListContext);
 
   const handleLogout = () => {
     console.log("Logout");
@@ -46,6 +54,7 @@ const Navbar = () => {
 
         <SectionRight>
           <SearchBar />
+          <WishListBar />
           <IconsContainer>
             {user._id ? (
               <>
@@ -60,6 +69,16 @@ const Navbar = () => {
                     <Logout onClick={handleLogout}>LOG OUT</Logout>
                   </StyledIconSubMenu>
                 </StyledIconMenu>
+                <AiOutlineHeart
+                  size="25"
+                  onClick={() => {
+                    if (isWishListBarOpen) {
+                      closeWishListBar();
+                    } else {
+                      openWishListBar();
+                    }
+                  }}
+                />
                 <AiOutlineShoppingCart size="25" />
               </>
             ) : (
@@ -73,7 +92,7 @@ const Navbar = () => {
           </IconsContainer>
         </SectionRight>
       </MainWrapper>
-      {(!isHomepage && !isSignup && !isLogin) && <SubNavbar />}
+      {!isHomepage && !isSignup && !isLogin && <SubNavbar />}
     </>
   );
 };
@@ -82,8 +101,9 @@ const MainWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: ${({isHomepage}) => isHomepage ? 'transparent' : COLORS.dark};
-  color: ${({isHomepage}) => isHomepage ? COLORS.dark : COLORS.light};
+  background-color: ${({ isHomepage }) =>
+    isHomepage ? "transparent" : COLORS.dark};
+  color: ${({ isHomepage }) => (isHomepage ? COLORS.dark : COLORS.light)};
   height: 85px;
   border-bottom: 0.5px solid ${COLORS.grey};
   z-index: 1000;
@@ -109,23 +129,23 @@ const BrandLink = styled(NavLink)`
   font-weight: bold;
   text-decoration: none;
   letter-spacing: 1px;
-  color: ${({isHomepage}) => isHomepage ? COLORS.dark : COLORS.light};
+  color: ${({ isHomepage }) => (isHomepage ? COLORS.dark : COLORS.light)};
   transition: all 400ms ease;
 
   &:hover {
-    color: ${({isHomepage}) => isHomepage ? COLORS.secondary : COLORS.grey};
-    cursor: pointer; 
+    color: ${({ isHomepage }) => (isHomepage ? COLORS.secondary : COLORS.grey)};
+    cursor: pointer;
   }
 `;
 
 const StyledIconLink = styled(NavLink)`
   text-decoration: none;
-  color: ${({isHomepage}) => isHomepage ? COLORS.dark : COLORS.light};
+  color: ${({ isHomepage }) => (isHomepage ? COLORS.dark : COLORS.light)};
   font-size: 20px;
   transition: all 400ms ease;
 
   &:hover {
-    color: ${({isHomepage}) => isHomepage ? COLORS.secondary : COLORS.grey};
+    color: ${({ isHomepage }) => (isHomepage ? COLORS.secondary : COLORS.grey)};
     cursor: pointer;
   }
 `;
@@ -153,7 +173,7 @@ const StyledIconSubMenu = styled.div`
 
   & ${StyledIconItems}, ${Logout} {
     color: ${COLORS.dark};
-    padding: 12px 16px; 
+    padding: 12px 16px;
     text-decoration: none;
     display: block;
   }
