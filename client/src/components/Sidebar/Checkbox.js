@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { COLORS } from "../../constants";
 
 const Checkbox = ({company, handleChecked}) => {
   const [checked, setChecked] = useState(false);
@@ -28,6 +29,16 @@ const Checkbox = ({company, handleChecked}) => {
 const StyledCheckBox = styled.div`
   display: flex;
   align-items: center;
+  
+  & input, label {
+    cursor: pointer;
+
+  }
+
+  & label:hover {
+    color: ${COLORS.secondary};
+  }
+
   & input {
     height: 18px;
     margin-right: 8px;
