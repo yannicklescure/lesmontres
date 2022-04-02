@@ -17,7 +17,7 @@ import { CategoriesContext } from "../contexts/CategoriesContext";
 const Navbar = () => {
   const history = useHistory();
   const location = useLocation();
-  console.log(location);
+  // console.log(location);
   const isHomepage = location.pathname === "/";
   const isLogin = location.pathname === "/login";
   const isSignup = location.pathname === "/signup";
@@ -55,7 +55,7 @@ const Navbar = () => {
   }, []);
 
   const handleLogout = () => {
-    console.log("Logout");
+    // console.log("Logout");
     logoutUser();
     history.push("/");
   };
@@ -111,7 +111,7 @@ const MainWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: ${({ishomepage}) => ishomepage === 'true' ? 'transparent' : COLORS.dark};
+  background-color: ${({ishomepage}) => ishomepage === 'true' ? 'transparent' : COLORS.black};
   color: ${({ishomepage}) => ishomepage === 'true' ? COLORS.dark : COLORS.light};
   height: 85px;
   border-bottom: 0.5px solid ${COLORS.grey};

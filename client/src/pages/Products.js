@@ -10,7 +10,7 @@ import ProductCard from "../components/ProductCard";
 
 const Products = () => {
   const params = useParams();
-  console.log(params);
+  // console.log(params);
   const category = params?.category !== undefined ? params.category : "fitness";
 
   const {
@@ -42,7 +42,7 @@ const Products = () => {
     setForceUpdate(forceUpdate + 1);
     loadingCategories();
 
-    console.log(localStorage);
+    // console.log(localStorage);
     const thisCategory = localStorage.find((el) => el.name === category);
     console.log(thisCategory);
     if (thisCategory) {
@@ -62,9 +62,9 @@ const Products = () => {
       .then((response) => {
         if (!unmounted) {
           // console.log(response);
-          setCompaniesIds(response.data.map((item) => item._id));
+          // setCompaniesIds(response.data.map((item) => item._id));
           setCompanies(response.data);
-          console.log(categories);
+          // console.log(categories);
           const copy = categories;
           copy.find((el) => el.name === category).companies = response.data;
           const filteredItems = items.filter(
@@ -108,16 +108,21 @@ const Products = () => {
       // console.log(copy);
     }
     // console.log(copy.length);
-    const productsToDisplay = [];
-    copy.forEach((id) => {
-      const filteredProducts = allProducts.filter(
-        (product) => product.companyId === id
-      );
-      filteredProducts.forEach((filteredProduct) =>
-        productsToDisplay.push(filteredProduct)
-      );
-    });
-    console.log(productsToDisplay);
+    let productsToDisplay = [];
+    if (companiesIds.length === 0) {
+      productsToDisplay = allProducts;
+    }
+    else {
+      copy.forEach((id) => {
+        const filteredProducts = allProducts.filter(
+          (product) => product.companyId === id
+        );
+        filteredProducts.forEach((filteredProduct) =>
+          productsToDisplay.push(filteredProduct)
+        );
+      });
+    }
+    // console.log(productsToDisplay);
     setProducts(productsToDisplay.sort((a, b) => a._id - b._id));
   };
 

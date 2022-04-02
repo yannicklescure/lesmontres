@@ -2,7 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 
 const Checkbox = ({company, handleChecked}) => {
-  const [checked, setChecked] = useState(true);
+  const [checked, setChecked] = useState(false);
 
   const handleChange = () => {
     const displayed = !checked;
