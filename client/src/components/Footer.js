@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import AboutUsBanner from "./AboutUsBanner";
-import NewsletterBanner from "./NewsletterBanner";
 import SocialsBanner from "./SocialsBanner";
+import { COLORS } from "../constants";
+import NewsletterBanner from "./NewsletterBanner";
 
 const Footer = () => {
   return (

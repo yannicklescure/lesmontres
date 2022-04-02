@@ -14,7 +14,7 @@ const MainBanner = () => {
             nisi ut aliquip ex ea commodo consequat.
           </SubHeading>
         </TextArea>
-        <ShopNowBtn to="/products">SHOP NOW</ShopNowBtn>
+        <ShopNowBtn to="/products/fitness">SHOP NOW</ShopNowBtn>
       </Container>
     </MainWrapper>
   );
@@ -22,11 +22,11 @@ const MainBanner = () => {
 
 const MainWrapper = styled.div`
   min-height: 100vh;
-  position: relative;
   font-family: Poppins;
   background: url("/images/trackers.png") no-repeat center center fixed;
   background-size: cover;
-  top: 0;
+  position: relative;
+  top: -85px;
   left: 0;
   display: flex;
   align-items: center;

@@ -1,26 +1,27 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { COLORS } from "../../constants";
 
-const Checkbox = ({company, handleChecked}) => {
-  const [checked, setChecked] = useState(true);
+const Checkbox = ({filter, handleChecked, name}) => {
+  const [checked, setChecked] = useState(false);
 
   const handleChange = () => {
     const displayed = !checked;
-    const _id = company._id;
+    const _id = filter._id;
     setChecked(displayed);
-    handleChecked({ _id, displayed });
+    handleChecked({ _id, displayed, name });
   }
 
   return (
     <StyledCheckBox>
       <input 
         type="checkbox" 
-        id={company._id}
-        name={company.name} 
+        id={filter._id}
+        name={filter.name} 
         checked={checked}
         onChange={handleChange}
       />
-      <label htmlFor={company._id}>{company.name}</label>
+      <label htmlFor={filter._id}>{filter.name}</label>
     </StyledCheckBox>
   )
 }
@@ -28,6 +29,16 @@ const Checkbox = ({company, handleChecked}) => {
 const StyledCheckBox = styled.div`
   display: flex;
   align-items: center;
+  
+  & input, label {
+    cursor: pointer;
+
+  }
+
+  & label:hover {
+    color: ${COLORS.secondary};
+  }
+
   & input {
     height: 18px;
     margin-right: 8px;

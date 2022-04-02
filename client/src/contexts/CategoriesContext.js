@@ -6,7 +6,50 @@ export const CategoriesContext = createContext(null);
 const initialState = {
   status: 'idle',
   hasLoaded: false,  
-  categories: [],
+  categories: [
+    {
+        "name": "fitness",
+        "companies": [],
+        "items": [],
+        "bodyLocations": []
+    },
+    {
+        "name": "medical",
+        "companies": [],
+        "items": [],
+        "bodyLocations": []
+    },
+    {
+        "name": "lifestyle",
+        "companies": [],
+        "items": [],
+        "bodyLocations": []
+    },
+    {
+        "name": "entertainment",
+        "companies": [],
+        "items": [],
+        "bodyLocations": []
+    },
+    {
+        "name": "industrial",
+        "companies": [],
+        "items": [],
+        "bodyLocations": []
+    },
+    {
+        "name": "pets and animals",
+        "companies": [],
+        "items": [],
+        "bodyLocations": []
+    },
+    {
+        "name": "gaming",
+        "companies": [],
+        "items": [],
+        "bodyLocations": []
+      }
+  ],
   message: null,
   type: "initial",
 };
@@ -66,7 +109,7 @@ export const CategoriesProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    console.log(localStorage);
+    // console.log(localStorage);
     if(localStorage?.length > 0) {
       dispatch({
         hasLoaded: true,
@@ -85,12 +128,16 @@ export const CategoriesProvider = ({ children }) => {
   };
 
   const receivedCategoriesFromServer = (data) => {
-    console.log(data);
     const tmp = data.categories.map(category => ({
       name: category.toLowerCase(),
       companies: [],
-      items: []
+      items: [],
+      bodyLocations: []
     }));
+    console.log('#########################');
+    console.log('initialState');
+    console.log('#########################');    
+    console.log(tmp);
     setLocalStorage(tmp);
     data.categories = tmp;
     dispatch({
