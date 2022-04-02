@@ -121,15 +121,16 @@ export const CategoriesProvider = ({ children }) => {
   };
 
   const receivedCategoriesFromServer = (data) => {
-    console.log('#########################');
-    console.log('initialState');
-    console.log('#########################');    
-    console.log(data);
     const tmp = data.categories.map(category => ({
       name: category.toLowerCase(),
       companies: [],
-      items: []
+      items: [],
+      bodyLocations: []
     }));
+    console.log('#########################');
+    console.log('initialState');
+    console.log('#########################');    
+    console.log(tmp);
     setLocalStorage(tmp);
     data.categories = tmp;
     dispatch({
@@ -147,7 +148,7 @@ export const CategoriesProvider = ({ children }) => {
 
   const updateCategories = (data) => {
     setLocalStorage(data.categories);
-    // console.log(data);
+    console.log(data);
     dispatch({
       ...data,
       type: "categories-updated",
