@@ -11,6 +11,12 @@ const WishListBar = () => {
     actions: { openWishListBar, closeWishListBar },
   } = useContext(WishListContext);
 
+  const {
+    state: {
+      user: { wishList },
+    },
+  } = useContext(UserContext);
+
   return (
     isWishListBarOpen && (
       <WishListBarContainer>
