@@ -31,7 +31,6 @@ const Products = () => {
     },
   } = useContext(CategoriesContext);
 
-  const [allProducts, setAllProducts] = useState([]);
   const [products, setProducts] = useState([]);
   const [companiesIds, setCompaniesIds] = useState([]);
   const [companies, setCompanies] = useState([]);
@@ -47,11 +46,9 @@ const Products = () => {
     console.log(thisCategory);
     if (thisCategory) {
       setCompanies(thisCategory.companies);
-      setAllProducts(thisCategory.items);
       setProducts(thisCategory.items);
     } else {
       setCompanies([]);
-      setAllProducts([]);
       setProducts([]);
     }
 
@@ -61,20 +58,15 @@ const Products = () => {
       })
       .then((response) => {
         if (!unmounted) {
-          // console.log(response);
-          // setCompaniesIds(response.data.map((item) => item._id));
           setCompanies(response.data);
-          // console.log(categories);
           const copy = categories;
           copy.find((el) => el.name === category).companies = response.data;
           const filteredItems = items.filter(
             (item) => item.category.toLowerCase() === category
           );
           copy.find((el) => el.name === category).items = filteredItems;
-          setAllProducts(filteredItems);
           setProducts(filteredItems);
           updateCategories({ categories: copy });
-          // console.log(copy);
         }
       })
       .catch((err) => console.log(err));
@@ -82,7 +74,6 @@ const Products = () => {
     return () => {
       unmounted = true;
     };
-
     // eslint-disable-next-line
   }, [category]);
 
@@ -90,25 +81,18 @@ const Products = () => {
     return <Loading size="32" />;
   }
 
-  // console.log(category);
-
   const handleChecked = (company) => {
-    // console.log(company);
     let copy = companiesIds;
-    // console.log(company.displayed);
     if (company.displayed) {
       copy.push(company._id);
       setCompaniesIds(copy);
-      // console.log(copy);
     } else {
       const position = copy.findIndex((id) => id === company._id);
-      // console.log(position);
       copy.splice(position, 1);
       setCompaniesIds(copy);
-      // console.log(copy);
     }
-    // console.log(copy.length);
     let productsToDisplay = [];
+    const allProducts = categories.find((el) => el.name === category).items;
     if (companiesIds.length === 0) {
       productsToDisplay = allProducts;
     }
@@ -122,7 +106,6 @@ const Products = () => {
         );
       });
     }
-    // console.log(productsToDisplay);
     setProducts(productsToDisplay.sort((a, b) => a._id - b._id));
   };
 
