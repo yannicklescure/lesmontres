@@ -43,9 +43,9 @@ const Products = () => {
     setForceUpdate(forceUpdate + 1);
     loadingCategories();
 
-    console.log(localStorage);
+    // console.log(localStorage);
     const thisCategory = localStorage.find((el) => el.name === category);
-    console.log(thisCategory);
+    // console.log(thisCategory);
     if (thisCategory) {
       setCompanies(thisCategory.companies);
       setProducts(thisCategory.items);
