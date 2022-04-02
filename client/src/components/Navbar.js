@@ -14,12 +14,9 @@ import { useContext, useEffect } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { WishListContext } from "../contexts/WishListContext";
 import SearchBar from "./SearchBar";
-
-
-
-
 import { ItemsContext } from "../contexts/ItemsContext";
 import { CategoriesContext } from "../contexts/CategoriesContext";
+import WishListBar from "./WishListBar";
 
 const Navbar = () => {
   const history = useHistory();
@@ -39,27 +36,22 @@ const Navbar = () => {
   } = useContext(WishListContext);
 
   const {
-    state: {
-      items,
-    }
+    state: { items },
   } = useContext(ItemsContext);
 
   const {
     localStorage,
-    actions: {
-      loadingCategories,
-      receivedCategoriesFromServer,
-    }
-  } = useContext(CategoriesContext);  
+    actions: { loadingCategories, receivedCategoriesFromServer },
+  } = useContext(CategoriesContext);
 
   useEffect(() => {
-    if(localStorage?.length === 0) {
+    if (localStorage?.length === 0) {
       let tmp = [];
       loadingCategories();
       items.forEach((item) => {
         if (!tmp.includes(item.category)) tmp.push(item.category);
       });
-      receivedCategoriesFromServer({categories: tmp});
+      receivedCategoriesFromServer({ categories: tmp });
       // console.log(tmp);
     }
     // eslint-disable-next-line
@@ -134,10 +126,10 @@ const MainWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
 
-
-
-  background-color: ${({ishomepage}) => ishomepage === 'true' ? 'transparent' : COLORS.black};
-  color: ${({ishomepage}) => ishomepage === 'true' ? COLORS.dark : COLORS.light};
+  background-color: ${({ ishomepage }) =>
+    ishomepage === "true" ? "transparent" : COLORS.black};
+  color: ${({ ishomepage }) =>
+    ishomepage === "true" ? COLORS.dark : COLORS.light};
 
   height: 85px;
   border-bottom: 0.5px solid ${COLORS.grey};
@@ -166,28 +158,29 @@ const BrandLink = styled(NavLink)`
   text-decoration: none;
   letter-spacing: 1px;
 
-  color: ${({ishomepage}) => ishomepage === 'true' ? COLORS.dark : COLORS.light};
+  color: ${({ ishomepage }) =>
+    ishomepage === "true" ? COLORS.dark : COLORS.light};
   transition: all 400ms ease;
 
   &:hover {
-    color: ${({ishomepage}) => ishomepage === 'true' ? COLORS.secondary : COLORS.grey};
-    cursor: pointer; 
-
+    color: ${({ ishomepage }) =>
+      ishomepage === "true" ? COLORS.secondary : COLORS.grey};
+    cursor: pointer;
   }
 `;
 
 const StyledIconLink = styled(NavLink)`
   text-decoration: none;
 
-
-  color: ${({ishomepage}) => ishomepage === 'true' ? COLORS.dark : COLORS.light};
+  color: ${({ ishomepage }) =>
+    ishomepage === "true" ? COLORS.dark : COLORS.light};
 
   font-size: 20px;
   transition: all 400ms ease;
 
   &:hover {
-
-    color: ${({ishomepage}) => ishomepage === 'true' ? COLORS.secondary : COLORS.grey};
+    color: ${({ ishomepage }) =>
+      ishomepage === "true" ? COLORS.secondary : COLORS.grey};
 
     cursor: pointer;
   }
