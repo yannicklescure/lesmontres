@@ -1,4 +1,4 @@
-import styled from "styled-components";
+arleimport styled from "styled-components";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { COLORS } from "../constants";
@@ -11,26 +11,24 @@ import {
 import { MdOutlineShoppingCart, MdShoppingCart } from "react-icons/md";
 
 const ProductCard = ({ product, getCompanyName }) => {
-  const [isShown, setIsShown] = useState(false);
-  const [fillHeart, setFillHeart] = useState(false);
+  // on hover, change outlined heart to filled heart
+  const [hover, setHover] = useState(false);
+
+  // TODO: onClick={addToWishlist}
 
   return (
     <ProductCardWrapper>
       <IconsWrapper>
-        <AiOutlineHeart />
-        <AiFillHeart />
-        <MdOutlineShoppingCart />
-        <MdShoppingCart />
-        <button
-          onMouseEnter={() => setIsShown(true)}
-          onMouseLeave={() => setIsShown(false)}
+        <WishlistIcons
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}
         >
-          btn
-        </button>
-        {isShown && <div>hello!</div>}
-        {/* <HeartFillIcon />
-        <CartOutlineIcon />
-        <CartFillIcon /> */}
+          {hover ? (
+            <AiFillHeart size="24" color="grey" />
+          ) : (
+            <AiOutlineHeart size="24" color="grey" />
+          )}
+        </WishlistIcons>
       </IconsWrapper>
 
       <CardNavLink to={`/product/${product._id}`}>
@@ -66,10 +64,10 @@ const ProductCardWrapper = styled.div`
 const CardNavLink = styled(NavLink)``;
 
 const IconsWrapper = styled.div``;
-// const HeartOutlineIcon = styled(AiOutlineHeart)``;
-// const HeartFillIcon = styled(AiFillHeart)``;
-// const CartOutlineIcon = styled(HiOutlineShoppingCart)``;
-// const CartFillIcon = styled(HiShoppingCart);
+
+const WishlistIcons = styled.div`
+  cursor: pointer;
+`;
 
 const ImgWrapper = styled.div`
   /* border: 1px solid ${COLORS.grey}; */
@@ -82,7 +80,6 @@ const StyledImg = styled.img`
   height: 200px;
   margin: auto;
   padding: 30px;
-  /* margin-bottom: 20px; */
 `;
 
 const Description = styled.div`
