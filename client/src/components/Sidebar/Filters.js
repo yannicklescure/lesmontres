@@ -1,29 +1,34 @@
 import { useState } from "react";
 import styled from "styled-components";
 import Checkbox from "./Checkbox";
-import { AiFillCaretRight, AiFillCaretDown } from 'react-icons/ai';
+import { AiFillCaretRight, AiFillCaretDown } from "react-icons/ai";
 import { COLORS } from "../../constants";
 
-const Filters = ({filters, handleChecked, name}) => {
-
+const Filters = ({ filters, handleChecked, name }) => {
   const [isShown, setIsShown] = useState(false);
-  
+  if (!filters) {
+    return null;
+  }
   return (
     <>
       <StyledTitleBtn onClick={() => setIsShown(!isShown)}>
         <div>{name}</div>
-        <div>{ !isShown ? <AiFillCaretRight /> : <AiFillCaretDown /> }</div>
+        <div>{!isShown ? <AiFillCaretRight /> : <AiFillCaretDown />}</div>
       </StyledTitleBtn>
       <InputBox isShown={isShown}>
-        { filters.length > 0 &&
-          filters.map(filter => (
-            <Checkbox key={filter._id} name={name} filter={filter} handleChecked={handleChecked} />
-          ))
-        }
+        {filters.length > 0 &&
+          filters.map((filter) => (
+            <Checkbox
+              key={filter._id}
+              name={name}
+              filter={filter}
+              handleChecked={handleChecked}
+            />
+          ))}
       </InputBox>
     </>
-  )
-}
+  );
+};
 
 const StyledTitleBtn = styled.button`
   font-weight: bold;
@@ -49,7 +54,7 @@ const StyledTitleBtn = styled.button`
 `;
 
 const InputBox = styled.div`
-  display: ${({isShown}) => isShown ? 'block' : 'none'};
+  display: ${({ isShown }) => (isShown ? "block" : "none")};
   transition: all 300ms ease;
 `;
 

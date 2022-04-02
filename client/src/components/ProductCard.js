@@ -15,18 +15,43 @@ const ProductCard = ({ product, getCompanyName }) => {
   const [heartHover, setHeartHover] = useState(false);
   const [cartHover, setCartHover] = useState(false);
   const [isShown, setIsShown] = useState(false);
+  const [addToCart, setAddToCart] = useState(false);
 
   // TODO:
-  // onClick={addToWishlist}
-  // onClick={addToCart}
+  // onClick={handleAddToWishlist}
+  // onClick={handleAddToCart}
+
+  const productId = product._id;
+  const handleAddToCart = () => {
+    fetch(`/api/cart`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ productId }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        // sessionStorage.setItem("currentUser", JSON.stringify(data));
+        // history.push(`/profile/${data.id}`); // redirect to currentUser's profile
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  // const handleAddToCart = () => {
+  //   console.log("hello");
+  // };
 
   return (
     <ProductCardWrapper
-      to={`/product/${product._id}`}
       onMouseEnter={() => setIsShown(true)}
       onMouseLeave={() => setIsShown(false)}
     >
       <IconsWrapper isShown={isShown}>
+        <button onClick={handleAddToCart}>add to cart</button>
         <WishlistIcons
           onMouseEnter={() => setHeartHover(true)}
           onMouseLeave={() => setHeartHover(false)}
@@ -49,11 +74,11 @@ const ProductCard = ({ product, getCompanyName }) => {
         </CartIcons>
       </IconsWrapper>
 
-      <ImgWrapper>
-        <StyledImg 
-          key={product._id} 
-          src={product.imageSrc} 
-          alt={product._id} 
+      <ImgWrapper to={`/product/${product._id}`}>
+        <StyledImg
+          key={product._id}
+          src={product.imageSrc}
+          alt={product._id}
           isShown={isShown}
         />
       </ImgWrapper>
@@ -66,9 +91,9 @@ const ProductCard = ({ product, getCompanyName }) => {
   );
 };
 
-const ProductCardWrapper = styled(NavLink)`
+const ProductCardWrapper = styled.div`
   /* box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; */
-  border: 0.5px solid #E6E6E6;
+  border: 0.5px solid #e6e6e6;
   border-radius: 5px;
   width: 275px;
   height: 350px;
@@ -102,7 +127,7 @@ const CartIcons = styled.div`
   cursor: pointer;
 `;
 
-const ImgWrapper = styled.div`
+const ImgWrapper = styled(NavLink)`
   /* border: 1px solid ${COLORS.grey}; */
 `;
 
@@ -112,7 +137,7 @@ const StyledImg = styled.img`
   margin: auto;
   padding: 30px;
   object-fit: contain;
-  transform: scale(${({isShown}) => isShown ? 1 : 0.9});
+  transform: scale(${({ isShown }) => (isShown ? 1 : 0.9)});
   transition: all 300ms ease;
 `;
 
