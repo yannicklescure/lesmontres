@@ -14,14 +14,19 @@ const ProductCard = ({ product, getCompanyName }) => {
   // on hover, change outlined heart to filled heart
   const [heartHover, setHeartHover] = useState(false);
   const [cartHover, setCartHover] = useState(false);
+  const [isShown, setIsShown] = useState(false);
 
   // TODO:
   // onClick={addToWishlist}
   // onClick={addToCart}
 
   return (
-    <ProductCardWrapper>
-      <IconsWrapper>
+    <ProductCardWrapper
+      to={`/product/${product._id}`}
+      onMouseEnter={() => setIsShown(true)}
+      onMouseLeave={() => setIsShown(false)}
+    >
+      <IconsWrapper isShown={isShown}>
         <WishlistIcons
           onMouseEnter={() => setHeartHover(true)}
           onMouseLeave={() => setHeartHover(false)}
@@ -44,26 +49,21 @@ const ProductCard = ({ product, getCompanyName }) => {
         </CartIcons>
       </IconsWrapper>
 
-      <CardNavLink to={`/product/${product._id}`}>
-        <ImgWrapper>
-          <StyledImg
-            key={product._id}
-            src={product.imageSrc}
-            alt={product._id}
-          />
-        </ImgWrapper>
-        <Description>
-          <ItemName>{product.name}</ItemName>
-          <CompanyName>{getCompanyName(product.companyId)}</CompanyName>
-          <Price>{product.price}</Price>
-        </Description>
-      </CardNavLink>
+      <ImgWrapper>
+        <StyledImg key={product._id} src={product.imageSrc} alt={product._id} />
+      </ImgWrapper>
+      <Description>
+        <ItemName>{product.name}</ItemName>
+        <CompanyName>{getCompanyName(product.companyId)}</CompanyName>
+        <Price>{product.price}</Price>
+      </Description>
     </ProductCardWrapper>
   );
 };
 
-const ProductCardWrapper = styled.div`
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+const ProductCardWrapper = styled(NavLink)`
+  /* box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; */
+  border: 1px solid ${COLORS.grey};
   width: 275px;
   height: 350px;
   display: flex;
@@ -72,21 +72,21 @@ const ProductCardWrapper = styled.div`
   text-align: center;
   gap: 20px;
   text-decoration: none;
-  border-radius: 20px;
-`;
-
-const CardNavLink = styled(NavLink)`
-  /* border: 2px solid green; */
-  text-decoration: none;
+  position: relative;
+  /* border-radius: 20px; */
 `;
 
 const IconsWrapper = styled.div`
   /* border: 1px solid red; */
-  margin-left: 195px;
-  display: flex;
+  /* margin-left: 195px; */
+  display: ${({ isShown }) => (isShown ? "flex" : "none")};
+  justify-content: center;
+  align-items: center;
   gap: 8px;
   width: fit-content;
-  padding: 15px 20px 0 0;
+  position: absolute;
+  top: 12px;
+  right: 12px;
 `;
 
 const WishlistIcons = styled.div`
