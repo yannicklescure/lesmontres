@@ -6,7 +6,43 @@ export const CategoriesContext = createContext(null);
 const initialState = {
   status: 'idle',
   hasLoaded: false,  
-  categories: [],
+  categories: [
+    {
+        "name": "fitness",
+        "companies": [],
+        "items": []
+    },
+    {
+        "name": "medical",
+        "companies": [],
+        "items": []
+    },
+    {
+        "name": "lifestyle",
+        "companies": [],
+        "items": []
+    },
+    {
+        "name": "entertainment",
+        "companies": [],
+        "items": []
+    },
+    {
+        "name": "industrial",
+        "companies": [],
+        "items": []
+    },
+    {
+        "name": "pets and animals",
+        "companies": [],
+        "items": []
+    },
+    {
+        "name": "gaming",
+        "companies": [],
+        "items": []
+    }
+  ],
   message: null,
   type: "initial",
 };
@@ -85,6 +121,9 @@ export const CategoriesProvider = ({ children }) => {
   };
 
   const receivedCategoriesFromServer = (data) => {
+    console.log('#########################');
+    console.log('initialState');
+    console.log('#########################');    
     console.log(data);
     const tmp = data.categories.map(category => ({
       name: category.toLowerCase(),
