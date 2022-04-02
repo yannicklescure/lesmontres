@@ -52,7 +52,7 @@ const getCompanies = async (req, res) => {
       ? res.status(200).json({ status: 200, data, message: "success" })
       : res.status(409).json({ status: 409, message: "ERROR" });
   } catch (err) {
-    console.log("Error Getting Companies", err);
+    console.log("Error getting companies list", err);
     res.status(500).json({ status: 500, message: err });
   } finally {
     client.close();
@@ -115,7 +115,7 @@ const getItems = async (req, res) => {
       ? res.status(200).json({ status: 200, data, message: "success" })
       : res.status(409).json({ status: 409, message: "ERROR" });
   } catch (err) {
-    console.log("Error Getting Items", err);
+    console.log("Error getting items list", err);
     res.status(500).json({ status: 500, message: err });
   } finally {
     client.close();
@@ -132,7 +132,7 @@ const getUsers = async (req, res) => {
       ? res.status(200).json({ status: 200, data: result, message: "success" })
       : res.status(409).json({ status: 409, message: "ERROR" });
   } catch (err) {
-    console.log("Error Getting Companies", err);
+    console.log("Error getting list of users", err);
     res.status(500).json({ status: 500, message: err });
   } finally {
     client.close();
@@ -183,7 +183,7 @@ const logInUser = async (req, res) => {
           .status(400)
           .json({ status: 400, message: "Passwords don't match" });
     } else
-      return res.status(400).json({ status: 400, message: "E-mail Not Found" });
+      return res.status(400).json({ status: 400, message: "E-mail not found" });
   } catch (err) {
     console.log(err);
   } finally {
@@ -261,7 +261,7 @@ const updateCart = async (req, res) => {
       const result = await db.collection("users").updateOne(
         { email },
         {
-          $set: {
+          $push: {
             cartArray,
           },
         }
@@ -270,12 +270,12 @@ const updateCart = async (req, res) => {
       console.log(result);
       return res.status(200).json({
         status: 200,
-        message: `${cartArray} was added to the cart`,
+        message: `Item was added to the cart`,
       });
     } else {
       return res.status(400).json({
         status: 400,
-        message: `Not able to add Cart #: ${cartArray} to the cart, user not found`,
+        message: `Not able to add Cart to database, user not found`,
       });
     }
   } catch (err) {
@@ -303,12 +303,12 @@ const updatePurchaseHistory = async (req, res) => {
       );
       return res.status(200).json({
         status: 200,
-        message: ` was added to the History of purchases`,
+        message: ` Cart has been added to the history of purchases`,
       });
     } else {
       return res.status(400).json({
         status: 400,
-        message: `Not able to add Purchase to the cart, user not found`,
+        message: `Not able to add iterm to the cart, user not found`,
       });
     }
   } catch (err) {

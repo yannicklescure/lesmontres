@@ -10,17 +10,25 @@ import ProductCard from "../components/ProductCard";
 
 const Products = () => {
   const params = useParams();
-  console.log(params);
+  // console.log(params);
   const category = params?.category !== undefined ? params.category : "fitness";
 
   const {
-    state: { items },
+    state: {
+      hasLoaded, 
+      items,
+    },
   } = useContext(ItemsContext);
 
   const {
     localStorage,
-    state: { hasLoaded, categories },
-    actions: { updateCategories, loadingCategories },
+    state: { 
+      categories 
+    },
+    actions: { 
+      updateCategories, 
+      loadingCategories,
+    },
   } = useContext(CategoriesContext);
 
   const [allProducts, setAllProducts] = useState([]);
@@ -32,13 +40,11 @@ const Products = () => {
   useEffect(() => {
     let unmounted = false;
     setForceUpdate(forceUpdate + 1);
-    // console.log(category);
-    // console.log(localStorage);
     loadingCategories();
-    // console.log('hasLoaded ' + hasLoaded);
 
+    // console.log(localStorage);
     const thisCategory = localStorage.find((el) => el.name === category);
-    // console.log(thisCategory);
+    console.log(thisCategory);
     if (thisCategory) {
       setCompanies(thisCategory.companies);
       setAllProducts(thisCategory.items);
@@ -56,10 +62,10 @@ const Products = () => {
       .then((response) => {
         if (!unmounted) {
           // console.log(response);
-          setCompaniesIds(response.data.map((item) => item._id));
+          // setCompaniesIds(response.data.map((item) => item._id));
           setCompanies(response.data);
+          // console.log(categories);
           const copy = categories;
-          // console.log(copy);
           copy.find((el) => el.name === category).companies = response.data;
           const filteredItems = items.filter(
             (item) => item.category.toLowerCase() === category
@@ -84,7 +90,7 @@ const Products = () => {
     return <Loading size="32" />;
   }
 
-  console.log(category);
+  // console.log(category);
 
   const handleChecked = (company) => {
     // console.log(company);
@@ -102,16 +108,21 @@ const Products = () => {
       // console.log(copy);
     }
     // console.log(copy.length);
-    const productsToDisplay = [];
-    copy.forEach((id) => {
-      const filteredProducts = allProducts.filter(
-        (product) => product.companyId === id
-      );
-      filteredProducts.forEach((filteredProduct) =>
-        productsToDisplay.push(filteredProduct)
-      );
-    });
-    console.log(productsToDisplay);
+    let productsToDisplay = [];
+    if (companiesIds.length === 0) {
+      productsToDisplay = allProducts;
+    }
+    else {
+      copy.forEach((id) => {
+        const filteredProducts = allProducts.filter(
+          (product) => product.companyId === id
+        );
+        filteredProducts.forEach((filteredProduct) =>
+          productsToDisplay.push(filteredProduct)
+        );
+      });
+    }
+    // console.log(productsToDisplay);
     setProducts(productsToDisplay.sort((a, b) => a._id - b._id));
   };
 
@@ -126,7 +137,11 @@ const Products = () => {
       <Sidebar companies={companies} handleChecked={handleChecked} />
       <ProductsSection forceUpdate={forceUpdate}>
         {products.map((product) => (
-          <ProductCard product={product} getCompanyName={getCompanyName} />
+          <ProductCard
+            product={product} 
+            getCompanyName={getCompanyName} 
+            key={product._id}
+          />
         ))}
       </ProductsSection>
     </PageWrapper>

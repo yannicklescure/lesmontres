@@ -4,11 +4,11 @@ import CompaniesBanner from "../components/CompaniesBanner";
 
 const Homepage = () => {
   return (
-    <div>
+    <>
       <MainBanner />
       <PopularItemsBanner />
       <CompaniesBanner />
-    </div>
+    </>
   );
 };
 
