@@ -35,21 +35,25 @@ const Products = () => {
   const [companiesIds, setCompaniesIds] = useState([]);
   const [companies, setCompanies] = useState([]);
   const [forceUpdate, setForceUpdate] = useState(0);
+  const [bodyLocations, setBodyLocations] = useState([]);
+  const [bodyParts, setBodyParts] = useState([]);
 
   useEffect(() => {
     let unmounted = false;
     setForceUpdate(forceUpdate + 1);
     loadingCategories();
 
-    // console.log(localStorage);
+    console.log(localStorage);
     const thisCategory = localStorage.find((el) => el.name === category);
     console.log(thisCategory);
     if (thisCategory) {
       setCompanies(thisCategory.companies);
       setProducts(thisCategory.items);
+      setBodyLocations(thisCategory.bodyLocations);
     } else {
       setCompanies([]);
       setProducts([]);
+      setBodyLocations([]);
     }
 
     fetch(`/api/companies?category=${category}`)
@@ -66,6 +70,16 @@ const Products = () => {
           );
           copy.find((el) => el.name === category).items = filteredItems;
           setProducts(filteredItems);
+          const theBodyLocations = [];
+          filteredItems.forEach(item => {
+            if (theBodyLocations.findIndex(el => el.name === item.body_location) === -1) theBodyLocations.push({
+              _id: item.body_location,
+              name: item.body_location,
+            });
+          });
+          copy.find((el) => el.name === category).bodyLocations = theBodyLocations;
+          // console.log(bodyLocations);
+          setBodyLocations(theBodyLocations);
           updateCategories({ categories: copy });
         }
       })
@@ -81,31 +95,51 @@ const Products = () => {
     return <Loading size="32" />;
   }
 
-  const handleChecked = (company) => {
-    let copy = companiesIds;
-    if (company.displayed) {
-      copy.push(company._id);
-      setCompaniesIds(copy);
-    } else {
-      const position = copy.findIndex((id) => id === company._id);
-      copy.splice(position, 1);
-      setCompaniesIds(copy);
-    }
+  const handleChecked = (data) => {
+    console.log(data.name);
     let productsToDisplay = [];
     const allProducts = categories.find((el) => el.name === category).items;
-    if (companiesIds.length === 0) {
-      productsToDisplay = allProducts;
+
+    // This function add/remove the elements ids to display
+    const getArray = (data, arr, callback) => {
+      if (data.displayed) {
+        arr.push(data._id);
+        callback(arr);
+      } else {
+        const position = arr.findIndex((id) => id === data._id);
+        arr.splice(position, 1);
+        callback(arr);
+      }
+      return arr;
     }
-    else {
-      copy.forEach((id) => {
-        const filteredProducts = allProducts.filter(
-          (product) => product.companyId === id
-        );
-        filteredProducts.forEach((filteredProduct) =>
-          productsToDisplay.push(filteredProduct)
-        );
-      });
+
+    // This function set the elements to display
+    const getProductsToDisplay = (arr, key) => {
+      if (arr.length === 0) {
+        productsToDisplay = allProducts;
+      }
+      else {
+        arr.forEach((el) => {
+          const filteredProducts = products.filter(
+            (product) => product[key] === el
+          );
+          filteredProducts.forEach((filteredProduct) =>
+            productsToDisplay.push(filteredProduct)
+          );
+        });
+      }
     }
+
+    // Here we filter based on the checkbox type
+    if (data.name === 'Companies') {
+      let copy = getArray(data, companiesIds, setCompaniesIds);
+      getProductsToDisplay(copy, 'companyId');
+    }
+    if (data.name === 'Body location') {
+      let copy = getArray(data, bodyParts, setBodyParts);
+      getProductsToDisplay(copy, 'body_location');
+    }
+    // console.log(productsToDisplay);
     setProducts(productsToDisplay.sort((a, b) => a._id - b._id));
   };
 
@@ -117,15 +151,19 @@ const Products = () => {
 
   return (
     <PageWrapper>
-      <Sidebar companies={companies} handleChecked={handleChecked} />
+      <Sidebar bodyLocations={bodyLocations} companies={companies} handleChecked={handleChecked} />
       <ProductsSection forceUpdate={forceUpdate}>
-        {products.map((product) => (
-          <ProductCard
-            product={product} 
-            getCompanyName={getCompanyName} 
-            key={product._id}
-          />
-        ))}
+        {
+          products.length > 0
+          ? products.map((product) => (
+              <ProductCard
+                product={product} 
+                getCompanyName={getCompanyName} 
+                key={product._id}
+              />
+            ))
+          : <>No result found.</>
+        }
       </ProductsSection>
     </PageWrapper>
   );
