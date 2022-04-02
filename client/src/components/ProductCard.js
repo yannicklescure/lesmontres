@@ -1,4 +1,4 @@
-arleimport styled from "styled-components";
+import styled from "styled-components";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { COLORS } from "../constants";
@@ -12,23 +12,36 @@ import { MdOutlineShoppingCart, MdShoppingCart } from "react-icons/md";
 
 const ProductCard = ({ product, getCompanyName }) => {
   // on hover, change outlined heart to filled heart
-  const [hover, setHover] = useState(false);
+  const [heartHover, setHeartHover] = useState(false);
+  const [cartHover, setCartHover] = useState(false);
 
-  // TODO: onClick={addToWishlist}
+  // TODO:
+  // onClick={addToWishlist}
+  // onClick={addToCart}
 
   return (
     <ProductCardWrapper>
       <IconsWrapper>
         <WishlistIcons
-          onMouseEnter={() => setHover(true)}
-          onMouseLeave={() => setHover(false)}
+          onMouseEnter={() => setHeartHover(true)}
+          onMouseLeave={() => setHeartHover(false)}
         >
-          {hover ? (
-            <AiFillHeart size="24" color="grey" />
+          {heartHover ? (
+            <AiFillHeart size="22" color="grey" />
           ) : (
-            <AiOutlineHeart size="24" color="grey" />
+            <AiOutlineHeart size="22" color="grey" />
           )}
         </WishlistIcons>
+        <CartIcons
+          onMouseEnter={() => setCartHover(true)}
+          onMouseLeave={() => setCartHover(false)}
+        >
+          {cartHover ? (
+            <MdShoppingCart size="22" color="grey" />
+          ) : (
+            <MdOutlineShoppingCart size="22" color="grey" />
+          )}
+        </CartIcons>
       </IconsWrapper>
 
       <CardNavLink to={`/product/${product._id}`}>
@@ -50,7 +63,7 @@ const ProductCard = ({ product, getCompanyName }) => {
 };
 
 const ProductCardWrapper = styled.div`
-  border: 1px solid ${COLORS.grey};
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   width: 275px;
   height: 350px;
   display: flex;
@@ -59,13 +72,27 @@ const ProductCardWrapper = styled.div`
   text-align: center;
   gap: 20px;
   text-decoration: none;
+  border-radius: 20px;
 `;
 
-const CardNavLink = styled(NavLink)``;
+const CardNavLink = styled(NavLink)`
+  /* border: 2px solid green; */
+  text-decoration: none;
+`;
 
-const IconsWrapper = styled.div``;
+const IconsWrapper = styled.div`
+  /* border: 1px solid red; */
+  margin-left: 195px;
+  display: flex;
+  gap: 8px;
+  width: fit-content;
+  padding: 15px 20px 0 0;
+`;
 
 const WishlistIcons = styled.div`
+  cursor: pointer;
+`;
+const CartIcons = styled.div`
   cursor: pointer;
 `;
 
@@ -74,8 +101,6 @@ const ImgWrapper = styled.div`
 `;
 
 const StyledImg = styled.img`
-  /* object-fit: contain; */
-  /* border: 2px solid blue; */
   width: 200px;
   height: 200px;
   margin: auto;
@@ -93,6 +118,7 @@ const Description = styled.div`
 const ItemName = styled.div`
   padding: 0 15px 0 30px;
   color: ${COLORS.secondary};
+  text-decoration: none;
   /* text-transform: uppercase; */
   font-size: 14px;
   font-family: Lato, sans-serif;
@@ -105,6 +131,7 @@ const CompanyName = styled.div`
   font-size: 12px;
   font-family: Lato, sans-serif;
   text-decoration: none;
+  color: black;
 `;
 
 const Price = styled.div`
@@ -112,6 +139,8 @@ const Price = styled.div`
   font-weight: bold;
   font-size: 18px;
   text-decoration: none;
+  color: black;
+  padding-bottom: 15px;
 `;
 
 export default ProductCard;
