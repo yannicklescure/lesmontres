@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { COLORS } from "../constants";
 import {
@@ -9,6 +9,7 @@ import {
   AiFillShopping,
 } from "react-icons/ai";
 import { MdOutlineShoppingCart, MdShoppingCart } from "react-icons/md";
+import { UserContext } from "../contexts/UserContext";
 
 const ProductCard = ({ product, getCompanyName }) => {
   // on hover, change outlined heart to filled heart
@@ -16,7 +17,11 @@ const ProductCard = ({ product, getCompanyName }) => {
   const [cartHover, setCartHover] = useState(false);
   const [isShown, setIsShown] = useState(false);
   const [addToCart, setAddToCart] = useState(false);
-
+  const { state } = useContext(UserContext);
+  console.log(state);
+  if (!state) {
+    return null;
+  }
   // TODO:
   // onClick={handleAddToWishlist}
   // onClick={handleAddToCart}
@@ -26,18 +31,22 @@ const ProductCard = ({ product, getCompanyName }) => {
     fetch(`/api/cart`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ productId }),
+      body: JSON.stringify({
+        cartArray: { _id: productId, qty: 1 },
+        email: state.user.email,
+      }),
     })
       .then((res) => {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
+        console.log("data", data);
+        console.log({ _id: productId });
         // sessionStorage.setItem("currentUser", JSON.stringify(data));
         // history.push(`/profile/${data.id}`); // redirect to currentUser's profile
       })
       .catch((error) => {
-        console.log(error);
+        console.log("error", error);
       });
   };
 
@@ -51,7 +60,6 @@ const ProductCard = ({ product, getCompanyName }) => {
       onMouseLeave={() => setIsShown(false)}
     >
       <IconsWrapper isShown={isShown}>
-        <button onClick={handleAddToCart}>add to cart</button>
         <WishlistIcons
           onMouseEnter={() => setHeartHover(true)}
           onMouseLeave={() => setHeartHover(false)}
@@ -67,7 +75,7 @@ const ProductCard = ({ product, getCompanyName }) => {
           onMouseLeave={() => setCartHover(false)}
         >
           {cartHover ? (
-            <MdShoppingCart size="22" color="grey" />
+            <MdShoppingCart onClick={handleAddToCart} size="22" color="grey" />
           ) : (
             <MdOutlineShoppingCart size="22" color="grey" />
           )}

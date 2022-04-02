@@ -4,15 +4,15 @@ import { AiOutlineArrowUp, AiOutlineArrowDown } from "react-icons/ai";
 export default function CartWrapper({ i }) {
   const [item, setItem] = useState("");
   const [quantity, setQuantity] = useState(i.qty);
-  console.log(quantity);
   useEffect(() => {
     fetch(`/api/items/${i._id}`)
       .then((res) => res.json())
       .then((data) => setItem(data));
   }, []);
-  if (!item) {
+  if (!item || !quantity) {
     return null;
   }
+  console.log(item);
   const ItemTotal =
     parseFloat(quantity) * parseFloat(item.data.price.replace("$", ""));
   //   console.log();
@@ -26,7 +26,7 @@ export default function CartWrapper({ i }) {
           <h1>{item.data.name}</h1>
           <h1>Category : {item.data.category}</h1>
           <p>Body Location {item.data.body_location}</p>
-          <p>${ItemTotal}</p>
+          <p>${ItemTotal.toFixed(2)}</p>
           <QttyDiv>
             Quantity : {quantity}
             <div>
