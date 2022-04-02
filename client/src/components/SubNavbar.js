@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { COLORS } from "../constants";

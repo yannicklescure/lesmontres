@@ -10,38 +10,45 @@ const initialState = {
     {
         "name": "fitness",
         "companies": [],
-        "items": []
+        "items": [],
+        "bodyLocations": []
     },
     {
         "name": "medical",
         "companies": [],
-        "items": []
+        "items": [],
+        "bodyLocations": []
     },
     {
         "name": "lifestyle",
         "companies": [],
-        "items": []
+        "items": [],
+        "bodyLocations": []
     },
     {
         "name": "entertainment",
         "companies": [],
-        "items": []
+        "items": [],
+        "bodyLocations": []
     },
     {
         "name": "industrial",
         "companies": [],
-        "items": []
+        "items": [],
+        "bodyLocations": []
     },
     {
         "name": "pets and animals",
         "companies": [],
-        "items": []
+        "items": [],
+        "bodyLocations": []
     },
     {
         "name": "gaming",
         "companies": [],
-        "items": []
-    }
+        "items": [],
+        "bodyLocations": []
+      }
   ],
   message: null,
   type: "initial",

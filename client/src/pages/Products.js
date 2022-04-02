@@ -45,7 +45,7 @@ const Products = () => {
 
     console.log(localStorage);
     const thisCategory = localStorage.find((el) => el.name === category);
-    console.log(thisCategory);
+    // console.log(thisCategory);
     if (thisCategory) {
       setCompanies(thisCategory.companies);
       setProducts(thisCategory.items);
