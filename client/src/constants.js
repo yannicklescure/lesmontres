@@ -14,7 +14,13 @@ export const COLORS = {
   grey: "#cccccc",
   orange: "#f79d00",
   peachy: "#E9D8D3",
-  turq: "#52BC65",
+
+  // LesMontres Palette:
+  oxfordBlue: "#011936",
+  blackCoral: "#465362",
+  mediumAquamarine: "#63CFAF",
+  linen: "#FFEDDF",
+  yellowOrange: "#FEB548",
 };
 
 // For styled-components
