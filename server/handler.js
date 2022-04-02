@@ -266,7 +266,18 @@ const updateCart = async (req, res) => {
           },
         }
       );
-      console.log(cartArray);
+
+      // if (cartArray.qty === 0) {
+      //   const deleteFromCart = await db.collection("users").updateOne(
+      //     { email },
+      //     {
+      //       $pull: {
+      //         cartArray,
+      //       },
+      //     }
+      //   );
+      // }
+
       console.log(result);
       return res.status(200).json({
         status: 200,
