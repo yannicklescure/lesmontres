@@ -45,7 +45,6 @@ const ContentWrapper = styled.div`
 const CopyrightText = styled.div`
   font-family: Helvetica, sans-serif;
   font-size: 12px;
-  /* font-weight: bold; */
   letter-spacing: 1px;
 `;
 
