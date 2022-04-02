@@ -102,7 +102,7 @@ export const CategoriesProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    console.log(localStorage);
+    // console.log(localStorage);
     if(localStorage?.length > 0) {
       dispatch({
         hasLoaded: true,
@@ -147,7 +147,7 @@ export const CategoriesProvider = ({ children }) => {
 
   const updateCategories = (data) => {
     setLocalStorage(data.categories);
-    console.log(data);
+    // console.log(data);
     dispatch({
       ...data,
       type: "categories-updated",
