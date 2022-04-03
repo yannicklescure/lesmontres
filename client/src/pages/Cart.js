@@ -13,6 +13,9 @@ const Cart = () => {
     state: {
       user,
     },
+    actions: {
+      updateUser,
+    }
   } = useContext(UserContext);
 
   const [total2Pay, setTotal2Pay] = useState({
@@ -24,7 +27,11 @@ const Cart = () => {
   const [itemsTotals, setItemsTotals] = useState(0);
 
   useEffect(() => {
-    const initItemsTotals = user.cartArray.map(item => ({_id: item._id, total: item.price.replace('$', '')}));
+    const initItemsTotals = user.cartArray.map(item => ({
+      _id: item._id, 
+      total: item.price.replace('$', ''),
+      
+    }));
     getTotal2Pay(initItemsTotals);
     setItemsTotals(initItemsTotals);
   }, []);

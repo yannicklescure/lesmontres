@@ -8,6 +8,7 @@ import {
   AiFillTwitterCircle,
 } from "react-icons/ai";
 import { FiMapPin } from "react-icons/fi";
+import CopyrightBanner from "./CopyrightBanner"
 
 const Footer = () => {
   return (
@@ -67,6 +68,9 @@ const MainWrapper = styled.div`
 const AboutUs = styled.div`
   border: 1px solid ${COLORS.grey};
   width: 25vw;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
 `;
 
 const Contact = styled.div`

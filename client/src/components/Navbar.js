@@ -3,6 +3,7 @@ import {
   AiOutlineClockCircle,
   AiOutlineUser,
   AiOutlineShoppingCart,
+  AiOutlineHeart,
 } from "react-icons/ai";
 import { MdOutlineShoppingCart, MdShoppingCart } from "react-icons/md";
 import { COLORS } from "../constants";
@@ -10,9 +11,12 @@ import SubNavbar from "./SubNavbar";
 import { NavLink, useHistory, useLocation } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../contexts/UserContext";
+import { WishListContext } from "../contexts/WishListContext";
 import SearchBar from "./SearchBar";
 import { ItemsContext } from "../contexts/ItemsContext";
 import { CategoriesContext } from "../contexts/CategoriesContext";
+import WishListBar from "./WishListBar";
+
 const Navbar = () => {
   const history = useHistory();
   const location = useLocation();
@@ -26,6 +30,10 @@ const Navbar = () => {
     state: { user },
     actions: { logoutUser },
   } = useContext(UserContext);
+  const {
+    state: { isWishListBarOpen },
+    actions: { openWishListBar, closeWishListBar },
+  } = useContext(WishListContext);
 
   const {
     state: { items },
@@ -84,6 +92,17 @@ const Navbar = () => {
                     <Logout onClick={handleLogout}>LOG OUT</Logout>
                   </StyledIconSubMenu>
                 </StyledIconMenu>
+                <AiOutlineHeart
+                  size="25"
+                  onClick={() => {
+                    if (isWishListBarOpen) {
+                      closeWishListBar();
+                    } else {
+                      openWishListBar();
+                    }
+                  }}
+                />
+                <AiOutlineShoppingCart size="25" />
 
                 <StyledCartLink to="/cart" ishomepage={isHomepage.toString()}>
                   {
@@ -116,6 +135,7 @@ const MainWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   background-color: ${({ ishomepage }) =>
     ishomepage === "true" ? "transparent" : COLORS.black};
   color: ${({ ishomepage }) => ishomepage === "true" ? COLORS.dark : COLORS.light};
