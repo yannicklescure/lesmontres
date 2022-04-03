@@ -1,14 +1,20 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import CartWrapper from "../components/CartWrapper";
+import CartItem from "../components/CartItem";
 import { UserContext } from "../contexts/UserContext";
 import { AiOutlineClose } from "react-icons/ai";
+import { ItemsContext } from "../contexts/ItemsContext";
 const Cart = () => {
-  const { state } = useContext(UserContext);
-  const [discount, setDiscount] = useState(true);
-  console.log(state.user.cartArray);
+  const {
+    state: {
+      user: { cartArray },
+    },
+  } = useContext(UserContext);
 
+  const [discount, setDiscount] = useState(true);
+
+  console.log(cartArray);
   return (
     <CartDiv>
       {discount && (
@@ -21,8 +27,8 @@ const Cart = () => {
         </DiscountDiv>
       )}
       <CartTitle>Your Cart :</CartTitle>
-      {state.user.cartArray.map((i) => (
-        <CartWrapper i={i} />
+      {cartArray.map((item) => (
+        <CartItem key={item._id} qty={item.qty} id={item._id} />
       ))}
     </CartDiv>
   );

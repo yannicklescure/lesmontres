@@ -261,27 +261,16 @@ const updateCart = async (req, res) => {
       const result = await db.collection("users").updateOne(
         { email },
         {
-          $push: {
+          $set: {
             cartArray,
           },
         }
       );
 
-      // if (cartArray.qty === 0) {
-      //   const deleteFromCart = await db.collection("users").updateOne(
-      //     { email },
-      //     {
-      //       $pull: {
-      //         cartArray,
-      //       },
-      //     }
-      //   );
-      // }
-
       console.log(result);
       return res.status(200).json({
         status: 200,
-        message: `Item was added to the cart`,
+        message: `Cart updated`,
       });
     } else {
       return res.status(400).json({

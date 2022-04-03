@@ -1,31 +1,63 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { AiOutlineArrowUp, AiOutlineArrowDown } from "react-icons/ai";
-export default function CartWrapper({ i }) {
-  const [item, setItem] = useState("");
-  const [quantity, setQuantity] = useState(i.qty);
+import Loading from "./Loading";
+import { ItemsContext } from "../contexts/ItemsContext";
+
+export default function CartItem({ id, qty = 1 }) {
+  const [quantity, setQuantity] = useState(qty);
+  const [item, setItem] = useState({ _id: null });
+  const {
+    state: { items },
+  } = useContext(ItemsContext);
+  console.log(items);
+
   useEffect(() => {
-    fetch(`/api/items/${i._id}`)
-      .then((res) => res.json())
-      .then((data) => setItem(data));
-  }, []);
-  if (!item || !quantity) {
-    return null;
+    // create item
+    const initItem = items.find((el) => el._id === id);
+    // initItem.qty = 1;
+    console.log(initItem);
+    setItem(initItem);
+    // setQuantity(initItem.qty);
+  }, [id]);
+  if (!item._id) {
+    return <Loading />;
   }
-  console.log(item);
-  const ItemTotal =
-    parseFloat(quantity) * parseFloat(item.data.price.replace("$", ""));
-  //   console.log();
-  console.log(i.qty);
-  console.log();
+  console.log(item._id);
+
+  //   const handleRemove = () => {
+  //     fetch(`/api/cart`, {
+  //       method: "PATCH",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({
+  //         cartArray: { qty: setQuantity(0) },
+  //         email: state.user.email,
+  //       }),
+  //     })
+  //       .then((res) => {
+  //         return res.json();
+  //       })
+  //       .then((data) => {
+  //         console.log("data", data);
+  //         console.log(i._id);
+  //       })
+  //       .catch((error) => {
+  //         console.log("error", error);
+  //       });
+  //   };\
+  // const itemPrice = item.price.replace("$", "");
+  // const ItemTotal = parseFloat(quantity) * parseFloat(itemPrice);
+  const ItemTotal = 0;
+  // console.log(item.qty);
+  console.log("item", item);
   return (
     <CartContainer>
       <CartDiv>
-        <CartImg src={item.data.imageSrc} alt={item.data.name} />
+        <CartImg src={item.imageSrc} alt={item.name} />
         <CartInfo>
-          <h1>{item.data.name}</h1>
-          <h1>Category : {item.data.category}</h1>
-          <p>Body Location {item.data.body_location}</p>
+          <h1>{item.name}</h1>
+          <h1>Category : {item.category}</h1>
+          <p>Body Location {item.body_location}</p>
           <p>${ItemTotal.toFixed(2)}</p>
           <QttyDiv>
             Quantity : {quantity}

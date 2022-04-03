@@ -17,23 +17,41 @@ const ProductCard = ({ product, getCompanyName }) => {
   const [cartHover, setCartHover] = useState(false);
   const [isShown, setIsShown] = useState(false);
   const [addToCart, setAddToCart] = useState(false);
-  const { state } = useContext(UserContext);
-  console.log(state);
-  if (!state) {
-    return null;
-  }
+
+  const {
+    state: { user },
+    actions: { updateUser },
+  } = useContext(UserContext);
+  // console.log(state);
+  // if (!state) {
+  //   return null;
+  // }
   // TODO:
   // onClick={handleAddToWishlist}
   // onClick={handleAddToCart}
 
-  const productId = product._id;
-  const handleAddToCart = () => {
+  const handleCart = () => {
+    const productId = product._id;
+    // update the cartArray state
+
+    const findProduct = user.cartArray.findIndex(
+      (item) => item._id === productId
+    );
+    console.log(findProduct);
+    const copy = user.cartArray;
+    if (findProduct === -1) {
+      copy.push(product);
+    } else {
+      copy.splice(findProduct, 1);
+    }
+    console.log(copy);
+    updateUser({ user: { ...user, cartArray: copy } });
     fetch(`/api/cart`, {
-      method: "PATCH",
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        cartArray: { _id: productId, qty: 1 },
-        email: state.user.email,
+        cartArray: user.cartArray,
+        email: user.email,
       }),
     })
       .then((res) => {
@@ -75,7 +93,7 @@ const ProductCard = ({ product, getCompanyName }) => {
           onMouseLeave={() => setCartHover(false)}
         >
           {cartHover ? (
-            <MdShoppingCart onClick={handleAddToCart} size="22" color="grey" />
+            <MdShoppingCart onClick={handleCart} size="22" color="grey" />
           ) : (
             <MdOutlineShoppingCart size="22" color="grey" />
           )}
