@@ -97,50 +97,57 @@ const Products = () => {
 
   const handleChecked = (data) => {
     console.log(data.name);
-    let productsToDisplay = [];
     const allProducts = categories.find((el) => el.name === category).items;
 
     // This function add/remove the elements ids to display
-    const getArray = (data, arr, callback) => {
-      if (data.displayed) {
-        arr.push(data._id);
-        callback(arr);
-      } else {
-        const position = arr.findIndex((id) => id === data._id);
-        arr.splice(position, 1);
-        callback(arr);
-      }
-      return arr;
+    const toggleItem = (data, arr, callback) => {
+      data.displayed
+        ? arr.push(data._id)
+        : arr.splice(arr.findIndex((id) => id === data._id), 1);
+      callback(arr);
+      // return arr;
     }
 
     // This function set the elements to display
-    const getProductsToDisplay = (arr, key) => {
-      if (arr.length === 0) {
-        productsToDisplay = allProducts;
-      }
-      else {
+    const getProductsToDisplay = async () => {
+      const filterProducts = (arr, key) => {
+        if (arr.length === 0) return [];
+        let dataFiltered = [];
         arr.forEach((el) => {
-          const filteredProducts = products.filter(
+          dataFiltered = [...dataFiltered, ...allProducts.filter(
             (product) => product[key] === el
-          );
-          filteredProducts.forEach((filteredProduct) =>
-            productsToDisplay.push(filteredProduct)
-          );
+          )];
         });
-      }
+        console.log(dataFiltered);
+        return dataFiltered;
+      };
+      const promise1 = filterProducts(bodyParts, 'body_location');
+      const promise2 = filterProducts(companiesIds, 'companyId');
+      Promise.all([promise1, promise2]).then((values) => {
+        let dataFiltered = [];
+        if (values[0].length === 0) dataFiltered = values[1];
+        else if (values[1].length === 0) dataFiltered = values[0];
+        else {
+          values[0].forEach(value => {
+            values[1].forEach(item => {
+              if(value === item) dataFiltered.push(item);
+            });
+          });
+        }
+        // const array = [...values[0], ...values[1]];
+        // const dataFiltered = [...new Set(array)].sort((a, b) => a._id - b._id);
+        console.log(dataFiltered);
+        setProducts(dataFiltered);
+      });
     }
 
     // Here we filter based on the checkbox type
-    if (data.name === 'Companies') {
-      let copy = getArray(data, companiesIds, setCompaniesIds);
-      getProductsToDisplay(copy, 'companyId');
-    }
-    if (data.name === 'Body location') {
-      let copy = getArray(data, bodyParts, setBodyParts);
-      getProductsToDisplay(copy, 'body_location');
-    }
-    // console.log(productsToDisplay);
-    setProducts(productsToDisplay.sort((a, b) => a._id - b._id));
+    if (data.name === 'Body location') toggleItem(data, bodyParts, setBodyParts);
+    if (data.name === 'Companies') toggleItem(data, companiesIds, setCompaniesIds);
+
+    (bodyParts.length === 0 && companiesIds.length === 0)
+      ? setProducts(allProducts)
+      : getProductsToDisplay();
   };
 
   const getCompanyName = (id) => {
