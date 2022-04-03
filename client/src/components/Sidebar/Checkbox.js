@@ -2,14 +2,14 @@ import { useState } from "react";
 import styled from "styled-components";
 import { COLORS } from "../../constants";
 
-const Checkbox = ({filter, handleChecked}) => {
+const Checkbox = ({filter, handleChecked, name}) => {
   const [checked, setChecked] = useState(false);
 
   const handleChange = () => {
     const displayed = !checked;
     const _id = filter._id;
     setChecked(displayed);
-    handleChecked({ _id, displayed });
+    handleChecked({ _id, displayed, name });
   }
 
   return (

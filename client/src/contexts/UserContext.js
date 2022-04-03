@@ -4,13 +4,13 @@ import usePersistedState from "../hooks/usePersistedState";
 export const UserContext = createContext(null);
 
 const initialState = {
-  status: 'idle',
-  hasLoaded: false,  
+  status: "idle",
+  hasLoaded: false,
   user: {
     _id: null,
-    firstName: null, 
-    lastName: null, 
-    email: null, 
+    firstName: null,
+    lastName: null,
+    email: null,
     cartArray: [],
     wishList: [],
     purchasedHistory: [],
@@ -20,7 +20,7 @@ const initialState = {
 };
 
 const reducer = (state, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case "initial": {
       return {
         ...state,
@@ -30,8 +30,8 @@ const reducer = (state, action) => {
       return {
         ...state,
         status: "loading-user",
-      }
-    } 
+      };
+    }
     case "received-user-from-server": {
       return {
         ...state,
@@ -39,35 +39,35 @@ const reducer = (state, action) => {
         loggedIn: true,
         hasLoaded: true,
         status: "user-loaded",
-      }
+      };
     }
     case "received-user-from-storage": {
       return {
         ...state,
         ...action,
         status: "user-loaded",
-      }
+      };
     }
     case "user-updated": {
       return {
         ...state,
-        ...action,
+        user: { ...action?.data },
         status: "user-updated",
-      }
+      };
     }
     case "delete-user": {
       return {
         ...state,
         ...action,
         status: "user-deleted",
-      }
+      };
     }
     case "logout-user": {
       return {
         ...state,
         ...action,
         status: "user-logged-out",
-      }
+      };
     }
     case "error-from-server": {
       return {
@@ -83,22 +83,22 @@ const reducer = (state, action) => {
 };
 
 export const UserProvider = ({ children }) => {
-  const [localStorage, setLocalStorage] = usePersistedState('user', {});
-  
+  const [localStorage, setLocalStorage] = usePersistedState("user", {});
+
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
     // console.log(localStorage);
     // console.log(localStorage?.user?._id);
-    if(localStorage?.user?._id) {
+    if (localStorage?.user?._id) {
       dispatch({
         hasLoaded: true,
         user: localStorage.user,
-        message: 'data loaded from storage',
+        message: "data loaded from storage",
         type: "received-user-from-storage",
-      })
+      });
     }
-  // eslint-disable-next-line
+    // eslint-disable-next-line
   }, []);
 
   const loadingUser = () => {
@@ -109,8 +109,9 @@ export const UserProvider = ({ children }) => {
 
   const updateUser = (data) => {
     // TO DO
+    setLocalStorage(data);
     dispatch({
-      ...data,
+      data,
       type: "user-updated",
     });
   };
@@ -146,17 +147,19 @@ export const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{
-      state,
-      actions: {
-        loadingUser,
-        receivedUserFromServer,
-        errorFromServerUser,
-        deleteUser,
-        updateUser,
-        logoutUser,
-      }
-    }}>
+    <UserContext.Provider
+      value={{
+        state,
+        actions: {
+          loadingUser,
+          receivedUserFromServer,
+          errorFromServerUser,
+          deleteUser,
+          updateUser,
+          logoutUser,
+        },
+      }}
+    >
       {children}
     </UserContext.Provider>
   );

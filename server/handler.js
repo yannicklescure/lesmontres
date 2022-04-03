@@ -261,16 +261,16 @@ const updateCart = async (req, res) => {
       const result = await db.collection("users").updateOne(
         { email },
         {
-          $push: {
+          $set: {
             cartArray,
           },
         }
       );
-      console.log(cartArray);
+
       console.log(result);
       return res.status(200).json({
         status: 200,
-        message: `Item was added to the cart`,
+        message: `Cart updated`,
       });
     } else {
       return res.status(400).json({
@@ -327,7 +327,7 @@ const addToWishlist = async (req, res) => {
     if (emailUsers) {
       await db
         .collection("users")
-        .updateOne({ email }, { $push: { wishlist: itemId } });
+        .updateOne({ email }, { $push: { wishList: itemId } });
       return res
         .status(200)
         .json({ status: 200, message: `${itemId} was added to the Wishlist` });
@@ -335,6 +335,37 @@ const addToWishlist = async (req, res) => {
       return res.status(400).json({
         status: 400,
         message: `Not able to add Item #: ${itemId} to wishlist, user not found`,
+      });
+    }
+  } catch (err) {
+    console.log(err);
+  } finally {
+    client.close();
+  }
+};
+const removeFromWishlist = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, option);
+  try {
+    await client.connect();
+    const { email, itemId } = req.body;
+    const db = client.db("LesMontres");
+    const emailUsers = await db.collection("users").findOne({ email });
+    if (emailUsers) {
+      await db
+        .collection("users")
+        .updateOne({ email }, { $pull: { wishList: { _id: itemId } } });
+
+      const newUsers = await db.collection("users").findOne({ email });
+
+      return res.status(200).json({
+        status: 200,
+        data: newUsers,
+        message: `${itemId} was removed to the Wishlist`,
+      });
+    } else {
+      return res.status(400).json({
+        status: 400,
+        message: `Not able to remove Item #: ${itemId} to wishlist, user not found`,
       });
     }
   } catch (err) {
@@ -354,4 +385,5 @@ module.exports = {
   updateCart,
   addToWishlist,
   updatePurchaseHistory,
+  removeFromWishlist,
 };

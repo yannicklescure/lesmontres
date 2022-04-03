@@ -14,6 +14,7 @@ import Login from "../pages/Login";
 import { UserContext } from "../contexts/UserContext";
 import ProductDetails from "../pages/ProductDetails";
 import Cart from "../pages/Cart";
+import WishListBar from "./WishListBar";
 
 function App() {
   const {
@@ -46,6 +47,7 @@ function App() {
       <BrowserRouter>
         <GlobalStyles />
         <Navbar />
+        <WishListBar></WishListBar>
         <Wrapper>
           <Switch>
             <Route exact path="/">

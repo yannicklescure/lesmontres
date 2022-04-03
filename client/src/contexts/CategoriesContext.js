@@ -10,38 +10,45 @@ const initialState = {
     {
         "name": "fitness",
         "companies": [],
-        "items": []
+        "items": [],
+        "bodyLocations": []
     },
     {
         "name": "medical",
         "companies": [],
-        "items": []
+        "items": [],
+        "bodyLocations": []
     },
     {
         "name": "lifestyle",
         "companies": [],
-        "items": []
+        "items": [],
+        "bodyLocations": []
     },
     {
         "name": "entertainment",
         "companies": [],
-        "items": []
+        "items": [],
+        "bodyLocations": []
     },
     {
         "name": "industrial",
         "companies": [],
-        "items": []
+        "items": [],
+        "bodyLocations": []
     },
     {
         "name": "pets and animals",
         "companies": [],
-        "items": []
+        "items": [],
+        "bodyLocations": []
     },
     {
         "name": "gaming",
         "companies": [],
-        "items": []
-    }
+        "items": [],
+        "bodyLocations": []
+      }
   ],
   message: null,
   type: "initial",
@@ -121,14 +128,11 @@ export const CategoriesProvider = ({ children }) => {
   };
 
   const receivedCategoriesFromServer = (data) => {
-    console.log('#########################');
-    console.log('initialState');
-    console.log('#########################');    
-    console.log(data);
     const tmp = data.categories.map(category => ({
       name: category.toLowerCase(),
       companies: [],
-      items: []
+      items: [],
+      bodyLocations: []
     }));
     setLocalStorage(tmp);
     data.categories = tmp;
@@ -147,7 +151,7 @@ export const CategoriesProvider = ({ children }) => {
 
   const updateCategories = (data) => {
     setLocalStorage(data.categories);
-    // console.log(data);
+    console.log(data);
     dispatch({
       ...data,
       type: "categories-updated",

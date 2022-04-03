@@ -3,15 +3,20 @@ import {
   AiOutlineClockCircle,
   AiOutlineUser,
   AiOutlineShoppingCart,
+  AiOutlineHeart,
 } from "react-icons/ai";
+import { MdOutlineShoppingCart, MdShoppingCart } from "react-icons/md";
 import { COLORS } from "../constants";
 import SubNavbar from "./SubNavbar";
 import { NavLink, useHistory, useLocation } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../contexts/UserContext";
+import { WishListContext } from "../contexts/WishListContext";
 import SearchBar from "./SearchBar";
 import { ItemsContext } from "../contexts/ItemsContext";
 import { CategoriesContext } from "../contexts/CategoriesContext";
+import WishListBar from "./WishListBar";
+
 const Navbar = () => {
   const history = useHistory();
   const location = useLocation();
@@ -24,29 +29,28 @@ const Navbar = () => {
     state: { user },
     actions: { logoutUser },
   } = useContext(UserContext);
+  const {
+    state: { isWishListBarOpen },
+    actions: { openWishListBar, closeWishListBar },
+  } = useContext(WishListContext);
 
   const {
-    state: {
-      items,
-    }
+    state: { items },
   } = useContext(ItemsContext);
 
   const {
     localStorage,
-    actions: {
-      loadingCategories,
-      receivedCategoriesFromServer,
-    }
-  } = useContext(CategoriesContext);  
+    actions: { loadingCategories, receivedCategoriesFromServer },
+  } = useContext(CategoriesContext);
 
   useEffect(() => {
-    if(localStorage?.length === 0) {
+    if (localStorage?.length === 0) {
       let tmp = [];
       loadingCategories();
       items.forEach((item) => {
         if (!tmp.includes(item.category)) tmp.push(item.category);
       });
-      receivedCategoriesFromServer({categories: tmp});
+      receivedCategoriesFromServer({ categories: tmp });
       // console.log(tmp);
     }
     // eslint-disable-next-line
@@ -87,7 +91,25 @@ const Navbar = () => {
                     <Logout onClick={handleLogout}>LOG OUT</Logout>
                   </StyledIconSubMenu>
                 </StyledIconMenu>
+                <AiOutlineHeart
+                  size="25"
+                  onClick={() => {
+                    if (isWishListBarOpen) {
+                      closeWishListBar();
+                    } else {
+                      openWishListBar();
+                    }
+                  }}
+                />
                 <AiOutlineShoppingCart size="25" />
+
+                <StyledIconItems to="/cart">
+                  {user.cartArray.length === 0 ? (
+                    <MdOutlineShoppingCart color="white" size="25" />
+                  ) : (
+                    <MdShoppingCart color="white" size="25" />
+                  )}
+                </StyledIconItems>
               </>
             ) : (
               <>
@@ -100,7 +122,7 @@ const Navbar = () => {
           </IconsContainer>
         </SectionRight>
       </MainWrapper>
-      {(!isHomepage && !isSignup && !isLogin) && <SubNavbar />}
+      {!isHomepage && !isSignup && !isLogin && <SubNavbar />}
     </>
   );
 };
@@ -109,8 +131,12 @@ const MainWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: ${({ishomepage}) => ishomepage === 'true' ? 'transparent' : COLORS.black};
-  color: ${({ishomepage}) => ishomepage === 'true' ? COLORS.dark : COLORS.light};
+
+  background-color: ${({ ishomepage }) =>
+    ishomepage === "true" ? "transparent" : COLORS.black};
+  color: ${({ ishomepage }) =>
+    ishomepage === "true" ? COLORS.dark : COLORS.light};
+
   height: 85px;
   /* border-bottom: 0.5px solid ${COLORS.grey}; */
   position: relative;
@@ -137,23 +163,30 @@ const BrandLink = styled(NavLink)`
   font-weight: bold;
   text-decoration: none;
   letter-spacing: 1px;
-  /* color: ${({ishomepage}) => ishomepage === 'true' ? COLORS.light : COLORS.light}; */
+  /* color: ${({ ishomepage }) =>
+    ishomepage === "true" ? COLORS.light : COLORS.light}; */
   transition: all 400ms ease;
 
   &:hover {
-    color: ${({ishomepage}) => ishomepage === 'true' ? COLORS.secondary : COLORS.grey};
-    cursor: pointer; 
+    color: ${({ ishomepage }) =>
+      ishomepage === "true" ? COLORS.secondary : COLORS.grey};
+    cursor: pointer;
   }
 `;
 
 const StyledIconLink = styled(NavLink)`
   text-decoration: none;
-  color: ${({ishomepage}) => ishomepage === 'true' ? COLORS.dark : COLORS.light};
+
+  color: ${({ ishomepage }) =>
+    ishomepage === "true" ? COLORS.dark : COLORS.light};
+
   font-size: 20px;
   transition: all 400ms ease;
 
   &:hover {
-    color: ${({ishomepage}) => ishomepage === 'true' ? COLORS.secondary : COLORS.grey};
+    color: ${({ ishomepage }) =>
+      ishomepage === "true" ? COLORS.secondary : COLORS.grey};
+
     cursor: pointer;
   }
 `;
@@ -181,7 +214,7 @@ const StyledIconSubMenu = styled.div`
 
   & ${StyledIconItems}, ${Logout} {
     color: ${COLORS.dark};
-    padding: 12px 16px; 
+    padding: 12px 16px;
     text-decoration: none;
     display: block;
   }
