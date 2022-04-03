@@ -3,53 +3,91 @@ import styled from "styled-components";
 import { AiOutlineArrowUp, AiOutlineArrowDown } from "react-icons/ai";
 import Loading from "./Loading";
 import { ItemsContext } from "../contexts/ItemsContext";
+import { UserContext } from "../contexts/UserContext";
 
-export default function CartItem({ id, qty = 1 }) {
+const CartItem = ({ id, qty = 1, handleTotal2Pay }) => {
   const [quantity, setQuantity] = useState(qty);
   const [item, setItem] = useState({ _id: null });
+  const [itemTotal, setItemTotal] = useState(0);
+
   const {
-    state: { items },
+    state: { 
+      items 
+    },
   } = useContext(ItemsContext);
-  console.log(items);
+  // console.log(items);
+
+  const {
+    state: {
+      user,
+    },
+    actions: {
+      updateUser,
+    }
+  } = useContext(UserContext);
 
   useEffect(() => {
     // create item
     const initItem = items.find((el) => el._id === id);
     // initItem.qty = 1;
-    console.log(initItem);
+    // console.log(initItem);
     setItem(initItem);
-    // setQuantity(initItem.qty);
+    setItemTotal(initItem.price.replace("$", ""));
   }, [id]);
   if (!item._id) {
     return <Loading />;
   }
-  console.log(item._id);
+  // console.log(item._id);
 
-  //   const handleRemove = () => {
-  //     fetch(`/api/cart`, {
-  //       method: "PATCH",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({
-  //         cartArray: { qty: setQuantity(0) },
-  //         email: state.user.email,
-  //       }),
-  //     })
-  //       .then((res) => {
-  //         return res.json();
-  //       })
-  //       .then((data) => {
-  //         console.log("data", data);
-  //         console.log(i._id);
-  //       })
-  //       .catch((error) => {
-  //         console.log("error", error);
-  //       });
-  //   };\
-  // const itemPrice = item.price.replace("$", "");
-  // const ItemTotal = parseFloat(quantity) * parseFloat(itemPrice);
-  const ItemTotal = 0;
-  // console.log(item.qty);
-  console.log("item", item);
+  const handleCart = () => {
+    // update the cartArray state
+
+    const findProduct = user.cartArray.findIndex(
+      (el) => el._id === item._id
+    );
+    // console.log(findProduct);
+    const copy = user.cartArray;
+    if (findProduct === -1) {
+      copy.push(item);
+    } else {
+      copy.splice(findProduct, 1);
+    }
+    console.log(copy);
+    updateUser({ user: { ...user, cartArray: copy } });
+    fetch(`/api/cart`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        cartArray: copy,
+        email: user.email,
+      }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log("data", data);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
+
+  const handleClick = (action) => {
+    const value = action === 'plus' ? quantity + 1 : quantity -1;
+    setQuantity(value);
+    const itemPrice = item.price.replace("$", "");
+    // console.log(value);
+    // console.log(itemPrice);
+    const copyItemTotal = parseFloat(value * itemPrice).toFixed(2);
+    // console.log(copyItemTotal);
+    setItemTotal(copyItemTotal);
+    handleTotal2Pay({
+      _id: item._id,
+      total: copyItemTotal,
+    });
+  }
+
   return (
     <CartContainer>
       <CartDiv>
@@ -58,47 +96,24 @@ export default function CartItem({ id, qty = 1 }) {
           <h1>{item.name}</h1>
           <h1>Category : {item.category}</h1>
           <p>Body Location {item.body_location}</p>
-          <p>${ItemTotal.toFixed(2)}</p>
+          <p>${itemTotal}</p>
           <QttyDiv>
             Quantity : {quantity}
             <div>
               <AiOutlineArrowDown
-                onClick={() => setQuantity((quantity) => --quantity)}
+                onClick={() => handleClick('minus')}
               />
               <AiOutlineArrowUp
-                onClick={() => setQuantity((quantity) => ++quantity)}
+                onClick={() => handleClick('plus')}
               />
             </div>
           </QttyDiv>
           <CartButtons>
-            <CartBtn>Move To Wishlist</CartBtn>
-            <CartBtn>Remove</CartBtn>
+            <CartBtn>Add to wish list</CartBtn>
+            <CartBtn onClick={handleCart}>Delete</CartBtn>
           </CartButtons>
         </CartInfo>
       </CartDiv>
-      <hr />
-      <CartPayment>
-        <h1>Summary</h1>
-        <h1>Do You have a Promo Code?</h1>
-        <CartTotal>
-          <p>Subtotal</p>
-          <p>${ItemTotal}</p>
-        </CartTotal>
-        <CartTotal>
-          <p>Estimated Shhipping</p>
-          <p>$8.00</p>
-        </CartTotal>
-        <CartTotal>
-          <p>Estimated Tax</p>
-          <strong>--</strong>
-        </CartTotal>
-
-        <CartFinal>
-          <p>Subtotal</p>
-          <p>${ItemTotal}</p>
-        </CartFinal>
-        <CartBuy>Buy</CartBuy>
-      </CartPayment>
     </CartContainer>
   );
 }
@@ -126,7 +141,7 @@ const CartBtn = styled.button`
   background: transparent;
   border: none;
   padding: 0 0 5px;
-  border-bottom: 1px solid lightgray;
+  /* border-bottom: 1px solid lightgray; */
   cursor: pointer;
 `;
 
@@ -140,32 +155,5 @@ const CartDiv = styled.div`
   padding: 20px 0;
   border-bottom: 1px solid lightgray;
 `;
-const CartBuy = styled.button`
-  background-color: #dc3e45;
-  color: #ffffff;
-  width: 100%;
-  /* border-radius: 100px; */
-  /* border-radius: 100px; */
-  outline: none;
-  border: none;
-  height: 40px;
-  margin: 12px auto;
-  padding: 9px;
-`;
-const CartPayment = styled.div`
-  display: flex;
-  justify-content: space-around;
-  flex-direction: column;
-`;
-const CartTotal = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-`;
-const CartFinal = styled.div`
-  display: flex;
-  justify-content: space-between;
-  border-top: 1px solid lightgray;
-  padding: 10px 0;
-  border-bottom: 1px solid lightgray;
-`;
+
+export default CartItem;

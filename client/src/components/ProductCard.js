@@ -50,7 +50,7 @@ const ProductCard = ({ product, getCompanyName }) => {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        cartArray: user.cartArray,
+        cartArray: copy,
         email: user.email,
       }),
     })

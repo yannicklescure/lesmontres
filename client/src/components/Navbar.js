@@ -3,9 +3,10 @@ import {
   AiOutlineClockCircle,
   AiOutlineUser,
   // AiOutlineShopping,
-  AiOutlineShoppingCart,
+  // AiOutlineShoppingCart,
   // AiOutlineSearch,
 } from "react-icons/ai";
+import { MdOutlineShoppingCart, MdShoppingCart } from "react-icons/md";
 import { COLORS } from "../constants";
 import SubNavbar from "./SubNavbar";
 import { NavLink, useHistory, useLocation } from "react-router-dom";
@@ -86,7 +87,11 @@ const Navbar = () => {
                 </StyledIconMenu>
 
                 <StyledIconItems to="/cart">
-                  <AiOutlineShoppingCart color="white" size="25" />
+                  {
+                    user.cartArray.length === 0
+                      ? <MdOutlineShoppingCart color="white" size="25" />
+                      : <MdShoppingCart color="white" size="25" />
+                  }
                 </StyledIconItems>
               </>
             ) : (
