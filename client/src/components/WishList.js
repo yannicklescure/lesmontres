@@ -32,7 +32,7 @@ const WishList = () => {
       .then((response) => updateUser(response.data));
   }
 
-  function addToCart(email, itemId) {
+  function addToCart(email, item) {
     fetch("/api/cart", {
       method: "PATCH",
       headers: {
@@ -40,14 +40,16 @@ const WishList = () => {
       },
       body: JSON.stringify({
         email: email,
-        cartArray: { _id: String(itemId), qty: 1 },
+        cartArray: item,
       }),
+    }).then(() => {
+      removeItemFromWishList(email, item._id);
     });
   }
 
-  const wishListObjectArray = wishList.map((wishListItemId) => {
+  const wishListObjectArray = wishList.map((wishListItem) => {
     const filteredWishListObjectArray = items.filter((item) => {
-      return item._id === Number(wishListItemId);
+      return item._id === Number(wishListItem._id);
     });
     console.log(filteredWishListObjectArray);
     if (filteredWishListObjectArray.length > 0) {
@@ -77,7 +79,7 @@ const WishList = () => {
         <button
           className=""
           onClick={() => {
-            addToCart(email, wishListItem._id);
+            addToCart(email, wishListItem);
           }}
         >
           Add To Cart

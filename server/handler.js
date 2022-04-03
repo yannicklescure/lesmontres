@@ -353,7 +353,7 @@ const removeFromWishlist = async (req, res) => {
     if (emailUsers) {
       await db
         .collection("users")
-        .updateOne({ email }, { $pull: { wishList: itemId } });
+        .updateOne({ email }, { $pull: { wishList: { _id: itemId } } });
 
       const newUsers = await db.collection("users").findOne({ email });
 
