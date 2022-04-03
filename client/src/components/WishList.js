@@ -6,58 +6,65 @@ import { WishListContext } from "../contexts/WishListContext";
 const WishList = () => {
   const {
     state: {
-      user: { wishList },
+      user: { wishList, email },
     },
+    actions: { updateUser },
   } = useContext(UserContext);
-
+  const userContextObject = useContext(UserContext);
   const {
     state: { items },
   } = useContext(ItemsContext);
 
+  function removeItemFromWishList(email, _id) {
+    fetch("/api/wishlist/remove", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        itemId: String(_id),
+      }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((response) => updateUser(response.data));
+  }
+
   const wishListObjectArray = wishList.map((wishListItemId) => {
     const filteredWishListObjectArray = items.filter((item) => {
-      return item._id == wishListItemId;
+      return item._id === Number(wishListItemId);
     });
+    console.log(filteredWishListObjectArray);
     if (filteredWishListObjectArray.length > 0) {
       return filteredWishListObjectArray[0];
     }
-    console.log(wishListObjectArray, filteredWishListObjectArray);
   });
+  console.log(wishListObjectArray);
 
-  return <h1>This is the last thing I will do</h1>;
-  //(
-  //   <div className="wish-list-main-container">
-  //     <div className="cart-item">
-  //       <div
-  //         className="item-info"
-  //         onClick={() => {removeItemFromCart(wishListObjectArray.id)}
-  //       >
-  //         <img
-  //           src="${wishListObjectArray.imageSrc}"
-  //           alt="${wishListObjectArray.name}"
-  //         />
-  //         <h4>${wishListObjectArray.name}</h4>
-  //       </div>
-  //       <div className="unit-price">
-  //         <small>$</small>${wishListObjectArray.price}
-  //       </div>
-  //       <div className="units">
-  //         <div
-  //           className="btn minus"
-  //           onClick="changeNumberOfUnits('minus', ${item.id})"
-  //         >
-  //           -
-  //         </div>
-  //         <div className="number">${wishListObjectArray.numInStock}</div>
-  //         <div
-  //           className="btn plus"
-  //           onClick="changeNumberOfUnits('plus', ${wishListObjectArray.id})"
-  //         >
-  //           +
-  //         </div>
-  //       </div>
-  //     </div>
-  //   </div>
-  // );
+  const wishListItems = wishListObjectArray.map((wishListItem) => {
+    const imgSrc = wishListItem.imageSrc;
+    const name = wishListItem.name;
+
+    return (
+      <div className="cart-item">
+        <div
+          className="item-info"
+          onClick={() => {
+            removeItemFromWishList(email, wishListItem._id);
+          }}
+        >
+          <img src={imgSrc} alt={name} />
+          <h4>{wishListItem.name}</h4>
+        </div>
+        <div className="inventory-container">
+          <div className="unit-price">{wishListItem.price}</div>
+        </div>
+      </div>
+    );
+  });
+  return <div className="wish-list-main-container">{wishListItems}</div>;
 };
+
 export default WishList;

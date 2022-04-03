@@ -21,7 +21,7 @@ const WishListBar = () => {
             closeWishListBar();
           }}
         />
-        <WishList></WishList>
+        <WishList />
       </WishListBarContainer>
     )
   );
