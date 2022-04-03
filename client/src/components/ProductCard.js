@@ -63,7 +63,6 @@ const ProductCard = ({ product, getCompanyName }) => {
 };
 
 const ProductCardWrapper = styled(NavLink)`
-  /* box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; */
   border: 0.5px solid #E6E6E6;
   border-radius: 5px;
   width: 275px;
