@@ -16,8 +16,9 @@ import { CategoriesContext } from "../contexts/CategoriesContext";
 const Navbar = () => {
   const history = useHistory();
   const location = useLocation();
-  // console.log(location);
+  console.log(location);
   const isHomepage = location.pathname === "/";
+  console.log(isHomepage);
   const isLogin = location.pathname === "/login";
   const isSignup = location.pathname === "/signup";
 
@@ -72,8 +73,8 @@ const Navbar = () => {
           <IconsContainer>
             {user._id ? (
               <>
-                <StyledIconMenu>
-                  <StyledIconBtn>
+                <StyledIconMenu ishomepage={isHomepage.toString()}>
+                  <StyledIconBtn ishomepage={isHomepage.toString()}>
                     <AiOutlineUser size="25" />
                   </StyledIconBtn>
                   <StyledIconSubMenu>
@@ -84,13 +85,16 @@ const Navbar = () => {
                   </StyledIconSubMenu>
                 </StyledIconMenu>
 
-                <StyledIconItems to="/cart">
+                <StyledCartLink to="/cart" ishomepage={isHomepage.toString()}>
                   {
                     user.cartArray.length === 0
-                      ? <MdOutlineShoppingCart color="white" size="25" />
-                      : <MdShoppingCart color="white" size="25" />
+                      ? <MdOutlineShoppingCart size="25" />
+                      : <CartDiv>
+                          <MdShoppingCart size="25" />
+                          <span>{user.cartArray.length}</span>
+                        </CartDiv>
                   }
-                </StyledIconItems>
+                </StyledCartLink>
               </>
             ) : (
               <>
@@ -114,8 +118,7 @@ const MainWrapper = styled.div`
   justify-content: space-between;
   background-color: ${({ ishomepage }) =>
     ishomepage === "true" ? "transparent" : COLORS.black};
-  color: ${({ ishomepage }) =>
-    ishomepage === "true" ? COLORS.dark : COLORS.light};
+  color: ${({ ishomepage }) => ishomepage === "true" ? COLORS.dark : COLORS.light};
   height: 85px;
   /* border-bottom: 0.5px solid ${COLORS.grey}; */
   position: relative;
@@ -142,7 +145,7 @@ const BrandLink = styled(NavLink)`
   font-weight: bold;
   text-decoration: none;
   letter-spacing: 1px;
-  /* color: ${({ishomepage}) => ishomepage === 'true' ? COLORS.light : COLORS.light}; */
+  color: ${({ishomepage}) => ishomepage === 'true' ? COLORS.dark : COLORS.light};
   transition: all 400ms ease;
 
   &:hover {
@@ -154,19 +157,32 @@ const BrandLink = styled(NavLink)`
 
 const StyledIconLink = styled(NavLink)`
   text-decoration: none;
-  color: ${({ ishomepage }) =>
-    ishomepage === "true" ? COLORS.dark : COLORS.light};
+  color: ${({ ishomepage }) => ishomepage === "true" ? COLORS.dark : COLORS.light};
   font-size: 20px;
   transition: all 400ms ease;
 
   &:hover {
-    color: ${({ ishomepage }) =>
-      ishomepage === "true" ? COLORS.secondary : COLORS.grey};
+    color: ${({ ishomepage }) => ishomepage === "true" ? COLORS.secondary : COLORS.grey};
     cursor: pointer;
   }
 `;
 
 const StyledIconItems = styled(NavLink)``;
+
+const StyledCartLink = styled(NavLink)`
+  color: ${({ ishomepage }) => ishomepage === "true" ? COLORS.dark : COLORS.light};
+  text-decoration: none;
+
+  &:hover {
+    color: ${({ ishomepage }) => ishomepage === "true" ? COLORS.secondary : COLORS.grey};
+  }
+`;
+
+const CartDiv = styled.div`
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+`;
 
 const Logout = styled.button`
   background: none;
@@ -203,7 +219,7 @@ const StyledIconBtn = styled.button`
   background: none;
   border: none;
   outline: none;
-  color: ${COLORS.dark};
+  color: ${({ ishomepage }) => ishomepage === "true" ? COLORS.dark : COLORS.light};
   font-size: 20px;
   display: flex;
   align-items: center;
@@ -219,7 +235,7 @@ const StyledIconMenu = styled.div`
   }
 
   &:hover ${StyledIconBtn} {
-    color: ${COLORS.dark};
+    color: ${({ ishomepage }) => ishomepage === "true" ? COLORS.secondary : COLORS.grey};
   }
 `;
 
@@ -229,23 +245,6 @@ const SectionRight = styled.div`
   gap: 12px;
   margin-right: 30px;
 `;
-
-// const SearchBar = styled.input`
-//   border: 1px solid white;
-//   width: 130px;
-//   height: 38px;
-//   font-size: 16px;
-//   border-radius: 50px;
-//   background-color: transparent;
-//   opacity: 0.75;
-//   color: ${({isHomepage}) => isHomepage === 'true' ? COLORS.dark : COLORS.light};
-// `;
-
-// const SearchIcon = styled(AiOutlineSearch)`
-//   font-size: 18px;
-//   position: absolute;
-//   left: 78%;
-// `;
 
 const IconsContainer = styled.div`
   display: flex;
