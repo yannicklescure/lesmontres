@@ -24,22 +24,19 @@ const Cart = () => {
   const [itemsTotals, setItemsTotals] = useState(0);
 
   useEffect(() => {
-    setItemsTotals(user.cartArray.map(item => ({_id: item._id, total: 0})));
+    const initItemsTotals = user.cartArray.map(item => ({_id: item._id, total: item.price.replace('$', '')}));
+    getTotal2Pay(initItemsTotals);
+    setItemsTotals(initItemsTotals);
   }, []);
 
-
-  const handleTotal2Pay = (item) => {
-    console.log(item);
-    let copyItemsTotals = itemsTotals;
-    // TO DO: Init cart with total on load
-    const position = copyItemsTotals.findIndex(el => el._id === item._id);
-    copyItemsTotals.splice(position,1, item);
-    setItemsTotals(copyItemsTotals);
+  const getTotal2Pay = (copyItemsTotals) => {
     console.log(copyItemsTotals);
     let sum = 0;
     copyItemsTotals.forEach(item => {
+      console.log(item.total);
       sum += parseFloat(item.total);
     });
+    console.log(sum);
     const subtotal = parseFloat(sum).toFixed(2);
     const shipping = parseFloat(8).toFixed(2);
     const taxes = parseFloat(subtotal * 0.15).toFixed(2);
@@ -50,6 +47,17 @@ const Cart = () => {
       taxes,
       total
     });
+  }
+
+  const handleTotal2Pay = (item) => {
+    console.log(item);
+    let copyItemsTotals = itemsTotals;
+    // TO DO: Init cart with total on load
+    const position = copyItemsTotals.findIndex(el => el._id === item._id);
+    copyItemsTotals.splice(position,1, item);
+    setItemsTotals(copyItemsTotals);
+    console.log(copyItemsTotals);
+    getTotal2Pay(copyItemsTotals);
   }
   
   return (
