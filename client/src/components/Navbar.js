@@ -2,9 +2,7 @@ import styled from "styled-components";
 import {
   AiOutlineClockCircle,
   AiOutlineUser,
-  // AiOutlineShopping,
   AiOutlineShoppingCart,
-  // AiOutlineSearch,
 } from "react-icons/ai";
 import { COLORS } from "../constants";
 import SubNavbar from "./SubNavbar";
@@ -114,13 +112,13 @@ const MainWrapper = styled.div`
   background-color: ${({ishomepage}) => ishomepage === 'true' ? 'transparent' : COLORS.black};
   color: ${({ishomepage}) => ishomepage === 'true' ? COLORS.dark : COLORS.light};
   height: 85px;
-  border-bottom: 0.5px solid ${COLORS.grey};
+  /* border-bottom: 0.5px solid ${COLORS.grey}; */
   position: relative;
   z-index: 1000;
 `;
 
 const BrandWrapper = styled.div`
-  margin-left: 30px;
+  margin-left: 100px;
 `;
 
 const Brand = styled.div`
@@ -139,7 +137,7 @@ const BrandLink = styled(NavLink)`
   font-weight: bold;
   text-decoration: none;
   letter-spacing: 1px;
-  color: ${({ishomepage}) => ishomepage === 'true' ? COLORS.dark : COLORS.light};
+  /* color: ${({ishomepage}) => ishomepage === 'true' ? COLORS.light : COLORS.light}; */
   transition: all 400ms ease;
 
   &:hover {
