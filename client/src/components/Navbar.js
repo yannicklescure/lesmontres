@@ -102,8 +102,6 @@ const Navbar = () => {
                     }
                   }}
                 />
-                <AiOutlineShoppingCart size="25" />
-
                 <StyledCartLink to="/cart" ishomepage={isHomepage.toString()}>
                   {
                     user.cartArray.length === 0
