@@ -39,8 +39,8 @@ const ProductDetails = () => {
           <ItemName>{product.name}</ItemName>
           <CompanyName>{getCompanyName(product.companyId)}</CompanyName>
           <Price>{product.price}</Price>
-          <Category>{product.category}</Category>
-          <BodyLocation>{product.body_location}</BodyLocation>
+          <Category>Category: {product.category}</Category>
+          <BodyLocation>Body Location: {product.body_location}</BodyLocation>
         </Description>
       </ContentWrapper>
     </Wrapper>
@@ -56,7 +56,9 @@ const ContentWrapper = styled.div`
 const ProductImg = styled.div``;
 const StyledImg = styled.img``;
 
-const Description = styled.div``;
+const Description = styled.div`
+
+`;
 
 const OutOfStock = styled.div``;
 
