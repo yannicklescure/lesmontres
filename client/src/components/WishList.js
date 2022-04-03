@@ -32,6 +32,19 @@ const WishList = () => {
       .then((response) => updateUser(response.data));
   }
 
+  function addToCart(email, itemId) {
+    fetch("/api/cart", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        cartArray: { _id: String(itemId), qty: 1 },
+      }),
+    });
+  }
+
   const wishListObjectArray = wishList.map((wishListItemId) => {
     const filteredWishListObjectArray = items.filter((item) => {
       return item._id === Number(wishListItemId);
@@ -61,6 +74,14 @@ const WishList = () => {
         <div className="inventory-container">
           <div className="unit-price">{wishListItem.price}</div>
         </div>
+        <button
+          className=""
+          onClick={() => {
+            addToCart(email, wishListItem._id);
+          }}
+        >
+          Add To Cart
+        </button>
       </div>
     );
   });
