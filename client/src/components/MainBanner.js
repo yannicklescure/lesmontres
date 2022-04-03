@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { COLORS } from "../constants";
+import bannerImg from "../assets/images/trackers.png";
 
 const MainBanner = () => {
   return (
@@ -23,7 +24,7 @@ const MainBanner = () => {
 const MainWrapper = styled.div`
   min-height: 100vh;
   font-family: Poppins;
-  background: url("/images/trackers.png") no-repeat center center fixed;
+  background: url(${bannerImg}) no-repeat center center fixed;
   background-size: cover;
   position: relative;
   top: -85px;

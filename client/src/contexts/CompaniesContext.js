@@ -1,13 +1,12 @@
 import { createContext, useEffect, useReducer } from "react";
 import usePersistedState from "../hooks/usePersistedState";
 
-export const ItemsContext = createContext(null);
+export const CompaniesContext = createContext(null);
 
 const initialState = {
   status: "idle",
   hasLoaded: false,
-  items: [],
-  searchItems: [],
+  companies: [],
   message: null,
   type: "initial",
 };
@@ -19,34 +18,34 @@ const reducer = (state, action) => {
         ...state,
       };
     }
-    case "loading-items-from-server": {
+    case "loading-companies-from-server": {
       return {
         ...state,
-        status: "loading-items-feed",
+        status: "loading-companies-feed",
       };
     }
-    case "received-items-from-server": {
+    case "received-companies-from-server": {
       return {
         ...state,
         ...action,
         hasLoaded: true,
-        status: "items-loaded",
+        status: "companies-loaded",
       };
     }
-    case "received-search-items-from-server": {
+    case "received-search-companies-from-server": {
       return {
         ...state,
         ...action,
         hasLoaded: true,
-        status: "items-loaded",
+        status: "companies-loaded",
       };
     }
-    case "received-items-from-storage": {
+    case "received-companies-from-storage": {
       return {
         ...state,
         ...action,
         hasLoaded: true,
-        status: "items-loaded",
+        status: "companies-loaded",
       };
     }
     case "error-from-server": {
@@ -61,41 +60,37 @@ const reducer = (state, action) => {
   }
 };
 
-export const ItemsProvider = ({ children }) => {
-  const [localStorage, setLocalStorage] = usePersistedState('items', []);
+export const CompaniesProvider = ({ children }) => {
+  const [localStorage, setLocalStorage] = usePersistedState('companies', {});
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    // console.log(localStorage);
-    if(localStorage?.length > 0) {
+    console.log(localStorage);
+    console.log(localStorage?.length > 0);
+    console.log(Object.keys(localStorage).length > 0);
+    if(Object.keys(localStorage).length > 0) {
       dispatch({
         hasLoaded: true,
-        items: localStorage,
+        companies: localStorage,
         message: 'data loaded from storage',
-        type: "received-items-from-storage",
+        type: "received-companies-from-storage",
       })
     }
   // eslint-disable-next-line
   }, []);
 
-  const loadingItems = () => {
+  const loadingCompanies = () => {
     dispatch({
-      type: "loading-items-from-server",
+      type: "loading-companies-from-server",
     });
   };
 
-  const receivedItemsFromServer = (data) => {
-    setLocalStorage(data.items);
+  const receivedCompaniesFromServer = (data) => {
+    console.log(data);
+    setLocalStorage({...localStorage, ...data});
     dispatch({
       ...data,
-      type: "received-items-from-server",
-    });
-  };
-
-  const receivedSearchItemsFromServer = (data) => {
-    dispatch({
-      ...data,
-      type: "received-search-items-from-server",
+      type: "received-companies-from-server",
     });
   };
 
@@ -106,18 +101,17 @@ export const ItemsProvider = ({ children }) => {
   };
 
   return (
-    <ItemsContext.Provider
+    <CompaniesContext.Provider
       value={{
         state,
         actions: {
-          loadingItems,
-          receivedItemsFromServer,
-          receivedSearchItemsFromServer,
+          loadingCompanies,
+          receivedCompaniesFromServer,
           errorFromServer,
         },
       }}
     >
       {children}
-    </ItemsContext.Provider>
+    </CompaniesContext.Provider>
   );
 };
