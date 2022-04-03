@@ -58,8 +58,8 @@ const ProductCard = ({ product, getCompanyName }) => {
         />
       </ImgWrapper>
       <Description>
-        <ItemName>{product.name}</ItemName>
         <CompanyName>{getCompanyName(product.companyId)}</CompanyName>
+        <ItemName>{product.name}</ItemName>
         <Price>{product.price}</Price>
       </Description>
     </ProductCardWrapper>
@@ -68,7 +68,8 @@ const ProductCard = ({ product, getCompanyName }) => {
 
 const ProductCardWrapper = styled(NavLink)`
   /* box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; */
-  border: 1px solid ${COLORS.grey};
+  border: 0.5px solid #E6E6E6;
+  border-radius: 5px;
   width: 275px;
   height: 350px;
   display: flex;
@@ -78,7 +79,6 @@ const ProductCardWrapper = styled(NavLink)`
   gap: 20px;
   text-decoration: none;
   position: relative;
-  /* border-radius: 20px; */
 `;
 
 const IconsWrapper = styled.div`
@@ -125,7 +125,7 @@ const Description = styled.div`
 `;
 
 const ItemName = styled.div`
-  padding: 0 15px 0 30px;
+  padding: 0 15px 12px 30px;
   color: ${COLORS.secondary};
   text-decoration: none;
   /* text-transform: uppercase; */
