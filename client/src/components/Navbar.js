@@ -5,6 +5,7 @@ import {
   AiOutlineShoppingCart,
   AiOutlineHeart,
 } from "react-icons/ai";
+import { MdOutlineShoppingCart, MdShoppingCart } from "react-icons/md";
 import { COLORS } from "../constants";
 import SubNavbar from "./SubNavbar";
 import { NavLink, useHistory, useLocation } from "react-router-dom";
@@ -101,6 +102,14 @@ const Navbar = () => {
                   }}
                 />
                 <AiOutlineShoppingCart size="25" />
+
+                <StyledIconItems to="/cart">
+                  {user.cartArray.length === 0 ? (
+                    <MdOutlineShoppingCart color="white" size="25" />
+                  ) : (
+                    <MdShoppingCart color="white" size="25" />
+                  )}
+                </StyledIconItems>
               </>
             ) : (
               <>

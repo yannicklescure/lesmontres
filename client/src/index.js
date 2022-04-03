@@ -8,15 +8,17 @@ import { WishListProvider } from "./contexts/WishListContext";
 
 ReactDOM.render(
   <React.StrictMode>
-    <UserProvider>
-      <ItemsProvider>
-        <CategoriesProvider>
-          <WishListProvider>
-            <App />
-          </WishListProvider>
-        </CategoriesProvider>
-      </ItemsProvider>
-    </UserProvider>
+    <CompaniesProvider>
+      <UserProvider>
+        <ItemsProvider>
+          <CategoriesProvider>
+            <WishListProvider>
+              <App />
+            </WishListProvider>
+          </CategoriesProvider>
+        </ItemsProvider>
+      </UserProvider>
+    </CompaniesProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

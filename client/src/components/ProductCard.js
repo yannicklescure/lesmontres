@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { COLORS } from "../constants";
 import {
@@ -9,20 +9,71 @@ import {
   AiFillShopping,
 } from "react-icons/ai";
 import { MdOutlineShoppingCart, MdShoppingCart } from "react-icons/md";
+import { UserContext } from "../contexts/UserContext";
 
 const ProductCard = ({ product, getCompanyName }) => {
   // on hover, change outlined heart to filled heart
   const [heartHover, setHeartHover] = useState(false);
   const [cartHover, setCartHover] = useState(false);
   const [isShown, setIsShown] = useState(false);
+  const [addToCart, setAddToCart] = useState(false);
 
+  const {
+    state: { user },
+    actions: { updateUser },
+  } = useContext(UserContext);
+  // console.log(state);
+  // if (!state) {
+  //   return null;
+  // }
   // TODO:
-  // onClick={addToWishlist}
-  // onClick={addToCart}
+  // onClick={handleAddToWishlist}
+  // onClick={handleAddToCart}
+
+  const handleCart = () => {
+    const productId = product._id;
+    // update the cartArray state
+
+    const findProduct = user.cartArray.findIndex(
+      (item) => item._id === productId
+    );
+    console.log(findProduct);
+    const copy = user.cartArray;
+    if (findProduct === -1) {
+      copy.push(product);
+    } else {
+      copy.splice(findProduct, 1);
+    }
+    console.log(copy);
+    updateUser({ user: { ...user, cartArray: copy } });
+    fetch(`/api/cart`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        cartArray: copy,
+        email: user.email,
+      }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log("data", data);
+        console.log({ _id: productId });
+        // sessionStorage.setItem("currentUser", JSON.stringify(data));
+        // history.push(`/profile/${data.id}`); // redirect to currentUser's profile
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
+
+  // const handleAddToCart = () => {
+  //   console.log("hello");
+  // };
 
   return (
     <ProductCardWrapper
-      to={`/product/${product._id}`}
       onMouseEnter={() => setIsShown(true)}
       onMouseLeave={() => setIsShown(false)}
     >
@@ -42,18 +93,18 @@ const ProductCard = ({ product, getCompanyName }) => {
           onMouseLeave={() => setCartHover(false)}
         >
           {cartHover ? (
-            <MdShoppingCart size="22" color="grey" />
+            <MdShoppingCart onClick={handleCart} size="22" color="grey" />
           ) : (
             <MdOutlineShoppingCart size="22" color="grey" />
           )}
         </CartIcons>
       </IconsWrapper>
 
-      <ImgWrapper>
-        <StyledImg 
-          key={product._id} 
-          src={product.imageSrc} 
-          alt={product._id} 
+      <ImgWrapper to={`/product/${product._id}`}>
+        <StyledImg
+          key={product._id}
+          src={product.imageSrc}
+          alt={product._id}
           isShown={isShown}
         />
       </ImgWrapper>
@@ -66,9 +117,9 @@ const ProductCard = ({ product, getCompanyName }) => {
   );
 };
 
-const ProductCardWrapper = styled(NavLink)`
+const ProductCardWrapper = styled.div`
   /* box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; */
-  border: 0.5px solid #E6E6E6;
+  border: 0.5px solid #e6e6e6;
   border-radius: 5px;
   width: 275px;
   height: 350px;
@@ -102,7 +153,7 @@ const CartIcons = styled.div`
   cursor: pointer;
 `;
 
-const ImgWrapper = styled.div`
+const ImgWrapper = styled(NavLink)`
   /* border: 1px solid ${COLORS.grey}; */
 `;
 
@@ -112,7 +163,7 @@ const StyledImg = styled.img`
   margin: auto;
   padding: 30px;
   object-fit: contain;
-  transform: scale(${({isShown}) => isShown ? 1 : 0.9});
+  transform: scale(${({ isShown }) => (isShown ? 1 : 0.9)});
   transition: all 300ms ease;
 `;
 

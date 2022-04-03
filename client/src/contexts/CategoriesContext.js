@@ -134,10 +134,6 @@ export const CategoriesProvider = ({ children }) => {
       items: [],
       bodyLocations: []
     }));
-    console.log('#########################');
-    console.log('initialState');
-    console.log('#########################');    
-    console.log(tmp);
     setLocalStorage(tmp);
     data.categories = tmp;
     dispatch({
