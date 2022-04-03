@@ -16,10 +16,6 @@ const ProductCard = ({ product, getCompanyName }) => {
   const [cartHover, setCartHover] = useState(false);
   const [isShown, setIsShown] = useState(false);
 
-  // TODO:
-  // onClick={addToWishlist}
-  // onClick={addToCart}
-
   return (
     <ProductCardWrapper
       to={`/product/${product._id}`}
