@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { COLORS } from "../constants";
 
 const CartPayment = ({total2Pay}) => {
   return (
@@ -21,7 +22,7 @@ const CartPayment = ({total2Pay}) => {
         <Strong>Total</Strong>
         <Strong>${total2Pay.total}</Strong>
       </Total>
-      <CartBuy>Buy</CartBuy>
+      <PurchaseBtn>Purchase now</PurchaseBtn>
     </Wrapper>
   )
 }
@@ -52,17 +53,21 @@ const Strong = styled.p`
   font-weight: bold;
 `;
 
-const CartBuy = styled.button`
-  background-color: #dc3e45;
-  color: #ffffff;
-  width: 100%;
-  /* border-radius: 100px; */
-  /* border-radius: 100px; */
+const PurchaseBtn = styled.button`
+  background-color: ${COLORS.danger};
+  color:${COLORS.light};
   outline: none;
   border: none;
-  height: 40px;
-  margin: 12px auto;
-  padding: 9px;
+  margin: 12px 0;
+  padding: 16px 16px;
+  width: 100%;
+  opacity: 0.9;
+  font-size: 16px;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+  }
 `;
 
 export default CartPayment;
