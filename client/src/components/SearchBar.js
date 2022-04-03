@@ -1,27 +1,32 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
 import { COLORS } from "../constants";
 import { ItemsContext } from "../contexts/ItemsContext";
 import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
 import Loading from "./Loading";
-export default function SearchBar() {
+
+const SearchBar = () => {
   const [addWidth, setAddWidth] = useState(false);
   const [search, setSearch] = useState("");
   const {
     state: { searchItems },
-    actions: { receivedItemsFromServer },
+    actions: { receivedSearchItemsFromServer },
   } = useContext(ItemsContext);
-
-  useEffect(() => {
-    fetch(`/api/items?search=${search}`)
-      .then((res) => res.json())
-      .then((response) =>
-        receivedItemsFromServer({ searchItems: response.data })
-      );
-  }, [search]);
 
   if (!searchItems) {
     return <Loading />;
+  }
+
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+    fetch(`/api/items?search=${search}`)
+      .then((res) => res.json())
+      .then((response) =>
+        // TO DO
+        // This items are not only for the search !!!
+        // search result should be stored in a search array in the state.
+        receivedSearchItemsFromServer({ searchItems: response.data })
+      );
   }
 
   return (
@@ -36,7 +41,7 @@ export default function SearchBar() {
           <SearchContainer>
             <SearchHeader>What are you looking for ?</SearchHeader>
             <SearchBarInput
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={handleSearch}
               placeholder="Search"
             />
             <Liner />
@@ -176,3 +181,5 @@ const SearchTitle = styled.h1`
 const SearchParam = styled.span`
   color: ${COLORS.danger};
 `;
+
+export default SearchBar;

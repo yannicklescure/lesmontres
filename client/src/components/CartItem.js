@@ -9,6 +9,7 @@ const CartItem = ({ id, qty = 1, handleTotal2Pay }) => {
   const [quantity, setQuantity] = useState(qty);
   const [item, setItem] = useState({ _id: null });
   const [itemTotal, setItemTotal] = useState(0);
+  const [qtyBtnClicked, setQtyBtnClicked] = useState(false);
 
   const {
     state: { 
@@ -74,6 +75,10 @@ const CartItem = ({ id, qty = 1, handleTotal2Pay }) => {
   };
 
   const handleClick = (action) => {
+    setQtyBtnClicked(true);
+    setTimeout(() => {
+      setQtyBtnClicked(false);
+    }, 300);
     const value = action === 'plus' ? quantity + 1 : quantity -1;
     setQuantity(value);
     const itemPrice = item.price.replace("$", "");
@@ -97,17 +102,15 @@ const CartItem = ({ id, qty = 1, handleTotal2Pay }) => {
           <h1>Category : {item.category}</h1>
           <p>Body Location {item.body_location}</p>
           <p>${itemTotal}</p>
-          <QttyDiv>
-            Quantity : {quantity}
-            <div>
-              <AiOutlineArrowDown
-                onClick={() => handleClick('minus')}
-              />
-              <AiOutlineArrowUp
-                onClick={() => handleClick('plus')}
-              />
-            </div>
-          </QttyDiv>
+          <QtyDiv>
+            <div>Quantity : {quantity}</div>
+            <QtyBtn qtyBtnClicked={qtyBtnClicked} onClick={() => handleClick('minus')}>
+              <AiOutlineArrowDown />
+            </QtyBtn>
+            <QtyBtn qtyBtnClicked={qtyBtnClicked} onClick={() => handleClick('plus')}>
+              <AiOutlineArrowUp />
+            </QtyBtn>
+          </QtyDiv>
           <CartButtons>
             <CartBtn>Add to wish list</CartBtn>
             <CartBtn onClick={handleCart}>Delete</CartBtn>
@@ -125,7 +128,9 @@ const CartContainer = styled.div`
 `;
 
 const CartImg = styled.img`
-  box-shadow: 0 5px 15px 2px rgb(0 0 0 / 3%);
+  /* box-shadow: 0 5px 15px 2px rgb(0 0 0 / 3%); */
+  width: 200px;
+  object-fit: contain;
 `;
 const CartInfo = styled.div`
   display: flex;
@@ -135,7 +140,7 @@ const CartInfo = styled.div`
 
 const CartButtons = styled.div`
   display: flex;
-  gap: 20px;
+  gap: 24px;
 `;
 const CartBtn = styled.button`
   background: transparent;
@@ -144,10 +149,20 @@ const CartBtn = styled.button`
   /* border-bottom: 1px solid lightgray; */
   cursor: pointer;
 `;
-
-const QttyDiv = styled.div`
+const QtyDiv = styled.div`
   display: flex;
-  gap: 20px;
+  align-items: center;
+`;
+const QtyBtn = styled.button`
+  display: flex;
+  align-items: center;
+  border: none;
+  background: none;
+  padding: 0;
+  margin-left: 8px;
+  cursor: pointer;
+  transition: all 300ms ease;
+  transform: scale(${({qtyBtnClicked}) => qtyBtnClicked ? 0.9 : 1});
 `;
 const CartDiv = styled.div`
   display: flex;

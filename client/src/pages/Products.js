@@ -6,6 +6,7 @@ import Sidebar from "../components/Sidebar";
 import { COLORS } from "../constants";
 import { ItemsContext } from "../contexts/ItemsContext";
 import { CategoriesContext } from "../contexts/CategoriesContext";
+import { CompaniesContext } from "../contexts/CompaniesContext";
 import ProductCard from "../components/ProductCard";
 
 const Products = () => {
@@ -21,9 +22,17 @@ const Products = () => {
   } = useContext(ItemsContext);
 
   const {
-    localStorage,
+    state: {
+      companies,
+    },
+    actions: {
+      receivedCompaniesFromServer,
+    },
+  } = useContext(CompaniesContext);
+
+  const {
     state: { 
-      categories 
+      categories,
     },
     actions: { 
       updateCategories, 
@@ -33,27 +42,37 @@ const Products = () => {
 
   const [products, setProducts] = useState([]);
   const [companiesIds, setCompaniesIds] = useState([]);
-  const [companies, setCompanies] = useState([]);
   const [forceUpdate, setForceUpdate] = useState(0);
   const [bodyLocations, setBodyLocations] = useState([]);
   const [bodyParts, setBodyParts] = useState([]);
 
   useEffect(() => {
     let unmounted = false;
-    setForceUpdate(forceUpdate + 1);
-    loadingCategories();
-
-    console.log(localStorage);
-    const thisCategory = localStorage.find((el) => el.name === category);
-    // console.log(thisCategory);
-    if (thisCategory) {
-      setCompanies(thisCategory.companies);
-      setProducts(thisCategory.items);
-      setBodyLocations(thisCategory.bodyLocations);
-    } else {
-      setCompanies([]);
-      setProducts([]);
-      setBodyLocations([]);
+    if (!unmounted) {
+      setForceUpdate(forceUpdate + 1);
+      loadingCategories();
+  
+      // console.log(companies);
+      if (companies[category] && companies[category].length > 0) {
+        const filteredItems = items.filter(
+          (item) => item.category.toLowerCase() === category
+        );
+        setProducts(filteredItems);
+        
+        const theBodyLocations = [];
+        filteredItems.forEach(item => {
+          if (theBodyLocations.findIndex(el => el.name === item.body_location) === -1) theBodyLocations.push({
+            _id: item.body_location,
+            name: item.body_location,
+          });
+        });
+        setBodyLocations(theBodyLocations);
+      }
+      else {
+        // setCompanies([]);
+        setProducts([]);
+        setBodyLocations([]);
+      }
     }
 
     fetch(`/api/companies?category=${category}`)
@@ -61,8 +80,11 @@ const Products = () => {
         if (!unmounted) return res.json();
       })
       .then((response) => {
-        if (!unmounted) {
-          setCompanies(response.data);
+        console.log(response);
+        if (!unmounted && response.status === 200) {
+          let data = companies;
+          data[category] = response.data;
+          receivedCompaniesFromServer(data);
           const copy = categories;
           copy.find((el) => el.name === category).companies = response.data;
           const filteredItems = items.filter(
@@ -150,15 +172,22 @@ const Products = () => {
       : getProductsToDisplay();
   };
 
-  const getCompanyName = (id) => {
-    return companies.find((company) => company._id === id).name;
-  };
+  
+  // console.log(companies[category]);
+  if (!companies[category]) return <Loading />;
 
-  if (companies.length === 0) return <Loading />;
+  const getCompanyName = (id) => {
+    // console.log(companies);
+    if (companies[category]) {
+      const position = companies[category].findIndex((company) => company._id === id);
+      return position !== -1 ? companies[category].find((company) => company._id === id).name : null;
+    }
+    return;
+  };
 
   return (
     <PageWrapper>
-      <Sidebar bodyLocations={bodyLocations} companies={companies} handleChecked={handleChecked} />
+      <Sidebar bodyLocations={bodyLocations} companies={companies[category]} handleChecked={handleChecked} />
       <ProductsSection forceUpdate={forceUpdate}>
         {
           products.length > 0

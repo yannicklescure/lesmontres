@@ -6,6 +6,7 @@ import { UserContext } from "../contexts/UserContext";
 // import { AiOutlineClose } from "react-icons/ai";
 // import { ItemsContext } from "../contexts/ItemsContext";
 import CartPayment from "../components/CartPayment";
+import { COLORS } from "../constants";
 
 const Cart = () => {
   const {
@@ -56,12 +57,12 @@ const Cart = () => {
       {
         user.cartArray.length > 0 
           ? <>
-            <CartDiv>
-              <CartTitle>Your Cart :</CartTitle>
+            <div>
+              <CartTitle>Shopping Cart</CartTitle>
               {user.cartArray.map((item) => (
                 <CartItem key={item._id} qty={item.qty} id={item._id} handleTotal2Pay={handleTotal2Pay} />
               ))}
-            </CartDiv>
+            </div>
             <CartPayment total2Pay={total2Pay} />
           </>
           : <div>Your cart is empty.</div>
@@ -76,25 +77,11 @@ const Wrapper = styled.div`
   margin: 16px auto;
 `;
 
-const CartDiv = styled.div`
-  /* padding: 75px 150px; */
-`;
-const DiscountWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-`;
-const DiscountDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 50%;
-  background: #f5f5f5;
-  padding: 20px;
-  margin: 0 0 20px;
-`;
 const CartTitle = styled.h1`
-  margin: 20px 0;
+  font-size: 32px;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid ${COLORS.grey};
 `;
 
 export default Cart;
