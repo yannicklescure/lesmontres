@@ -7,7 +7,7 @@ import NewsletterBanner from "./NewsletterBanner";
 const Footer = () => {
   return (
     <FooterWrapper>
-      <NewsletterBanner />
+      {/* <NewsletterBanner /> */}
       <AboutUsBanner />
       <SocialsBanner />
     </FooterWrapper>

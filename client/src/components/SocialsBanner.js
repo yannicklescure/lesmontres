@@ -12,9 +12,9 @@ const SocialsBanner = () => {
       <ContentWrapper>
         <CopyrightText>© LesMontres</CopyrightText>
         <SocialsIcons>
-          <AiFillFacebook size="20" />
-          <AiFillTwitterCircle size="20" />
-          <AiFillInstagram size="20" />
+          <AiFillFacebook size="23" />
+          <AiFillTwitterCircle size="23" />
+          <AiFillInstagram size="23" />
         </SocialsIcons>
       </ContentWrapper>
     </MainWrapper>
