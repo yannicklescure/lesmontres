@@ -4,18 +4,13 @@ import styled from "styled-components";
 import { AiOutlineClose } from "react-icons/ai";
 import { COLORS } from "../constants";
 import { WishListContext } from "../contexts/WishListContext";
+import WishList from "./WishList";
 
 const WishListBar = () => {
   const {
     state: { isWishListBarOpen },
     actions: { openWishListBar, closeWishListBar },
   } = useContext(WishListContext);
-
-  const {
-    state: {
-      user: { wishList },
-    },
-  } = useContext(UserContext);
 
   return (
     isWishListBarOpen && (
@@ -26,6 +21,7 @@ const WishListBar = () => {
             closeWishListBar();
           }}
         />
+        <WishList></WishList>
       </WishListBarContainer>
     )
   );
@@ -34,12 +30,13 @@ export default WishListBar;
 
 const WishListBarContainer = styled.div`
   position: absolute;
+  margin-top: 85px;
   top: 0;
   right: 0;
-  height: 100%;
+  height: 100vh;
   background: white;
   width: 30%;
-  z-index: 20;
+  z-index: 999;
   transition: top ease 5s;
   box-shadow: 0px 68px 207px 200px rgba(0, 0, 0, 0.65);
 `;

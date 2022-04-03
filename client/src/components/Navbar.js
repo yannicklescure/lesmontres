@@ -78,7 +78,6 @@ const Navbar = () => {
 
         <SectionRight>
           <SearchBar />
-          <WishListBar />
           <IconsContainer>
             {user._id ? (
               <>
