@@ -58,14 +58,16 @@ const SearchBar = () => {
           <SearchItems>
             {searchItems.map((product) => {
               return (
-                <>
+                <Wrapper>
                   {!product.name.includes(search) && search.length > 3 && (
-                    <ProductCard
-                      product={product}
-                      getCompanyName={getCompanyName}
-                    />
+                    <>
+                      <ProductCard
+                        product={product}
+                        getCompanyName={getCompanyName}
+                      />
+                    </>
                   )}
-                </>
+                </Wrapper>
               );
             })}
           </SearchItems>
@@ -111,6 +113,7 @@ const SearchIcon = styled(AiOutlineSearch)`
 `;
 const SearchContainer = styled.div`
   padding: 50px;
+  background: white ;
 `;
 const SearchHeader = styled.h1`
   color: ${COLORS.dark};
@@ -131,45 +134,14 @@ const Liner = styled.hr`
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 `;
 const SearchItems = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-
-  display: grid;
-  grid-template-columns: auto auto auto auto auto;
-  max-width: 80%;
+  gap: 24px;
+  display: flex ;
+  flex-wrap: wrap;
+  max-width: 75%;
   margin: 0 auto;
 `;
-const Item = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  box-shadow: 0 5px 15px 2px rgb(0 0 0 / 3%);
-`;
-const ItemImg = styled.img`
-  height: 150px;
-  width: 180px;
-  margin: 15px auto;
-`;
-
-const ItemName = styled.p`
-  color: ${COLORS.dark};
-  padding: 0 10px;
-`;
-const ItemPrice = styled.p`
-  color: ${COLORS.danger};
-  padding: 10px;
-`;
-const ItemBuy = styled.button`
-  background-color: ${COLORS.danger};
-  color: ${COLORS.white};
-  width: 90%;
-  border-radius: 100px;
-  outline: none;
-  border: none;
-  height: 40px;
-  margin: 12px auto;
-  padding: 9px;
+const Wrapper = styled.div`
+  max-width: 90%;
 `;
 const SearchTitle = styled.h1`
   color: ${COLORS.dark};
