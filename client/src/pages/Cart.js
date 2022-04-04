@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import CartItem from "../components/CartItem";
 import { UserContext } from "../contexts/UserContext";
-// import { AiOutlineClose } from "react-icons/ai";
+import { IoCloseOutline } from "react-icons/io5";
 // import { ItemsContext } from "../contexts/ItemsContext";
 import CartPayment from "../components/CartPayment";
 import { COLORS } from "../constants";
@@ -13,9 +13,6 @@ const Cart = () => {
     state: {
       user,
     },
-    actions: {
-      updateUser,
-    }
   } = useContext(UserContext);
 
   const [total2Pay, setTotal2Pay] = useState({
@@ -25,6 +22,8 @@ const Cart = () => {
     total: 0
   });
   const [itemsTotals, setItemsTotals] = useState(0);
+
+  const [successPayment, setSuccessPayment] = useState(false);
 
   useEffect(() => {
     const initItemsTotals = user.cartArray.map(item => ({
@@ -68,7 +67,14 @@ const Cart = () => {
   }
   
   return (
-    <Wrapper>
+    <Wrapper successPayment={successPayment}>
+      {
+        successPayment &&
+        <TextAlert>
+          <div>Thank you for shopping with us.</div>
+          <TextAlertBtn onClick={() => setSuccessPayment(false)}><IoCloseOutline /></TextAlertBtn>
+        </TextAlert>
+      }
       {
         user.cartArray.length > 0 
           ? <>
@@ -78,7 +84,7 @@ const Cart = () => {
                 <CartItem key={item._id} qty={item.qty} id={item._id} handleTotal2Pay={handleTotal2Pay} />
               ))}
             </div>
-            <CartPayment total2Pay={total2Pay} />
+            <CartPayment total2Pay={total2Pay} setSuccessPayment={setSuccessPayment} />
           </>
           : <div>Your cart is empty.</div>
       }
@@ -88,7 +94,8 @@ const Cart = () => {
 
 const Wrapper = styled.div`
   display: flex;
-  align-items: flex-start;
+  ${({successPayment}) => successPayment ? 'flex-direction: column;' : ''}  
+  align-items: ${({successPayment}) => successPayment ? 'center' : 'flex-start'};
   margin: 16px auto;
 `;
 
@@ -97,6 +104,32 @@ const CartTitle = styled.h1`
   padding-bottom: 16px;
   margin-bottom: 16px;
   border-bottom: 1px solid ${COLORS.grey};
+`;
+
+const TextAlert = styled.div`
+  margin-bottom: 16px;
+  padding: 16px 32px;
+  background-color: ${COLORS.success};
+  color: ${COLORS.light};
+  display: flex;
+  align-items: center;
+  gap: 16px;
+`;
+
+const TextAlertBtn = styled.button`
+  padding: 0;
+  border: none;
+  outline: none;
+  background: none;
+  font-size: 16px;
+  color: ${COLORS.light};
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    color: ${COLORS.grey};
+  }
 `;
 
 export default Cart;

@@ -20,9 +20,9 @@ import WishListBar from "./WishListBar";
 const Navbar = () => {
   const history = useHistory();
   const location = useLocation();
-  console.log(location);
+  // console.log(location);
   const isHomepage = location.pathname === "/";
-  console.log(isHomepage);
+  // console.log(isHomepage);
   const isLogin = location.pathname === "/login";
   const isSignup = location.pathname === "/signup";
 
@@ -30,10 +30,11 @@ const Navbar = () => {
     state: { user },
     actions: { logoutUser },
   } = useContext(UserContext);
-  const {
-    state: { isWishListBarOpen },
-    actions: { openWishListBar, closeWishListBar },
-  } = useContext(WishListContext);
+
+  // const {
+  //   state: { isWishListBarOpen },
+  //   actions: { openWishListBar, closeWishListBar },
+  // } = useContext(WishListContext);
 
   const {
     state: { items },
@@ -80,29 +81,8 @@ const Navbar = () => {
           <SearchBar />
           <IconsContainer>
             {user._id ? (
-              <>
-                <StyledIconMenu ishomepage={isHomepage.toString()}>
-                  <StyledIconBtn ishomepage={isHomepage.toString()}>
-                    <AiOutlineUser size="25" />
-                  </StyledIconBtn>
-                  <StyledIconSubMenu>
-                    <StyledIconItems to="/">My wish list</StyledIconItems>
-                    <StyledIconItems to="/">Settings</StyledIconItems>
-                    <StyledIconItems to="/">Something</StyledIconItems>
-                    <Logout onClick={handleLogout}>LOG OUT</Logout>
-                  </StyledIconSubMenu>
-                </StyledIconMenu>
-                <AiOutlineHeart
-                  size="25"
-                  onClick={() => {
-                    if (isWishListBarOpen) {
-                      closeWishListBar();
-                    } else {
-                      openWishListBar();
-                    }
-                  }}
-                />
-                <StyledCartLink to="/cart" ishomepage={isHomepage.toString()}>
+              <>                
+                <StyledNavLink to="/cart" ishomepage={isHomepage.toString()}>
                   {
                     user.cartArray.length === 0
                       ? <MdOutlineShoppingCart size="25" />
@@ -111,7 +91,18 @@ const Navbar = () => {
                           <span>{user.cartArray.length}</span>
                         </CartDiv>
                   }
-                </StyledCartLink>
+                </StyledNavLink>
+                <StyledIconMenu ishomepage={isHomepage.toString()}>
+                  <StyledIconBtn ishomepage={isHomepage.toString()}>
+                    <AiOutlineUser size="25" />
+                  </StyledIconBtn>
+                  <StyledIconSubMenu>
+                    <StyledIconItems to="/order-history">Your Orders</StyledIconItems>
+                    <StyledIconItems to="/wish-list">Your wish list</StyledIconItems>
+                    <StyledIconItems to="/settings">Settings</StyledIconItems>
+                    <Logout onClick={handleLogout}>LOG OUT</Logout>
+                  </StyledIconSubMenu>
+                </StyledIconMenu>
               </>
             ) : (
               <>
@@ -187,7 +178,7 @@ const StyledIconLink = styled(NavLink)`
 
 const StyledIconItems = styled(NavLink)``;
 
-const StyledCartLink = styled(NavLink)`
+const StyledNavLink = styled(NavLink)`
   color: ${({ ishomepage }) => ishomepage === "true" ? COLORS.dark : COLORS.light};
   text-decoration: none;
 

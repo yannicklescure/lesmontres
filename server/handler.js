@@ -248,6 +248,7 @@ const createUser = async (req, res) => {
     client.close();
   }
 };
+
 const updateCart = async (req, res) => {
   const client = new MongoClient(MONGO_URI, option);
   const { email, cartArray } = req.body;
@@ -284,9 +285,47 @@ const updateCart = async (req, res) => {
     client.close();
   }
 };
-const updatePurchaseHistory = async (req, res) => {
+
+const addToWishlist2 = async (req, res) => {
   const client = new MongoClient(MONGO_URI, option);
-  const { email, purchaseHistory } = req.body;
+  const { email, wishList } = req.body;
+  try {
+    await client.connect();
+    const db = client.db("LesMontres");
+    const emailUsers = await db.collection("users").findOne({ email });
+
+    console.log(emailUsers);
+    if (emailUsers) {
+      const result = await db.collection("users").updateOne(
+        { email },
+        {
+          $set: {
+            wishList,
+          },
+        }
+      );
+
+      console.log(result);
+      return res.status(200).json({
+        status: 200,
+        message: `Cart updated`,
+      });
+    } else {
+      return res.status(400).json({
+        status: 400,
+        message: `Not able to add Cart to database, user not found`,
+      });
+    }
+  } catch (err) {
+    console.log(err);
+  } finally {
+    client.close();
+  }
+};
+
+const updatePurchasedHistory = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, option);
+  const { email, purchasedHistory, cartArray } = req.body;
   try {
     await client.connect();
     const db = client.db("LesMontres");
@@ -296,8 +335,9 @@ const updatePurchaseHistory = async (req, res) => {
       const result = await db.collection("users").updateOne(
         { email },
         {
-          $push: {
-            purchaseHistory: purchaseHistory,
+          $set: {
+            purchasedHistory,
+            cartArray,
           },
         }
       );
@@ -317,6 +357,7 @@ const updatePurchaseHistory = async (req, res) => {
     client.close();
   }
 };
+
 const addToWishlist = async (req, res) => {
   const client = new MongoClient(MONGO_URI, option);
   try {
@@ -343,6 +384,7 @@ const addToWishlist = async (req, res) => {
     client.close();
   }
 };
+
 const removeFromWishlist = async (req, res) => {
   const client = new MongoClient(MONGO_URI, option);
   try {
@@ -384,6 +426,7 @@ module.exports = {
   logInUser,
   updateCart,
   addToWishlist,
-  updatePurchaseHistory,
+  updatePurchasedHistory,
   removeFromWishlist,
+  addToWishlist2,
 };
