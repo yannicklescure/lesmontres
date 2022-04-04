@@ -6,6 +6,7 @@ import {
   AiFillTwitterCircle,
   AiFillGoogleSquare,
 } from "react-icons/ai";
+import CopyrightBanner from "../CopyrightBanner";
 
 const Footer = () => {
   return (
@@ -54,6 +55,7 @@ const Footer = () => {
           </SocialContainer>
         </SocialWrapper>
       </Container>
+      <CopyrightBanner />
     </MainWrapper>
   );
 };
