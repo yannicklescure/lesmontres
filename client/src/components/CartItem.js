@@ -13,6 +13,7 @@ const CartItem = ({ id, qty = 1, handleTotal2Pay }) => {
 
   const [quantity, setQuantity] = useState(qty);
   const [item, setItem] = useState({ _id: null });
+  // eslint-disable-next-line
   const [itemTotal, setItemTotal] = useState(0);
   const [qtyBtnClicked, setQtyBtnClicked] = useState(false);
   const [forceUpdate, setForceUpdate] = useState(0);
@@ -43,8 +44,9 @@ const CartItem = ({ id, qty = 1, handleTotal2Pay }) => {
     setItemTotal(initItem.price.replace("$", ""));
     const wishListPosition = user.wishList.findIndex(item => item._id === initItem._id);
     setIsWishlisted(wishListPosition !== -1);
+    // eslint-disable-next-line
   }, [id]);
-  
+
   if (!item._id) {
     return <Loading />;
   }

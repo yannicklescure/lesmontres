@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { COLORS } from "../../constants";
-import { NavLink, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { BsSmartwatch } from "react-icons/bs";
 import Filters from "./Filters";
 
@@ -53,18 +53,6 @@ const StyledTitle = styled.div`
 
   & span:first-child {
     margin-right: 8px;
-  }
-`;
-
-const StyledLink = styled(NavLink)`
-  display: flex;
-  align-items: center;
-  color: ${({ active }) => (active ? COLORS.dark : COLORS.secondary)};
-  font-weight: ${({ active }) => (active ? "bold" : "normal")};
-  text-decoration: none;
-
-  &:hover {
-    color: ${COLORS.dark};
   }
 `;
 

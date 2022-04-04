@@ -31,6 +31,7 @@ const ProductCard = ({ product, getCompanyName }) => {
     setIsWishlisted(wishListPosition !== -1);
     const cartPosition = user.cartArray.findIndex(item => item._id === product._id);
     setIsInCart(cartPosition !== -1);
+    // eslint-disable-next-line
   }, [])
 
   const handleCart = () => {
