@@ -1,7 +1,8 @@
-import { useContext, useEffect, useState } from "react";
+// import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { ItemsContext } from "../contexts/ItemsContext";
 import { UserContext } from "../contexts/UserContext";
-import { WishListContext } from "../contexts/WishListContext";
+// import { WishListContext } from "../contexts/WishListContext";
 
 const WishList = () => {
   const {
@@ -10,7 +11,7 @@ const WishList = () => {
     },
     actions: { updateUser },
   } = useContext(UserContext);
-  const userContextObject = useContext(UserContext);
+  // const userContextObject = useContext(UserContext);
   const {
     state: { items },
   } = useContext(ItemsContext);
@@ -55,6 +56,7 @@ const WishList = () => {
     if (filteredWishListObjectArray.length > 0) {
       return filteredWishListObjectArray[0];
     }
+    return null;
   });
   console.log(wishListObjectArray);
 

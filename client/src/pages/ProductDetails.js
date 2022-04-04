@@ -49,6 +49,7 @@ const ProductDetails = () => {
         const wishListPosition = user.wishList.findIndex(item => item._id === response.data._id);
         setIsWishlisted(wishListPosition !== -1);
       });
+    // eslint-disable-next-line
   }, [id]);
 
   if (!product._id) {

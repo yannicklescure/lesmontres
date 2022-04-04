@@ -2,8 +2,8 @@ import styled from "styled-components";
 import {
   AiOutlineClockCircle,
   AiOutlineUser,
-  AiOutlineShoppingCart,
-  AiOutlineHeart,
+  // AiOutlineShoppingCart,
+  // AiOutlineHeart,
 } from "react-icons/ai";
 import { MdOutlineShoppingCart, MdShoppingCart } from "react-icons/md";
 import { COLORS } from "../constants";
@@ -11,11 +11,11 @@ import SubNavbar from "./SubNavbar";
 import { NavLink, useHistory, useLocation } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../contexts/UserContext";
-import { WishListContext } from "../contexts/WishListContext";
+// import { WishListContext } from "../contexts/WishListContext";
 import SearchBar from "./SearchBar";
 import { ItemsContext } from "../contexts/ItemsContext";
 import { CategoriesContext } from "../contexts/CategoriesContext";
-import WishListBar from "./WishListBar";
+// import WishListBar from "./WishListBar";
 
 const Navbar = () => {
   const history = useHistory();

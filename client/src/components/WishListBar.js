@@ -1,5 +1,6 @@
-import { useContext, useEffect, useState } from "react";
-import { UserContext } from "../contexts/UserContext";
+// import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
+// import { UserContext } from "../contexts/UserContext";
 import styled from "styled-components";
 import { AiOutlineClose } from "react-icons/ai";
 import { COLORS } from "../constants";
@@ -9,7 +10,8 @@ import WishList from "./WishList";
 const WishListBar = () => {
   const {
     state: { isWishListBarOpen },
-    actions: { openWishListBar, closeWishListBar },
+    // actions: { openWishListBar, closeWishListBar },
+    actions: { closeWishListBar },
   } = useContext(WishListContext);
 
   return (

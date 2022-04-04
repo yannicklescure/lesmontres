@@ -32,6 +32,7 @@ const Cart = () => {
     }));
     getTotal2Pay(initItemsTotals);
     setItemsTotals(initItemsTotals);
+    // eslint-disable-next-line
   }, []);
 
   const getTotal2Pay = (copyItemsTotals) => {
