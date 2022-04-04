@@ -85,11 +85,12 @@ const Description = styled.div`
 
 const OutOfStock = styled.div`
   background-color: ${COLORS.danger};
-  text-transform: uppercase;
   font-size: 12px;
   font-family: Lato, sans-serif;
   text-decoration: none;
-  color: black;
+  color: white;
+  padding: 5px;
+  width: fit-content;
 `;
 const InStock = styled.div`
   background-color: ${COLORS.mediumAquamarine};
@@ -144,7 +145,6 @@ const AddToWishList = styled.button`
   background-color: transparent;
   border: 1px solid ${COLORS.grey};
   padding: 10px;
-
 `;
 
 export default ProductDetails;
