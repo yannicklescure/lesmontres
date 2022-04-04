@@ -4,6 +4,7 @@ import { COLORS } from "../constants";
 import { ItemsContext } from "../contexts/ItemsContext";
 import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
 import Loading from "./Loading";
+import ProductCard from "./ProductCard";
 
 const SearchBar = () => {
   const [addWidth, setAddWidth] = useState(false);
@@ -27,7 +28,11 @@ const SearchBar = () => {
         // search result should be stored in a search array in the state.
         receivedSearchItemsFromServer({ searchItems: response.data })
       );
-  }
+  };
+
+  const getCompanyName = () => {
+    return "company";
+  };
 
   return (
     <SearchBarWrapper>
@@ -40,10 +45,7 @@ const SearchBar = () => {
           />
           <SearchContainer>
             <SearchHeader>What are you looking for ?</SearchHeader>
-            <SearchBarInput
-              onChange={handleSearch}
-              placeholder="Search"
-            />
+            <SearchBarInput onChange={handleSearch} placeholder="Search" />
             <Liner />
           </SearchContainer>
 
@@ -54,16 +56,14 @@ const SearchBar = () => {
           )}
 
           <SearchItems>
-            {searchItems.map((i) => {
+            {searchItems.map((product) => {
               return (
                 <>
-                  {!i.name.includes(search) && search.length > 3 && (
-                    <Item>
-                      <ItemImg src={i.imageSrc} alt={i.name} />
-                      <ItemName>{i.name}</ItemName>
-                      <ItemPrice>{i.price}</ItemPrice>
-                      <ItemBuy>Add To Cart</ItemBuy>
-                    </Item>
+                  {!product.name.includes(search) && search.length > 3 && (
+                    <ProductCard
+                      product={product}
+                      getCompanyName={getCompanyName}
+                    />
                   )}
                 </>
               );
@@ -73,7 +73,7 @@ const SearchBar = () => {
       )}
     </SearchBarWrapper>
   );
-}
+};
 
 const SearchBarInput = styled.input`
   border: 1px solid white;
