@@ -1,22 +1,23 @@
 import styled from "styled-components";
 import { useContext, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { COLORS } from "../constants";
 import {
   AiOutlineHeart,
   AiFillHeart,
-  AiOutlineShopping,
-  AiFillShopping,
+  // AiOutlineShopping,
+  // AiFillShopping,
 } from "react-icons/ai";
 import { MdOutlineShoppingCart, MdShoppingCart } from "react-icons/md";
 import { UserContext } from "../contexts/UserContext";
 
 const ProductCard = ({ product, getCompanyName }) => {
+  const history = useHistory();
   // on hover, change outlined heart to filled heart
   const [heartHover, setHeartHover] = useState(false);
   const [cartHover, setCartHover] = useState(false);
   const [isShown, setIsShown] = useState(false);
-  const [addToCart, setAddToCart] = useState(false);
+  // const [addToCart, setAddToCart] = useState(false);
 
   const {
     state: { user },
@@ -31,6 +32,11 @@ const ProductCard = ({ product, getCompanyName }) => {
   // onClick={handleAddToCart}
 
   const handleCart = () => {
+    // console.log(user.email);
+    if (!user.email) {
+      history.push('/login');
+      return;
+    }
     const productId = product._id;
     // update the cartArray state
 
@@ -45,6 +51,7 @@ const ProductCard = ({ product, getCompanyName }) => {
       copy.splice(findProduct, 1);
     }
     console.log(copy);
+    // updateUser({ user: { ...user, cartArray: copy } });
     updateUser({ user: { ...user, cartArray: copy } });
     fetch(`/api/cart`, {
       method: "PUT",
@@ -68,6 +75,14 @@ const ProductCard = ({ product, getCompanyName }) => {
       });
   };
 
+  const handleWishList = () => {
+    // console.log(user.email);
+    if (!user.email) {
+      history.push('/login');
+      return;
+    }
+  }
+
   // const handleAddToCart = () => {
   //   console.log("hello");
   // };
@@ -83,7 +98,7 @@ const ProductCard = ({ product, getCompanyName }) => {
           onMouseLeave={() => setHeartHover(false)}
         >
           {heartHover ? (
-            <AiFillHeart size="22" color="grey" />
+            <AiFillHeart onClick={handleWishList} size="22" color="grey" />
           ) : (
             <AiOutlineHeart size="22" color="grey" />
           )}
