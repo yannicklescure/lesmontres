@@ -27,7 +27,7 @@ const MainWrapper = styled.div`
   background: url(${bannerImg}) no-repeat center center fixed;
   background-size: cover;
   position: relative;
-  top: -85px;
+  margin-top: -85px;
   left: 0;
   display: flex;
   align-items: center;
