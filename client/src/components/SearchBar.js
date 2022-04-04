@@ -58,7 +58,7 @@ const SearchBar = () => {
           <SearchItems>
             {searchItems.map((product) => {
               return (
-                <Wrapper>
+                <Wrapper key={product._id}>
                   {!product.name.includes(search) && search.length > 3 && (
                     <>
                       <ProductCard
