@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { NavLink, useHistory } from "react-router-dom";
 import { COLORS } from "../constants";
 import {
@@ -14,22 +14,21 @@ import { UserContext } from "../contexts/UserContext";
 const ProductCard = ({ product, getCompanyName }) => {
   const history = useHistory();
   // on hover, change outlined heart to filled heart
-  const [heartHover, setHeartHover] = useState(false);
+  // const [heartHover, setHeartHover] = useState(false);
   const [cartHover, setCartHover] = useState(false);
   const [isShown, setIsShown] = useState(false);
-  // const [addToCart, setAddToCart] = useState(false);
+  const [isWishlisted, setIsWishlisted] = useState(false);
+  const [forceUpdate, setForceUpdate] = useState(0);
 
   const {
     state: { user },
     actions: { updateUser },
   } = useContext(UserContext);
-  // console.log(state);
-  // if (!state) {
-  //   return null;
-  // }
-  // TODO:
-  // onClick={handleAddToWishlist}
-  // onClick={handleAddToCart}
+  
+  useEffect(() => {
+    const position = user.wishList.findIndex(item => item._id === product._id);
+    setIsWishlisted(position !== -1);
+  }, [])
 
   const handleCart = () => {
     // console.log(user.email);
@@ -78,6 +77,10 @@ const ProductCard = ({ product, getCompanyName }) => {
       history.push('/login');
       return;
     }
+
+    setIsWishlisted(!isWishlisted);
+    setForceUpdate(forceUpdate + 1);
+
     const productId = product._id;
     // update the wishList state
 
@@ -119,21 +122,25 @@ const ProductCard = ({ product, getCompanyName }) => {
     >
       <IconsWrapper isShown={isShown}>
         <WishlistIcons
-          onMouseEnter={() => setHeartHover(true)}
-          onMouseLeave={() => setHeartHover(false)}
+          // onMouseEnter={() => setHeartHover(true)}
+          // onMouseLeave={() => setHeartHover(false)}
+          isWishlisted={isWishlisted}
+          onClick={handleWishList}
+          forceUpdate={forceUpdate}
         >
-          {heartHover ? (
-            <AiFillHeart onClick={handleWishList} size="22" color="grey" />
+          {isWishlisted ? (
+            <AiFillHeart size="22" />
           ) : (
-            <AiOutlineHeart size="22" color="grey" />
+            <AiOutlineHeart size="22" />
           )}
         </WishlistIcons>
         <CartIcons
           onMouseEnter={() => setCartHover(true)}
           onMouseLeave={() => setCartHover(false)}
+          onClick={handleCart} 
         >
           {cartHover ? (
-            <MdShoppingCart onClick={handleCart} size="22" color="grey" />
+            <MdShoppingCart size="22" color="grey" />
           ) : (
             <MdOutlineShoppingCart size="22" color="grey" />
           )}
@@ -187,7 +194,12 @@ const IconsWrapper = styled.div`
 `;
 
 const WishlistIcons = styled.div`
+  color: ${({isWishlisted}) => isWishlisted ? COLORS.danger : COLORS.secondary};
   cursor: pointer;
+
+  &:hover {
+    color: ${COLORS.secondary};
+  }
 `;
 const CartIcons = styled.div`
   cursor: pointer;
