@@ -51,7 +51,7 @@ const reducer = (state, action) => {
     case "user-updated": {
       return {
         ...state,
-        user: { ...action?.data },
+        ...action,
         status: "user-updated",
       };
     }
@@ -108,10 +108,9 @@ export const UserProvider = ({ children }) => {
   };
 
   const updateUser = (data) => {
-    // TO DO
     setLocalStorage(data);
     dispatch({
-      data,
+      ...data,
       type: "user-updated",
     });
   };

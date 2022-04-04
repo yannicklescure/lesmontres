@@ -49,10 +49,10 @@ express()
   .post("/api/login", logInUser)
   .post("/api/signup", createUser)
 
-  .patch("/api/cart", updateCart)
+  .put("/api/cart", updateCart)
   .patch("/api/wishlist", addToWishlist)
   .patch("/api/wishlist/remove", removeFromWishlist)
-  .patch("/api/purchasehistory", updatePurchaseHistory)
+  .put("/api/purchasehistory", updatePurchaseHistory)
   // .patch("/api/wishlist", removeFromWishlist)
   // REST endpoints?
   .get("/bacon", (req, res) => res.status(200).json("🥓"))
