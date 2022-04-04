@@ -18,9 +18,9 @@ const OrderHistory = () => {
   } = useContext(CompaniesContext);
 
   const getCompanyName = (id, category) => {
-    console.log(id);
-    console.log(category);
-    console.log(companies);
+    // console.log(id);
+    // console.log(category);
+    // console.log(companies);
     if (companies[category]) {
       const position = companies[category].findIndex((company) => company._id === id);
       return position !== -1 ? companies[category].find((company) => company._id === id).name : null;

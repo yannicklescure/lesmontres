@@ -15,9 +15,10 @@ const ProductCard = ({ product, getCompanyName }) => {
   const history = useHistory();
   // on hover, change outlined heart to filled heart
   // const [heartHover, setHeartHover] = useState(false);
-  const [cartHover, setCartHover] = useState(false);
+  // const [cartHover, setCartHover] = useState(false);
   const [isShown, setIsShown] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [isInCart, setIsInCart] = useState(false);
   const [forceUpdate, setForceUpdate] = useState(0);
 
   const {
@@ -26,8 +27,10 @@ const ProductCard = ({ product, getCompanyName }) => {
   } = useContext(UserContext);
   
   useEffect(() => {
-    const position = user.wishList.findIndex(item => item._id === product._id);
-    setIsWishlisted(position !== -1);
+    const wishListPosition = user.wishList.findIndex(item => item._id === product._id);
+    setIsWishlisted(wishListPosition !== -1);
+    const cartPosition = user.cartArray.findIndex(item => item._id === product._id);
+    setIsInCart(cartPosition !== -1);
   }, [])
 
   const handleCart = () => {
@@ -36,6 +39,10 @@ const ProductCard = ({ product, getCompanyName }) => {
       history.push('/login');
       return;
     }
+
+    setIsInCart(!isInCart);
+    setForceUpdate(forceUpdate + 1);
+
     const productId = product._id;
     // update the cartArray state
 
@@ -129,20 +136,21 @@ const ProductCard = ({ product, getCompanyName }) => {
           forceUpdate={forceUpdate}
         >
           {isWishlisted ? (
-            <AiFillHeart size="22" />
+            <AiFillHeart size="24" />
           ) : (
-            <AiOutlineHeart size="22" />
+            <AiOutlineHeart size="24" />
           )}
         </WishlistIcons>
         <CartIcons
-          onMouseEnter={() => setCartHover(true)}
-          onMouseLeave={() => setCartHover(false)}
+          // onMouseEnter={() => setCartHover(true)}
+          // onMouseLeave={() => setCartHover(false)}
+          isInCart={isInCart}
           onClick={handleCart} 
         >
-          {cartHover ? (
-            <MdShoppingCart size="22" color="grey" />
+          {isInCart ? (
+            <MdShoppingCart size="24" />
           ) : (
-            <MdOutlineShoppingCart size="22" color="grey" />
+            <MdOutlineShoppingCart size="24" />
           )}
         </CartIcons>
       </IconsWrapper>
@@ -202,7 +210,12 @@ const WishlistIcons = styled.div`
   }
 `;
 const CartIcons = styled.div`
+  color: ${({isInCart}) => isInCart ? COLORS.success : COLORS.secondary};
   cursor: pointer;
+
+  &:hover {
+    color: ${COLORS.secondary};
+  }
 `;
 
 const ImgWrapper = styled(NavLink)`

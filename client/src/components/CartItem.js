@@ -4,12 +4,19 @@ import { AiOutlineArrowUp, AiOutlineArrowDown } from "react-icons/ai";
 import Loading from "./Loading";
 import { ItemsContext } from "../contexts/ItemsContext";
 import { UserContext } from "../contexts/UserContext";
+import { NavLink, useHistory } from "react-router-dom";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { COLORS } from "../constants";
 
 const CartItem = ({ id, qty = 1, handleTotal2Pay }) => {
+  const history = useHistory();
+
   const [quantity, setQuantity] = useState(qty);
   const [item, setItem] = useState({ _id: null });
   const [itemTotal, setItemTotal] = useState(0);
   const [qtyBtnClicked, setQtyBtnClicked] = useState(false);
+  const [forceUpdate, setForceUpdate] = useState(0);
+  const [isWishlisted, setIsWishlisted] = useState(false);
 
   const {
     state: { 
@@ -34,7 +41,10 @@ const CartItem = ({ id, qty = 1, handleTotal2Pay }) => {
     // console.log(initItem);
     setItem(initItem);
     setItemTotal(initItem.price.replace("$", ""));
+    const wishListPosition = user.wishList.findIndex(item => item._id === initItem._id);
+    setIsWishlisted(wishListPosition !== -1);
   }, [id]);
+  
   if (!item._id) {
     return <Loading />;
   }
@@ -93,12 +103,56 @@ const CartItem = ({ id, qty = 1, handleTotal2Pay }) => {
     });
   }
 
+  const handleWishList = () => {
+    // console.log(user.email);
+    if (!user.email) {
+      history.push('/login');
+      return;
+    }
+
+    setIsWishlisted(!isWishlisted);
+    setForceUpdate(forceUpdate + 1);
+
+    const productId = item._id;
+    // update the wishList state
+
+    const findProduct = user.wishList.findIndex(
+      (item) => item._id === productId
+    );
+    console.log(findProduct);
+    const copy = user.wishList;
+    if (findProduct === -1) {
+      copy.push(item);
+    } else {
+      copy.splice(findProduct, 1);
+    }
+    console.log(copy);
+    updateUser({ user: { ...user, wishList: copy } });
+    fetch(`/api/wishList2`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        wishList: copy,
+        email: user.email,
+      }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
+
   return (
     <CartContainer>
       <CartDiv>
         <CartImg src={item.imageSrc} alt={item.name} />
         <CartInfo>
-          <h1>{item.name}</h1>
+          <ItemName to={`product/${item._id}`}>{item.name}</ItemName>
           <p>Category: {item.category}</p>
           <p>Body Location: {item.body_location}</p>
           {/* <p>${itemTotal}</p> */}
@@ -113,7 +167,23 @@ const CartItem = ({ id, qty = 1, handleTotal2Pay }) => {
             </QtyBtn>
           </QtyDiv>
           <CartButtons>
-            <CartBtn>Add to wish list</CartBtn>
+            <AddToWishList
+              onClick={handleWishList}
+              forceUpdate={forceUpdate}
+            >
+              <WishlistIcons
+                // onMouseEnter={() => setHeartHover(true)}
+                // onMouseLeave={() => setHeartHover(false)}
+                isWishlisted={isWishlisted}
+              >
+                {isWishlisted ? (
+                  <AiFillHeart size="24" />
+                ) : (
+                  <AiOutlineHeart size="24" />
+                )}
+              </WishlistIcons>
+              <div>Add to Wishlist</div>
+            </AddToWishList>
             <CartBtn onClick={handleCart}>Delete</CartBtn>
           </CartButtons>
         </CartInfo>
@@ -129,10 +199,9 @@ const CartContainer = styled.div`
 `;
 
 const CartImg = styled.img`
-  /* box-shadow: 0 5px 15px 2px rgb(0 0 0 / 3%); */
-  width: 200px;
   object-fit: contain;
 `;
+
 const CartInfo = styled.div`
   display: flex;
   justify-content: space-between;
@@ -144,9 +213,10 @@ const CartButtons = styled.div`
   gap: 24px;
 `;
 const CartBtn = styled.button`
-  background: transparent;
+  background: none;
   border: none;
-  padding: 0 0 5px;
+  padding: 0;
+  font-size: 14px;
   /* border-bottom: 1px solid lightgray; */
   cursor: pointer;
 `;
@@ -168,6 +238,31 @@ const CartDiv = styled.div`
   gap: 20px;
   padding: 20px 0;
   border-bottom: 1px solid lightgray;
+`;
+
+const ItemName = styled(NavLink)`
+  text-decoration: none;
+  font-size: 18px;
+  color: ${COLORS.secondary};
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const AddToWishList = styled.button`
+  border: none;
+  background: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  cursor: pointer;
+`;
+
+const WishlistIcons = styled.div`
+  color: ${({isWishlisted}) => isWishlisted ? COLORS.danger : COLORS.secondary};
 `;
 
 export default CartItem;

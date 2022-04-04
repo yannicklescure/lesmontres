@@ -22,7 +22,6 @@ const Cart = () => {
     total: 0
   });
   const [itemsTotals, setItemsTotals] = useState(0);
-
   const [successPayment, setSuccessPayment] = useState(false);
 
   useEffect(() => {
@@ -46,7 +45,8 @@ const Cart = () => {
     const subtotal = parseFloat(sum).toFixed(2);
     const shipping = parseFloat(8).toFixed(2);
     const taxes = parseFloat(subtotal * 0.15).toFixed(2);
-    const total = parseFloat(subtotal + shipping + taxes).toFixed(2);
+    const total = parseFloat(Number(subtotal) + Number(shipping) + Number(taxes)).toFixed(2);
+    console.log(total);
     setTotal2Pay({
       subtotal,
       shipping,

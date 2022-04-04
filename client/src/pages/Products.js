@@ -176,7 +176,9 @@ const Products = () => {
   // console.log(companies[category]);
   if (!companies[category]) return <Loading />;
 
-  const getCompanyName = (id) => {
+  const getCompanyName = (id, category) => {
+    // console.log(id);
+    // console.log(category);
     // console.log(companies);
     if (companies[category]) {
       const position = companies[category].findIndex((company) => company._id === id);

@@ -65,9 +65,9 @@ export const CompaniesProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    console.log(localStorage);
-    console.log(localStorage?.length > 0);
-    console.log(Object.keys(localStorage).length > 0);
+    // console.log(localStorage);
+    // console.log(localStorage?.length > 0);
+    // console.log(Object.keys(localStorage).length > 0);
     if(Object.keys(localStorage).length > 0) {
       dispatch({
         hasLoaded: true,
