@@ -15,6 +15,9 @@ import { UserContext } from "../contexts/UserContext";
 import ProductDetails from "../pages/ProductDetails";
 import Cart from "../pages/Cart";
 import WishListBar from "./WishListBar";
+import WishList from "../pages/WishList";
+import Settings from "../pages/Settings";
+import OrderHistory from "../pages/OrderHistory";
 
 function App() {
   const {
@@ -70,6 +73,15 @@ function App() {
             </Route>
             <Route exact path="/cart">
               <Cart />
+            </Route>
+            <Route exact path="/order-history">
+              <OrderHistory />
+            </Route>
+            <Route exact path="/settings">
+              <Settings />
+            </Route>
+            <Route exact path="/wish-list">
+              <WishList />
             </Route>
             <Route path="">
               <ErrorPage />

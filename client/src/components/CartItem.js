@@ -79,7 +79,7 @@ const CartItem = ({ id, qty = 1, handleTotal2Pay }) => {
     setTimeout(() => {
       setQtyBtnClicked(false);
     }, 300);
-    const value = action === 'plus' ? quantity + 1 : quantity -1;
+    const value = action === 'plus' ? quantity + 1 : quantity === 1 ? 1 : quantity -1;
     setQuantity(value);
     const itemPrice = item.price.replace("$", "");
     // console.log(value);
@@ -99,11 +99,12 @@ const CartItem = ({ id, qty = 1, handleTotal2Pay }) => {
         <CartImg src={item.imageSrc} alt={item.name} />
         <CartInfo>
           <h1>{item.name}</h1>
-          <h1>Category : {item.category}</h1>
-          <p>Body Location {item.body_location}</p>
-          <p>${itemTotal}</p>
+          <p>Category: {item.category}</p>
+          <p>Body Location: {item.body_location}</p>
+          {/* <p>${itemTotal}</p> */}
+          <p>{item.price}</p>
           <QtyDiv>
-            <div>Quantity : {quantity}</div>
+            <div>Qty: {quantity}</div>
             <QtyBtn qtyBtnClicked={qtyBtnClicked} onClick={() => handleClick('minus')}>
               <AiOutlineArrowDown />
             </QtyBtn>
@@ -161,8 +162,6 @@ const QtyBtn = styled.button`
   padding: 0;
   margin-left: 8px;
   cursor: pointer;
-  transition: all 300ms ease;
-  transform: scale(${({qtyBtnClicked}) => qtyBtnClicked ? 0.9 : 1});
 `;
 const CartDiv = styled.div`
   display: flex;

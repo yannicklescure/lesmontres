@@ -124,7 +124,7 @@ const ProductCard = ({ product, getCompanyName }) => {
         />
       </ImgWrapper>
       <Description>
-        <CompanyName>{getCompanyName(product.companyId)}</CompanyName>
+        <CompanyName>{getCompanyName(product.companyId, product.category.toLowerCase())}</CompanyName>
         <ItemName>{product.name}</ItemName>
         <Price>{product.price}</Price>
       </Description>

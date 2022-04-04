@@ -1,7 +1,57 @@
+import { useContext, useState } from "react";
 import styled from "styled-components";
 import { COLORS } from "../constants";
+import { UserContext } from "../contexts/UserContext";
+import Loading from "./Loading";
 
-const CartPayment = ({total2Pay}) => {
+const CartPayment = ({ total2Pay, setSuccessPayment }) => {
+
+  const {
+    state: { user },
+    actions: { updateUser },
+  } = useContext(UserContext);
+
+  const [processPayment, setProcessPayment] = useState(false);
+
+  const handlePurchase = () => {
+    const copyUser = user;
+    let { purchasedHistory, cartArray } = copyUser;
+    purchasedHistory = [...cartArray, ...purchasedHistory];
+    cartArray = [];
+    console.log(purchasedHistory);
+    console.log(cartArray);
+    setProcessPayment(true);
+    setTimeout(() => {
+      setProcessPayment(false);
+      setSuccessPayment(true);
+      updateUser({ user: {
+        ...user,
+        cartArray,
+        purchasedHistory,
+      }});
+    }, 3000);
+
+    // /api/purchasedHistory
+    fetch(`/api/purchasedHistory`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        cartArray,
+        email: user.email,
+        purchasedHistory,
+      }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  }
+
   return (
     <Wrapper>
       <Title>Summary</Title>
@@ -22,7 +72,9 @@ const CartPayment = ({total2Pay}) => {
         <Strong>Total</Strong>
         <Strong>${total2Pay.total}</Strong>
       </Total>
-      <PurchaseBtn>Purchase now</PurchaseBtn>
+      <PurchaseBtn onClick={handlePurchase}>
+        {processPayment ? <Loading size="18" /> : 'Purchase now'}
+      </PurchaseBtn>
     </Wrapper>
   )
 }

@@ -11,8 +11,9 @@ const {
   logInUser,
   updateCart,
   addToWishlist,
-  updatePurchaseHistory,
+  updatePurchasedHistory,
   removeFromWishlist,
+  addToWishlist2,
 } = require("./handler");
 const PORT = 4000;
 
@@ -50,9 +51,10 @@ express()
   .post("/api/signup", createUser)
 
   .put("/api/cart", updateCart)
+  .put("/api/wishlist2", addToWishlist2)
   .patch("/api/wishlist", addToWishlist)
   .patch("/api/wishlist/remove", removeFromWishlist)
-  .put("/api/purchasehistory", updatePurchaseHistory)
+  .put("/api/purchasedHistory", updatePurchasedHistory)
   // .patch("/api/wishlist", removeFromWishlist)
   // REST endpoints?
   .get("/bacon", (req, res) => res.status(200).json("🥓"))

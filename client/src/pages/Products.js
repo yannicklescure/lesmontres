@@ -219,7 +219,7 @@ const ProductsSection = styled.div`
   flex-wrap: wrap;
   padding: 16px;
   justify-content: center;
-  gap: 30px;
+  gap: 32px;
 `;
 
 export default Products;
