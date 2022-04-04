@@ -65,10 +65,7 @@ const ProductCard = ({ product, getCompanyName }) => {
         return res.json();
       })
       .then((data) => {
-        console.log("data", data);
-        console.log({ _id: productId });
-        // sessionStorage.setItem("currentUser", JSON.stringify(data));
-        // history.push(`/profile/${data.id}`); // redirect to currentUser's profile
+        console.log(data);
       })
       .catch((error) => {
         console.log("error", error);
@@ -81,11 +78,39 @@ const ProductCard = ({ product, getCompanyName }) => {
       history.push('/login');
       return;
     }
-  }
+    const productId = product._id;
+    // update the wishList state
 
-  // const handleAddToCart = () => {
-  //   console.log("hello");
-  // };
+    const findProduct = user.wishList.findIndex(
+      (item) => item._id === productId
+    );
+    console.log(findProduct);
+    const copy = user.wishList;
+    if (findProduct === -1) {
+      copy.push(product);
+    } else {
+      copy.splice(findProduct, 1);
+    }
+    console.log(copy);
+    updateUser({ user: { ...user, wishList: copy } });
+    fetch(`/api/wishList2`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        wishList: copy,
+        email: user.email,
+      }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
 
   return (
     <ProductCardWrapper
