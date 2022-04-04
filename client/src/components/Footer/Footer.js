@@ -1,60 +1,88 @@
 import styled from "styled-components";
 import { COLORS } from "../../constants";
 import {
-  AiOutlinePhone,
-  AiOutlineMail,
   AiFillFacebook,
   AiFillInstagram,
   AiFillTwitterCircle,
+  AiFillGoogleSquare,
 } from "react-icons/ai";
-import { FiMapPin } from "react-icons/fi";
-import CopyrightBanner from "./CopyrightBanner"
 
 const Footer = () => {
   return (
     <MainWrapper>
-      <AboutUs>
-        <h1>About Us</h1>
-        <div>
-          Lorem ipsum dolor sit amet. Ut perferendis rerum hic cupiditate
-          necessitatibus est quia iure qui velit unde et error tenetur ut
-          corrupti minima.
-        </div>
-      </AboutUs>
-      <Contact>
-        <h1>Contact</h1>
-        <div>
-          <div>
-            <FiMapPin />
-            <span>123 Saint Laurent, Montreal QC, H3B 2YJ</span>
-          </div>
-          <div>
-            <AiOutlinePhone />
-            <span>(514)-908-6713</span>
-          </div>
-          <div>
-            <AiOutlineMail />
-            <span>info@lesmontres.ca</span>
-          </div>
-        </div>
-      </Contact>
-      <Newsletter>
-        <h1>Newsletter</h1>
-        <div>Sign up to receive 10% off your next purchase and a lifetime of emails in your junk folder!</div>
-      </Newsletter>
-      <FollowUs>
-        <h1>Follow Us</h1>
-        <SocialsIcons>
-          <AiFillFacebook size="23" />
-          <AiFillTwitterCircle size="23" />
-          <AiFillInstagram size="23" />
-        </SocialsIcons>
-      </FollowUs>
+      <Container>
+        <AboutUs>
+          <h1>About Us</h1>
+          <Lists>
+            <List>Home</List>
+            <List>Products</List>
+            <List>Cart</List>
+            <List>Pricing</List>
+          </Lists>
+        </AboutUs>
+        <Seperator />
+        <Contact>
+          <h1>Help</h1>
+          <Lists>
+            <List>Shipping</List>
+            <List>Discounts</List>
+            <List>News Letter</List>
+            <List>Status</List>
+          </Lists>
+        </Contact>
+        <Seperator />
+
+        <Contact>
+          <h1>Contact</h1>
+          <Lists>
+            <List>1455 Boul de Maisonneuve O, Montréal, QC H3G 1M8</List>
+            <List>(314) 750-4388</List>
+            <List>LesMontres@gmail.com</List>
+            <List>Contact Page</List>
+          </Lists>
+          <Address></Address>
+        </Contact>
+        <Seperator />
+
+        <SocialWrapper>
+          <h1>Follow Us</h1>
+          <SocialContainer>
+            <AiFillFacebook size="23" />
+            <AiFillTwitterCircle size="23" />
+            <AiFillInstagram size="23" />
+            <AiFillGoogleSquare size="23" />
+          </SocialContainer>
+        </SocialWrapper>
+      </Container>
     </MainWrapper>
   );
 };
-
+const SocialWrapper = styled.div`
+  width: 25vw;
+  display: grid;
+  height: 50%;
+`;
 const MainWrapper = styled.div`
+  max-width: 80%;
+`;
+
+const List = styled.li`
+  margin: 10px 5px;
+`;
+const Lists = styled.ul`
+  margin: 20px 0;
+`;
+const SocialContainer = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+const Container = styled.div`
+  display: grid;
+  grid-template-columns: repeat(7, auto);
+  grid-gap: 20px;
+  padding: 0 40px;
+  justify-items: center;
+  align-items: center;
   width: 100vw;
   height: 250px;
   background-color: ${COLORS.darker};
@@ -62,11 +90,13 @@ const MainWrapper = styled.div`
   font-family: Helvetica, sans-serif;
   font-size: 14px;
   letter-spacing: 1px;
-  display: flex;
+`;
+const Seperator = styled.hr`
+  height: 40%;
+  opacity: 0.2;
 `;
 
 const AboutUs = styled.div`
-  border: 1px solid ${COLORS.grey};
   width: 25vw;
   display: flex;
   flex-direction: column;
@@ -74,24 +104,11 @@ const AboutUs = styled.div`
 `;
 
 const Contact = styled.div`
-  border: 1px solid ${COLORS.grey};
   width: 25vw;
 `;
 
-const Newsletter = styled.div`
-  border: 1px solid ${COLORS.grey};
+const Address = styled.div`
   width: 25vw;
-`;
-
-const FollowUs = styled.div`
-  border: 1px solid ${COLORS.grey};
-  width: 25vw;
-`;
-
-const SocialsIcons = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 5px;
 `;
 
 export default Footer;
