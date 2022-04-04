@@ -8,7 +8,6 @@ import {
   AiFillTwitterCircle,
 } from "react-icons/ai";
 import { FiMapPin } from "react-icons/fi";
-import CopyrightBanner from "./CopyrightBanner"
 
 const Footer = () => {
   return (
