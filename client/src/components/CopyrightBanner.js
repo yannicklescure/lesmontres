@@ -12,9 +12,9 @@ const SocialsBanner = () => {
 const MainWrapper = styled.div`
   /* border: 2px solid red; */
   color: white;
-  background-color: ${COLORS.secondary};
+  background-color: ${COLORS.darker};
   width: 100vw;
-  height: 50px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,7 +23,7 @@ const MainWrapper = styled.div`
 
 const CopyrightText = styled.div`
   font-family: Helvetica, sans-serif;
-  font-size: 12px;
+  font-size: 10px;
   letter-spacing: 1px;
 `;
 
