@@ -207,7 +207,7 @@ const Products = () => {
 
 const PageWrapper = styled.div`
   display: grid;
-  grid-template-columns: 200px auto;
+  grid-template-columns: 250px auto;
   position: relative;
   margin-bottom: 16px;
   border-bottom: 1px solid ${COLORS.secondary};
