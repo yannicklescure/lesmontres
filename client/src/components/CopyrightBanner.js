@@ -13,7 +13,7 @@ const MainWrapper = styled.div`
   /* border: 2px solid red; */
   color: white;
   background-color: ${COLORS.darker};
-  width: 100vw;
+  width: 100%;
   height: 30px;
   display: flex;
   align-items: center;

@@ -1,16 +1,12 @@
 import styled from "styled-components";
 import { useEffect, useState, useContext } from "react";
-import { NavLink, useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { COLORS } from "../constants";
 import Loading from "../components/Loading";
-import {
-  AiOutlineHeart,
-  AiFillHeart,
-  // AiOutlineShopping,
-  // AiFillShopping,
-} from "react-icons/ai";
-import { MdOutlineShoppingCart, MdShoppingCart } from "react-icons/md";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+// import { MdOutlineShoppingCart, MdShoppingCart } from "react-icons/md";
 import { UserContext } from "../contexts/UserContext";
+import { CompaniesContext } from "../contexts/CompaniesContext";
 
 const ProductDetails = () => {
   const {
@@ -19,19 +15,30 @@ const ProductDetails = () => {
   } = useContext(UserContext);
   const history = useHistory();
 
+  const {
+    state: {
+      companies,
+    },
+  } = useContext(CompaniesContext);
+
   // fetch the product from the server by id
   const [product, setProduct] = useState({ _id: null });
+  const [forceUpdate, setForceUpdate] = useState(0);
+  const [isWishlisted, setIsWishlisted] = useState(false);
+  
   const id = useParams()._id;
 
   // we would usually put this in the helper file, since we are using it in multiple files
-  const getCompanyName = (id) => {
-    // return companies.find((company) => company._id === id).name;
-    return "company";
+  const getCompanyName = (id, category) => {
+    // console.log(id);
+    // console.log(category);
+    // console.log(companies);
+    if (companies[category]) {
+      const position = companies[category].findIndex((company) => company._id === id);
+      return position !== -1 ? companies[category].find((company) => company._id === id).name : null;
+    }
+    return;
   };
-
-  const [heartHover, setHeartHover] = useState(false);
-  const [cartHover, setCartHover] = useState(false);
-  // const [isShown, setIsShown] = useState(false);
 
   useEffect(() => {
     fetch(`/api/items/${id}`)
@@ -39,6 +46,8 @@ const ProductDetails = () => {
       .then((response) => {
         console.log(response.data);
         setProduct(response.data);
+        const wishListPosition = user.wishList.findIndex(item => item._id === response.data._id);
+        setIsWishlisted(wishListPosition !== -1);
       });
   }, [id]);
 
@@ -90,6 +99,50 @@ const ProductDetails = () => {
       });
   };
 
+  const handleWishList = () => {
+    // console.log(user.email);
+    if (!user.email) {
+      history.push('/login');
+      return;
+    }
+
+    setIsWishlisted(!isWishlisted);
+    setForceUpdate(forceUpdate + 1);
+
+    const productId = product._id;
+    // update the wishList state
+
+    const findProduct = user.wishList.findIndex(
+      (item) => item._id === productId
+    );
+    console.log(findProduct);
+    const copy = user.wishList;
+    if (findProduct === -1) {
+      copy.push(product);
+    } else {
+      copy.splice(findProduct, 1);
+    }
+    console.log(copy);
+    updateUser({ user: { ...user, wishList: copy } });
+    fetch(`/api/wishList2`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        wishList: copy,
+        email: user.email,
+      }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
+
   return (
     <Wrapper>
       <ContentWrapper>
@@ -103,25 +156,29 @@ const ProductDetails = () => {
             <InStock>In Stock</InStock>
           )}
           <ItemName>{product.name}</ItemName>
-          <CompanyName>{getCompanyName(product.companyId)}</CompanyName>
+          <CompanyName>{getCompanyName(product.companyId, product.category.toLowerCase())}</CompanyName>
           <Category>Category: {product.category}</Category>
           <BodyLocation>Body Location: {product.body_location}</BodyLocation>
           <Price>{product.price}</Price>
           {product.numInStock > 0 && (
             <AddToCart onClick={handleCart}>Add to Cart</AddToCart>
           )}
-          <AddToWishList>
+          <AddToWishList
+            onClick={handleWishList}
+            forceUpdate={forceUpdate}
+          >
             <WishlistIcons
-              onMouseEnter={() => setHeartHover(true)}
-              onMouseLeave={() => setHeartHover(false)}
+              // onMouseEnter={() => setHeartHover(true)}
+              // onMouseLeave={() => setHeartHover(false)}
+              isWishlisted={isWishlisted}
             >
-              {heartHover ? (
-                <AiFillHeart size="22" color="grey" />
+              {isWishlisted ? (
+                <AiFillHeart size="24" />
               ) : (
-                <AiOutlineHeart size="22" color="grey" />
+                <AiOutlineHeart size="24" />
               )}
             </WishlistIcons>
-            Add to Wishlist
+            <div>Add to Wishlist</div>
           </AddToWishList>
         </Description>
       </ContentWrapper>
@@ -227,20 +284,17 @@ const AddToCart = styled.button`
 `;
 
 const AddToWishList = styled.button`
-  text-align: left;
-  /* background-color: transparent; */
   border: none;
-  background-color: transparent;
-  /* border: 1px solid ${COLORS.grey}; */
-  padding: 10px;
+  background: none;
+  padding: 0;
   display: flex;
   align-items: center;
-  gap: 10px;
-  /* text-transform: uppercase; */
-  font-size: 12px;
+  gap: 12px;
+  font-size: 14px;
+  cursor: pointer;
 `;
 
 const WishlistIcons = styled.div`
-  cursor: pointer;
+  color: ${({isWishlisted}) => isWishlisted ? COLORS.danger : COLORS.secondary};
 `;
 export default ProductDetails;
