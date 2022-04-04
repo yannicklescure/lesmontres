@@ -4,6 +4,7 @@ import ProductCard from "../components/ProductCard";
 import { COLORS } from "../constants";
 import { CompaniesContext } from "../contexts/CompaniesContext";
 import { UserContext } from "../contexts/UserContext";
+import { v4 as uuidv4 } from 'uuid';
 
 const OrderHistory = () => {
 
@@ -37,7 +38,7 @@ const OrderHistory = () => {
             <ProductCard
               product={product}
               getCompanyName={getCompanyName}
-              key={product._id}
+              key={product._id + uuidv4()}
             />
           ))
         }
