@@ -60,12 +60,11 @@ const Footer = () => {
   );
 };
 const SocialWrapper = styled.div`
-  width: 25vw;
   display: grid;
   height: 50%;
 `;
 const MainWrapper = styled.div`
-  max-width: 80%;
+  max-width: 100%;
 `;
 
 const List = styled.li`
@@ -79,13 +78,11 @@ const SocialContainer = styled.div`
   gap: 10px;
 `;
 const Container = styled.div`
-  display: grid;
-  grid-template-columns: repeat(7, auto);
-  grid-gap: 20px;
+  display: flex ;
+  justify-content: space-evenly ;
   padding: 0 40px;
   justify-items: center;
   align-items: center;
-  width: 100vw;
   height: 250px;
   background-color: ${COLORS.darker};
   color: white;
@@ -99,18 +96,15 @@ const Seperator = styled.hr`
 `;
 
 const AboutUs = styled.div`
-  width: 25vw;
   display: flex;
   flex-direction: column;
   padding: 10px;
 `;
 
 const Contact = styled.div`
-  width: 25vw;
 `;
 
 const Address = styled.div`
-  width: 25vw;
 `;
 
 export default Footer;
