@@ -7,6 +7,9 @@
 - [Omar Gubran](https://github.com/Amooryjubran)
 - [Yannick Lescure](https://github.com/yannicklescure)
 
+## Online version
+Website is available on heroku https://lesmontres.herokuapp.com/
+
 ## Group project instructions
 
 You will make use of _everything_ that you have learned thus far in the bootcamp to build an e-commerce app that will showcase all of the provided _wearables_ items.
