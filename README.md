@@ -9,8 +9,11 @@
 
 ## Online version
 Website is available on heroku https://lesmontres.herokuapp.com/
+
 *Testing user*
+
 email: johndoe@email.com
+
 password: 1234567890
 
 ## Group project instructions
