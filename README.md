@@ -1,5 +1,14 @@
 # Wearables E-Commerce Project
 
+## Team members
+
+- [Alessia Piscopo](https://github.com/AlessiaPiscopo)
+- [Greg Rodriguez](https://github.com/gregrodz)
+- [Omar Gubran](https://github.com/Amooryjubran)
+- [Yannick Lescure](https://github.com/yannicklescure)
+
+## Group project instructions
+
 You will make use of _everything_ that you have learned thus far in the bootcamp to build an e-commerce app that will showcase all of the provided _wearables_ items.
 
 The stack is React.Js, Node.Js, and styled-components.
@@ -66,4 +75,4 @@ You can see the guidelines [here](./__documentation/PROJECT.md)
 
 Your team will have to present the final product on the final day in order to get a passing grade. Who will draw the short straw?
 
-- The presentation shouldn't be more than 5 mintues long.
+- The presentation shouldn't be more than 5 minutes long.
