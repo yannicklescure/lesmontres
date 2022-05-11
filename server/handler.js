@@ -5,6 +5,8 @@ const bcrypt = require("bcrypt");
 const { MongoClient } = require("mongodb");
 require("dotenv").config();
 const { MONGO_URI } = process.env;
+// https://medium.com/the-node-js-collection/simple-server-side-cache-for-express-js-with-node-js-45ff296ca0f0
+const mcache = require('memory-cache');
 
 const option = {
   useNewUrlParser: true,
@@ -14,128 +16,187 @@ const getCompanies = async (req, res) => {
   console.log(req.query);
   const { category } = req.query;
 
-  const client = new MongoClient(MONGO_URI, option);
-  try {
-    await client.connect();
-    const db = client.db("LesMontres");
-    const companies = await db.collection("companies").find().toArray();
-    let data = companies;
-    // console.log(data);
-
-    const items = await db.collection("items").find().toArray();
-    // console.log(items);
-
-    if (category) {
-      const products = items.filter(
-        (item) => item.category.toLowerCase() === category
-      );
-      // console.log(products);
-      const companiesIds = [];
-      products.forEach((product) => {
-        if (!companiesIds.includes(product.companyId))
-          companiesIds.push(product.companyId);
-      });
-      // console.log(companiesIds);
-      const filteredCompanies = [];
-      companiesIds.forEach((companiesId) => {
-        const filteredCompany = companies.filter(
-          (company) => company._id === companiesId
+  let key = '__express__' + req.originalUrl || req.url
+  let cachedBody = mcache.get(key);
+  if (cachedBody) {
+    res.set("Content-Type", "text/html");
+    res.status(200).json({ status: 200, data: cachedBody, message: "success" })
+    return
+  }
+  else {
+    const client = new MongoClient(MONGO_URI, option);
+    try {
+      await client.connect();
+      const db = client.db("LesMontres");
+      const companies = await db.collection("companies").find().toArray();
+      let data = companies;
+      // console.log(data);
+  
+      const items = await db.collection("items").find().toArray();
+      // console.log(items);
+  
+      if (category) {
+        const products = items.filter(
+          (item) => item.category.toLowerCase() === category
         );
-        filteredCompanies.push(filteredCompany[0]);
-      });
-      // console.log(filteredCompanies);
+        // console.log(products);
+        const companiesIds = [];
+        products.forEach((product) => {
+          if (!companiesIds.includes(product.companyId))
+            companiesIds.push(product.companyId);
+        });
+        // console.log(companiesIds);
+        const filteredCompanies = [];
+        companiesIds.forEach((companiesId) => {
+          const filteredCompany = companies.filter(
+            (company) => company._id === companiesId
+          );
+          filteredCompanies.push(filteredCompany[0]);
+        });
+        // console.log(filteredCompanies);
+  
+        data = filteredCompanies;
+      }
 
-      data = filteredCompanies;
+      if (data) {
+        mcache.put(key, data);    
+      }
+      
+      res.flush();
+      data
+        ? res.status(200).json({ status: 200, data, message: "success" })
+        : res.status(409).json({ status: 409, message: "ERROR" });
+    } catch (err) {
+      console.log("Error getting companies list", err);
+      res.status(500).json({ status: 500, message: err });
+    } finally {
+      client.close();
     }
-
-    data
-      ? res.status(200).json({ status: 200, data, message: "success" })
-      : res.status(409).json({ status: 409, message: "ERROR" });
-  } catch (err) {
-    console.log("Error getting companies list", err);
-    res.status(500).json({ status: 500, message: err });
-  } finally {
-    client.close();
   }
 };
 
 const getItem = async (req, res) => {
   console.log(req.params);
 
-  const client = new MongoClient(MONGO_URI, option);
-  try {
-    await client.connect();
-    const db = client.db("LesMontres");
-    const _id = parseInt(req.params._id);
-    const result = await db.collection("items").findOne({ _id });
-    console.log(result);
-    let data = result;
-
-    result
-      ? res.status(200).json({ status: 200, data, message: "success" })
-      : res.status(409).json({ status: 409, message: "Item not found" });
-  } catch (err) {
-    console.log("Error Getting Items", err);
-    res.status(500).json({ status: 500, message: err });
-  } finally {
-    client.close();
+  let key = '__express__' + req.originalUrl || req.url
+  let cachedBody = mcache.get(key);
+  if (cachedBody) {
+    res.set("Content-Type", "text/html");
+    res.status(200).json({ status: 200, data: cachedBody, message: "success" })
+    return
+  }
+  else {
+    const client = new MongoClient(MONGO_URI, option);
+    try {
+      await client.connect();
+      const db = client.db("LesMontres");
+      const _id = parseInt(req.params._id);
+      const result = await db.collection("items").findOne({ _id });
+      console.log(result);
+      let data = result;
+  
+      if (data) {
+        mcache.put(key, data);
+      }
+      
+      res.flush();
+  
+      result
+        ? res.status(200).json({ status: 200, data, message: "success" })
+        : res.status(409).json({ status: 409, message: "Item not found" });
+    } catch (err) {
+      console.log("Error Getting Items", err);
+      res.status(500).json({ status: 500, message: err });
+    } finally {
+      client.close();
+    }
   }
 };
 
 const getItems = async (req, res) => {
   console.log(req.query);
 
-  const client = new MongoClient(MONGO_URI, option);
-  try {
-    await client.connect();
-    const db = client.db("LesMontres");
-    const result = await db.collection("items").find().toArray();
-    let data = result;
-
-    if (req.query.search) {
-      let searchResults = [];
-      data.forEach((item) => {
-        if (item.name.toLowerCase().includes(req.query.search.toLowerCase())) {
-          searchResults.push(item);
-        }
-      });
-      data = searchResults;
-      console.log(searchResults);
+  let key = '__express__' + req.originalUrl || req.url
+  let cachedBody = mcache.get(key);
+  if (cachedBody) {
+    res.set("Content-Type", "text/html");
+    res.status(200).json({ status: 200, data: cachedBody, message: "success" })
+    return
+  }
+  else {    
+    const client = new MongoClient(MONGO_URI, option);
+    try {
+      await client.connect();
+      const db = client.db("LesMontres");
+      const result = await db.collection("items").find().toArray();
+      let data = result;
+  
+      if (req.query.search) {
+        let searchResults = [];
+        data.forEach((item) => {
+          if (item.name.toLowerCase().includes(req.query.search.toLowerCase())) {
+            searchResults.push(item);
+          }
+        });
+        data = searchResults;
+        console.log(searchResults);
+      }
+  
+      if (req.query.categories) {
+        let categories = [];
+        data.forEach((item) => {
+          if (!categories.includes(item.category)) categories.push(item.category);
+        });
+        data = categories;
+      }
+  
+      if (data) {
+        mcache.put(key, data);
+      }
+      
+      res.flush();
+  
+      result
+        ? res.status(200).json({ status: 200, data, message: "success" })
+        : res.status(409).json({ status: 409, message: "ERROR" });
+    } catch (err) {
+      console.log("Error getting items list", err);
+      res.status(500).json({ status: 500, message: err });
+    } finally {
+      client.close();
     }
-
-    if (req.query.categories) {
-      let categories = [];
-      data.forEach((item) => {
-        if (!categories.includes(item.category)) categories.push(item.category);
-      });
-      data = categories;
-    }
-
-    result
-      ? res.status(200).json({ status: 200, data, message: "success" })
-      : res.status(409).json({ status: 409, message: "ERROR" });
-  } catch (err) {
-    console.log("Error getting items list", err);
-    res.status(500).json({ status: 500, message: err });
-  } finally {
-    client.close();
   }
 };
 
 const getUsers = async (req, res) => {
-  const client = new MongoClient(MONGO_URI, option);
-  try {
-    await client.connect();
-    const db = client.db("LesMontres");
-    const result = await db.collection("users").find().toArray();
-    result
-      ? res.status(200).json({ status: 200, data: result, message: "success" })
-      : res.status(409).json({ status: 409, message: "ERROR" });
-  } catch (err) {
-    console.log("Error getting list of users", err);
-    res.status(500).json({ status: 500, message: err });
-  } finally {
-    client.close();
+  let key = '__express__' + req.originalUrl || req.url
+  let cachedBody = mcache.get(key);
+  if (cachedBody) {
+    res.set("Content-Type", "text/html");
+    res.status(200).json({ status: 200, data: cachedBody, message: "success" })
+    return
+  }
+  else {    
+    const client = new MongoClient(MONGO_URI, option);
+    try {
+      await client.connect();
+      const db = client.db("LesMontres");
+      const data = await db.collection("users").find().toArray();
+  
+      if (data) {
+        mcache.put(key, data);
+      }
+      
+      res.flush();
+      data
+        ? res.status(200).json({ status: 200, data, message: "success" })
+        : res.status(409).json({ status: 409, message: "ERROR" });
+    } catch (err) {
+      console.log("Error getting list of users", err);
+      res.status(500).json({ status: 500, message: err });
+    } finally {
+      client.close();
+    }
   }
 };
 

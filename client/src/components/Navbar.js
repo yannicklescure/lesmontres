@@ -41,12 +41,12 @@ const Navbar = () => {
   } = useContext(ItemsContext);
 
   const {
-    localStorage,
     actions: { loadingCategories, receivedCategoriesFromServer },
   } = useContext(CategoriesContext);
 
   useEffect(() => {
-    if (localStorage?.length === 0) {
+    console.log(items);
+    if (Array.isArray(items)) {
       let tmp = [];
       loadingCategories();
       items.forEach((item) => {
