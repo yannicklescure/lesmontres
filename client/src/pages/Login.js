@@ -5,11 +5,13 @@ import { COLORS } from "../constants";
 import { BsSmartwatch } from 'react-icons/bs';
 import { UserContext } from "../contexts/UserContext";
 import Loading from "../components/Loading";
+import ErrorMsg from "../components/ErrorMsg";
 
 const SignUp = () => {
   const history = useHistory();
   const [disabled, setDisabled] = useState(true);
   const [valid, setValid] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const {
     state: {
@@ -17,6 +19,7 @@ const SignUp = () => {
     },
     actions: {
       loadingUser,
+      logoutUser,
       receivedUserFromServer,
       errorFromServerUser,
     }
@@ -56,10 +59,17 @@ const SignUp = () => {
       })
         .then((res) => res.json())
         .then((json) => {
-          console.log(json);
-          receivedUserFromServer({user: json.data});
-          // Go to homepage
-          history.push('/');
+          if (json.status === 200) {
+            receivedUserFromServer({user: json.data});
+            // Go to homepage
+            history.push('/');
+          }
+          else {
+            setErrorMessage(json.message);
+            setValid(false);
+            setDisabled(true);
+            logoutUser();
+          }
         })
         .catch((err) => {
           console.error(err);
@@ -99,7 +109,8 @@ const SignUp = () => {
         </LoginBtn>
       </SignUpForm>
 
-      <StyledInfo>New to Les montres? <LoginLink to="/signup">Create an account.</LoginLink></StyledInfo> 
+      <StyledInfo>New to Les montres? <LoginLink to="/signup">Create an account.</LoginLink></StyledInfo>
+      { errorMessage && <ErrorMsg message={errorMessage} width="336px" setMessage={setErrorMessage} /> }
     </Wrapper>
   );
 };

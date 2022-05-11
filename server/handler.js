@@ -203,7 +203,8 @@ const getUsers = async (req, res) => {
 const logInUser = async (req, res) => {
   const client = new MongoClient(MONGO_URI, option);
   const { email, password } = req.body;
-
+  console.log(req.body);
+  
   try {
     await client.connect();
     const db = client.db("LesMontres");
