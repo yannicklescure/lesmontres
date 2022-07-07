@@ -1,5 +1,7 @@
 # Wearables E-Commerce Project
 
+![home page screenshot](./screenshots/FireShot%20Capture%20001%20-%20Les%20montres%20-%20lesmontres.herokuapp.com.png)
+
 ## Team members
 
 - [Alessia Piscopo](https://github.com/AlessiaPiscopo)
@@ -8,16 +10,17 @@
 - [Yannick Lescure](https://github.com/yannicklescure)
 
 ## Online version
-Website is available on heroku https://lesmontres.herokuapp.com/
 
-*Testing user*
+Website is available on heroku [lesmontres.herokuapp.com](https://lesmontres.herokuapp.com/)
+
+### Testing user
 
 email: johndoe@email.com
 password: 1234567890
 
 ## Group project instructions
 
-You will make use of _everything_ that you have learned thus far in the bootcamp to build an e-commerce app that will showcase all of the provided _wearables_ items.
+You will make use of everything that you have learned thus far in the bootcamp to build an e-commerce app that will showcase all of the provided wearables_ items.
 
 The stack is React.Js, Node.Js, and styled-components.
 
@@ -31,7 +34,7 @@ Your node server should be RESTful and follow REST principles, at least to the e
 
 ## Getting Started
 
-<img src="./server/assets/software-dev-path.jpg" style="width: 100%;" />
+![software-dev-path](./server/assets/software-dev-path.jpg)
 
 You have your assignment and your team. What should you do first? This will vary for every team, and even every team member.
 
